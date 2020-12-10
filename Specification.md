@@ -4,11 +4,11 @@
 - 文字列を２つ入れ比較する単純なサイト作る。
 - できれば...
   - 別のPCとの同期を行い比較
+
 ## 使う言語など
-- laravel
-  - phpフレームワーク
-- laravel echo
-  - 同期に必要
+- laravel (php)
+  - laravel echo
+    - 同期に必要
 - javascript
   - 比較フレームワークでも入れる
   - リアルタイム処理
