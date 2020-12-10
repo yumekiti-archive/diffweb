@@ -16,3 +16,6 @@
 
 ## サーバーなど
 docker使って制作する予定
+
+## 前提知識
+`docker-compose up`使い方
