@@ -19,3 +19,10 @@ docker使って制作する予定
 
 ## 前提知識
 `docker-compose up`使い方
+
+## 候補
+- laravel echo
+- Pusher
+- LaravelPusher
+- redis
+- laravel app
