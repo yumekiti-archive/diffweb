@@ -1,0 +1,15 @@
+version: '3'
+services:
+
+  web:
+    image:
+    container_name:
+    restart: always
+    ports:
+      - 8080:80
+
+  db:
+    image:
+    
+    container_name:
+    restart: always

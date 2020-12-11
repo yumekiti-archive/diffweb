@@ -26,3 +26,6 @@ docker使って制作する予定
 - LaravelPusher
 - redis
 - laravel app
+- node.js
+- socket.io
+- axios
