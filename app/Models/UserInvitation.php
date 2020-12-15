@@ -38,19 +38,5 @@ class UserInvitation extends Model
 
     }
 
-    /**
-     * 招待先のDiffを取得する
-     */
-    public function diff(){
-
-        // 正しく動くか怪しい
-        return $this->hasOneThrought(
-            Diff::class,
-            Member::class,
-            'id',
-            'id',  // Diffの外部キー
-            'invited_member_id', // 
-            'diff_id' // diffsのローカルキー
-        );
-    }
+  
 }
