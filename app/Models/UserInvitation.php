@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Diff;
+use App\Models\Member;
 
 class UserInvitation extends Model
 {
@@ -14,7 +17,7 @@ class UserInvitation extends Model
      */
     public function invitedOpponentUser()
     {
-
+        return $this->belongsTo(User::class, 'invited_partner_id');
     }
 
     /**
@@ -22,6 +25,16 @@ class UserInvitation extends Model
      */
     public function invitedUser()
     {
+        // 正しく動くか怪しい
+        return $this->hasOneThrought(
+            User::class,
+            Member::class, // 自分を参照する中間テーブル
+            'id', // member.id 
+            'id', // 取得テーブルが参照する中間テーブルに対する参照キー
+            'invited_user_id',
+            'member_id' 
+
+        );
 
     }
 
@@ -29,6 +42,15 @@ class UserInvitation extends Model
      * 招待先のDiffを取得する
      */
     public function diff(){
-        
+
+        // 正しく動くか怪しい
+        return $this->hasOneThrought(
+            Diff::class,
+            Member::class,
+            'id',
+            'id',
+            'invited_user_id',
+            'diff_id'
+        );
     }
 }

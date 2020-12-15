@@ -16,18 +16,16 @@ class CreateUserInvitationsTable extends Migration
         Schema::create('user_invitations', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->bigInteger('invited_user_id')->index();
+            $table->bigInteger('invited_member_id')->index();
             $table->bigInteger('invited_partner_id')->index();
-            $table->bigInteger('diff_id')->index();
 
-            $table->foreign('invited_user_id')->references('id')->on('users')
-                ->onDelete('cascade')->onDelete('cascade');
-            $table->foreign('invited_partner_id')->references('id')->on('users');
-            $table->foreign('diff_id')->references('diff_id')->on('diffs')
-                ->onDelete('cascade')->onDelete('cascade');
+            $table->foreign('invited_partner_id')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('invited_member_id')->references('id')->on('members')
+                ->onDelete('cascade')->onUpdate('cascade');
 
-            // 同じDiffに対して同じユーザーが同じユーザーを複数回招待できないようにする。
-            $table->unique('invited_user_id', 'invited_partner_id', 'diff_id');
+            // 同じメンバーが同じユーザーに対して複数回招待できないようにする。
+            $table->unique('invited_member_id', 'invited_partner_id');
         });
     }
 
