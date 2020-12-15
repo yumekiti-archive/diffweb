@@ -16,7 +16,7 @@ class Member extends Model
      */
     public function user()
     {
-
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -24,6 +24,6 @@ class Member extends Model
      */
     public function diff()
     {
-        
+        return $this->belongsTo(Diff::class, 'diff_id');
     }
 }
