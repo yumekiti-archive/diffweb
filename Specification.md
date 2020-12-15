@@ -26,24 +26,44 @@
    
 
 
-## 仕様
-- 文字列を２つ入れ比較する単純なサイト作る。
-- できれば...
-  - 別のPCとの同期を行い比較
+## 使用言語
+- PHP
+- JavaScript(on Node.js)
+- HTML
+- CSS
 
-## 使う言語など
-- laravel (php)
-  - laravel echo
-    - 同期に必要
-- javascript
-  - 比較フレームワークでも入れる
-  - リアルタイム処理
-- html
+## 使用フレームワーク
+- Laravel
+- Vue.js
+- Bootstrap
+
+
+## 開発時にホストPCに必要な環境やツール
+- Docker
+- Node.js
+- Postman
+- UTF-8対応のなんらかのIDE、エディター
+- PHP
+- Composer(Dockerでも可能？)
+- Git
+
+## 実行時に必要
+- Docker
+  - LAMP(LEMP)
+  - Redis
+  - Node.js
+    - laravel-echo-server
+
+
+
 
 ## サーバーなど
 docker使って制作する予定
 
 ## 前提知識
-`docker-compose up`使い方
+- `docker-compose up`使い方
+- LaravelのControllerとModelとMigration
+
+
 
 
