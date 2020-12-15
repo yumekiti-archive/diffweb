@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Diff;
 
 class User extends Authenticatable
 {
@@ -58,4 +59,11 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * アクセス権のあるDiffを取得する
+     */
+    public function diffs(){
+        return $this->belongsToMany(Diff::class, 'members', 'user_id', 'diff_id');
+    }
 }
