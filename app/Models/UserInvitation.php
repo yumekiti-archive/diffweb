@@ -31,8 +31,8 @@ class UserInvitation extends Model
             Member::class, // 自分を参照する中間テーブル
             'id', // member.id 
             'id', // 取得テーブルが参照する中間テーブルに対する参照キー
-            'invited_user_id',
-            'member_id' 
+            'invited_member_id',
+            'invited_user_id' 
 
         );
 
@@ -48,9 +48,9 @@ class UserInvitation extends Model
             Diff::class,
             Member::class,
             'id',
-            'id',
-            'invited_user_id',
-            'diff_id'
+            'id',  // Diffの外部キー
+            'invited_member_id', // 
+            'diff_id' // diffsのローカルキー
         );
     }
 }
