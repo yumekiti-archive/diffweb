@@ -1,9 +1,9 @@
-###### 2020/12/14
+
+## 概要
+文字列を２つ入れ比較しそれを同期&共有するサービスを作成する。
 
 ## 仕様
-ユーザはメールアドレスとパスワードで認証することができる。
 
-ユーザーはDiff比較ページをURLによって共有することができる。
 
 - 認証方法
   - ユーザはEmailとパスワードで認証することができる。
@@ -12,42 +12,58 @@
 - Diffについて
   - ユーザーは2つの文章を比較することができる
   - この2つの文章を比較する仕組みをDiffと呼ぶこととする。
-  - このDiffは他のユーザーと共有することができる。
+  - このDiffは他のユーザー(複数)と共有することができる。
   - Diffは推測不能なURLによって共有することができる。
   - Diffはユーザーを指定することによって共有することができる。
   - ユーザーはDiffを複数作成することができる。
   - ユーザーはDiffを永続化することができる。
   - 共有されたユーザーはDiffを編集することができる。
+  - Diffを閲覧、編集可能なユーザーのことをメンバーと呼ぶ
+  - メンバーはDiffをメンバーの除外をすることができる。
+    - 除外するときはパスワード入力を求めること。
+    - またメンバーはDiffの作成者を除外することができる。
+  - Diffは閲覧モードと編集モードを用意し、編集モードの時は他のユーザーから編集できないようにすること。
+   
 
 
-###### 2020/12/08
+## 使用言語
+- PHP
+- JavaScript(on Node.js)
+- HTML
+- CSS
 
-## 仕様
-- 文字列を２つ入れ比較する単純なサイト作る。
-- できれば...
-  - 別のPCとの同期を行い比較
+## 使用フレームワーク
+- Laravel
+- Vue.js
+- Bootstrap
 
-## 使う言語など
-- laravel (php)
-  - laravel echo
-    - 同期に必要
-- javascript
-  - 比較フレームワークでも入れる
-  - リアルタイム処理
-- html
+
+## 開発時にホストPCに必要な環境やツール
+- Docker
+- Node.js
+- Postman
+- UTF-8対応のなんらかのIDE、エディター
+- PHP
+- Composer(Dockerでも可能？)
+- Git
+
+## 実行時に必要
+- Docker
+  - LAMP(LEMP)
+  - Redis
+  - Node.js
+    - laravel-echo-server
+
+
+
 
 ## サーバーなど
 docker使って制作する予定
 
 ## 前提知識
-`docker-compose up`使い方
+- `docker-compose up`使い方
+- LaravelのControllerとModelとMigration
 
-## 候補
-- laravel echo
-- Pusher
-- LaravelPusher
-- redis
-- laravel app
-- node.js
-- socket.io
-- axios
+
+
+
