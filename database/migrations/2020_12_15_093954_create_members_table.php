@@ -16,8 +16,8 @@ class CreateMembersTable extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->bigInteger('user_id');
-            $table->bigInteger('diff_id');
+            $table->bigInteger('user_id')->index();
+            $table->bigInteger('diff_id')->index();
 
             $table->unique('user_id', 'diff_id');
             $table->foreign('user_id')->references('id')->on('users');
