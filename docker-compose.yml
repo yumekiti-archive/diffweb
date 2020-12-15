@@ -1,15 +1,41 @@
 version: '3'
+
 services:
-
-  web:
-    image:
-    container_name:
-    restart: always
+  nginx:
+    image: nginx
+    container_name: diffweb_nginx
     ports:
-      - 8080:80
-
+      - "8080:80"
+    volumes:
+      - ./nginx-default.conf:/etc/nginx/conf.d/default.conf
+      - ./:/var/www/html
+    depends_on:
+      - php
+  php:
+      container_name: diffweb_php
+      user: ${user}
+      build:
+          context: .
+          dockerfile: php.dockerfile
+      volumes:
+          - ./:/var/www/html
+      depends_on:
+        - db
+  # MySQL
   db:
-    image:
-    
-    container_name:
-    restart: always
+    image: mysql:5.7
+    container_name: diffweb_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+    - 3306:3306
+  redis:
+    container_name: diffweb_redis
+    image: redis:6.0.9
+    ports:
+      - "6379:6379"
