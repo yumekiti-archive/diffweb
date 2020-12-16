@@ -20,8 +20,10 @@ class CreateMembersTable extends Migration
             $table->bigInteger('diff_id')->index();
 
             $table->unique('user_id', 'diff_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('diff_id')->references('id')->on('diffs');
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('diff_id')->references('id')->on('diffs')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
