@@ -18,7 +18,7 @@ class CreateDiffsTable extends Migration
             $table->timestamps();
             $table->text('source_text');
             $table->text('compared_text');
-            $table->bigInteger('updating_user_id')->index();
+            $table->bigInteger('updating_user_id')->unsigned()->index();
 
             $table->foreign('updating_user_id')->references('id')->on('users');
         });
