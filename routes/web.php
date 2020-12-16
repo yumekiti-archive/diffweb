@@ -47,7 +47,7 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
 
         // Diffを編集モードにします。
         // 先客がいればエラーを返してください。
-        Rouge::post('/diffs/{diffId}/lock', [DiffController::class, 'lock']);
+        Route::post('/diffs/{diffId}/lock', [DiffController::class, 'lock']);
 
         // Diffの編集モードを解除します。
         // 編集モードを解除しているユーザーと編集中のユーザーが一致しているかチェックしてから解除してください。
