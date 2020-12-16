@@ -16,6 +16,7 @@ class CreateDiffsTable extends Migration
         Schema::create('diffs', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $talbe->text('title');
             $table->text('source_text');
             $table->text('compared_text');
             $table->bigInteger('updating_user_id')->unsigned()->index();
