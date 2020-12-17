@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Diff;
+use App\Http\Requests\EditDiff;
 
 class DiffController extends Controller
 {
@@ -19,9 +20,9 @@ class DiffController extends Controller
     /**
      * Pages/Diff/Edit.vueを返すようにしてください。
      */
-    public function edit($diffId)
+    public function edit(EditDiff $request, $diffId)
     {
-
+        
     }
 
 }
