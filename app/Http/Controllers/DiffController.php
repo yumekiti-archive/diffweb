@@ -21,9 +21,37 @@ class DiffController extends Controller
     /**
      * Pages/Diff/Edit.vueを返すようにしてください。
      */
-    public function edit(EditDiff $request, $diffId)
+    public function show($diffId)
     {
         
     }
+
+    /**
+     * Diffを作成します。
+     */
+    public function create(EditDiff $request)
+    {
+
+    }
+
+    /**
+     * Diffを更新します。
+     */
+    public function update(EditDiff $request, $diffId)
+    {
+
+    }
+
+    public function lock($diffId)
+    {
+
+    }
+
+    public function unlock($diffId)
+    {
+
+    }
+
+   
 
 }
