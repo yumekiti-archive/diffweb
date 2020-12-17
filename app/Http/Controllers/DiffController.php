@@ -42,11 +42,17 @@ class DiffController extends Controller
 
     }
 
+    /**
+     * Diffをロックします。
+     */
     public function lock($diffId)
     {
 
     }
 
+    /**
+     * Diffのロックを解除します。
+     */
     public function unlock($diffId)
     {
 
