@@ -11,6 +11,7 @@ class DiffController extends Controller
     
     /**
      * Pages/Diff/Index.vueを返すようにしてください。
+     * paginationを使用してページングできるようにしてください。　
      */
     public function index()
     {
