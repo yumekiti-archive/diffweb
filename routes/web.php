@@ -54,7 +54,7 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
         Route::delete('/diffs/{diffId}/lock', [DiffController::class, 'unlock']);
 
         // Diffにアクセスすることのできるメンバーを一覧表示します。
-        Route::get('/diffs/{diffId}/users', [MemberController::class, 'all'])->name('diffs.members.all');
+        Route::get('/diffs/{diffId}/users', [MemberController::class, 'index'])->name('diffs.members.index');
 
         // 一定期間内でパスワードを確認済みであればメンバーを削除します
         // リクエストパラメーターにパスワードを含めてそのパスワードを検証します。
