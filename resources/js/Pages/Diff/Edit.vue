@@ -14,15 +14,13 @@
                                     <span 
                                         v-for="(part,  index) in compared" :key="part.value + index"
                                     >
-                                        <span v-if="part.added" class="added">
-
-                                        </span>
+                                    
                                         
-                                        <span v-else-if="part.removed" class="removed">
+                                        <span v-if="part.removed" class="removed">
                                             {{ part.value }}
                                         </span>
                                         
-                                        <span v-else>
+                                        <span v-else-if="!part.added">
                                             {{ part.value}}
                                         </span>
                                     </span>

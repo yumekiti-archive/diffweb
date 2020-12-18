@@ -3514,8 +3514,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 var Diff = __webpack_require__(/*! diff */ "./node_modules/diff/dist/diff.js");
 
 
@@ -50011,9 +50009,7 @@ var render = function() {
                       { staticClass: "break-all" },
                       _vm._l(_vm.compared, function(part, index) {
                         return _c("span", { key: part.value + index }, [
-                          part.added
-                            ? _c("span", { staticClass: "added" })
-                            : part.removed
+                          part.removed
                             ? _c("span", { staticClass: "removed" }, [
                                 _vm._v(
                                   "\n                                        " +
@@ -50021,13 +50017,15 @@ var render = function() {
                                     "\n                                    "
                                 )
                               ])
-                            : _c("span", [
+                            : !part.added
+                            ? _c("span", [
                                 _vm._v(
                                   "\n                                        " +
                                     _vm._s(part.value) +
                                     "\n                                    "
                                 )
                               ])
+                            : _vm._e()
                         ])
                       }),
                       0
