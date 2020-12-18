@@ -27,7 +27,7 @@ class EditDiff extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => ['required', 'max:20']
         ];
     }
 }

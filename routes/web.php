@@ -32,7 +32,8 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
     Route::get('/diffs', [DiffController::class, 'index'])->name('diffs.all');
 
     // Diffを新規作成します。
-    Route::post('/diffs', [DiffController::class, 'create']);
+    Route::post('/diffs', [DiffController::class, 'create'])->name('diffs.create');
+    Route::get('/create', [DiffController::class, 'new'])->name('diffs.new');
 
 
     Route::group(['middleware' => ['member']], function () {
@@ -43,15 +44,15 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
 
         // Diffを更新します
         // 他のユーザーが編集しているにも関わらずputしようとしている場合はエラーを返してください。
-        Route::put('/diffs/{diffId}', [DiffController::class, 'update']);
+        Route::put('/diffs/{diffId}', [DiffController::class, 'update'])->name('diffs.update');
 
         // Diffを編集モードにします。
         // 先客がいればエラーを返してください。
-        Route::put('/diffs/{diffId}/lock', [DiffController::class, 'lock']);
+        Route::put('/diffs/{diffId}/lock', [DiffController::class, 'lock'])->name('diffs.lock');
 
         // Diffの編集モードを解除します。
         // 編集モードを解除しているユーザーと編集中のユーザーが一致しているかチェックしてから解除してください。
-        Route::delete('/diffs/{diffId}/lock', [DiffController::class, 'unlock']);
+        Route::delete('/diffs/{diffId}/lock', [DiffController::class, 'unlock'])->name('diffs.unlock');
 
         // Diffにアクセスすることのできるメンバーを一覧表示します。
         Route::get('/diffs/{diffId}/users', [MemberController::class, 'index'])->name('diffs.members.index');
@@ -65,10 +66,10 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
 
         // ユーザーを招待します。
         // user_idをpostパラメーターに含めるようにしてください。
-        Route::post('/diffs/{diffId}/invitations', [InvitationController::class, 'create']);
+        Route::post('/diffs/{diffId}/invitations', [InvitationController::class, 'create'])->name('diffs.invitations.create');
 
         // ユーザーへの招待を取り下げます。
-        Route::delete('/diffs/{diffId}/invitations/{invitationId}', [InvitationController::class, 'cancelInvitation']);
+        Route::delete('/diffs/{diffId}/invitations/{invitationId}', [InvitationController::class, 'cancelInvitation'])->name('diffs.invitations.cancel');
         
 
 

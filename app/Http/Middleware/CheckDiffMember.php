@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Diff;
+use Illuminate\Support\Facades\Auth;
 
 class CheckDiffMember
 {

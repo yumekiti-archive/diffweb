@@ -10,9 +10,9 @@ class Diff extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['source_text', 'compared_text'];
+    protected $fillable = ['source_text', 'compared_text', 'title'];
 
-    public function updatingUser(){
+    public function lockedUser(){
         return $this->belongsTo(User::class, 'updating_user_id', 'id');
     }
 

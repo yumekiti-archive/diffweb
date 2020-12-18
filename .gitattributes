@@ -3,3 +3,12 @@
 *.scss linguist-vendored
 *.js linguist-vendored
 CHANGELOG.md export-ignore
+
+*.min.js binary
+*.min.css binary
+*.css linguist-vendored
+*.scss linguist-vendored
+/public/js/**/* binary
+/public/css/**/* binary
+/public/build/**/* binary
+/public/vendor/**/* binary
