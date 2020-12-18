@@ -3550,7 +3550,7 @@ var Diff = __webpack_require__(/*! diff */ "./node_modules/diff/dist/diff.js");
             }
           });
         } else {
-          this.$inertia.post(this.route('diffs.update', this.diff.id), this.form, {
+          this.$inertia.put(this.route('diffs.update', this.diff.id), this.form, {
             onFinish: function onFinish() {
               console.log("保存完了");
             }
