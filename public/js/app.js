@@ -3500,6 +3500,10 @@ var Diff = __webpack_require__(/*! diff */ "./node_modules/diff/dist/diff.js");
       type: Object,
       required: false,
       "default": null
+    },
+    me: {
+      type: Object,
+      required: true
     }
   },
   data: function data() {
@@ -3522,6 +3526,9 @@ var Diff = __webpack_require__(/*! diff */ "./node_modules/diff/dist/diff.js");
         console.log(diffs);
         return diffs;
       }
+    },
+    locked: function locked() {
+      return this.diff != null && this.diff.locked_user != null && this.diff.locked_user.id !== this.me.id;
     }
   },
   created: function created() {
@@ -3532,7 +3539,15 @@ var Diff = __webpack_require__(/*! diff */ "./node_modules/diff/dist/diff.js");
     }
   },
   methods: {
-    trySave: function trySave() {}
+    trySave: function trySave() {
+      if (this.locked) {
+        if (this.diff == null) {
+          this.$inertia.post(this.route('diffs.create'), this.form);
+        } else {
+          this.$inertia.post(this.route('diffs.update', this.diff.id), this.form);
+        }
+      }
+    }
   }
 });
 
@@ -50132,7 +50147,16 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "mt-6" }, [
-                  _c("div", [_c("div", [_vm._v("ロックされています。")])]),
+                  _c("div", [
+                    _vm.locked
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(_vm.diff.lockd_user.user_name) +
+                              "によってロックされています。"
+                          )
+                        ])
+                      : _vm._e()
+                  ]),
                   _vm._v(" "),
                   _c(
                     "button",

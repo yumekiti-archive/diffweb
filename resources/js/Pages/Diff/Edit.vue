@@ -20,7 +20,7 @@
                         </div>
                         <div class="mt-6">
                             <div>
-                                <div>ロックされています。</div>
+                                <div v-if="locked">{{ diff.lockd_user.user_name }}によってロックされています。</div>
                             </div>
                             <button type="button" class="bg-blue-600 text-gray-200 rounded hover:bg-blue-500 px-4 py-2 focus:outline-none" @click="trySave">保存</button>
                         </div>
@@ -43,6 +43,10 @@ export default {
             type: Object,
             required: false,
             default: null
+        },
+        me: {
+            type: Object,
+            required: true,
         }
     },
 
@@ -67,6 +71,9 @@ export default {
                 console.log(diffs);
                 return diffs;
             }
+        },
+        locked(){
+            return this.diff != null && this.diff.locked_user != null && this.diff.locked_user.id !== this.me.id;
         }
     },
 
@@ -80,7 +87,13 @@ export default {
 
     methods: {
         trySave(){
-
+            if(this.locked){
+                if(this.diff == null){
+                    this.$inertia.post(this.route('diffs.create'), this.form);
+                }else{
+                    this.$inertia.post(this.route('diffs.update', this.diff.id), this.form);
+                }
+            }
         }
     }
     

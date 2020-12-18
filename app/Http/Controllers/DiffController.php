@@ -28,13 +28,13 @@ class DiffController extends Controller
     {
         $diff = Diff::with('lockedUser')->findOrFail($diffId);
 
-        return Inertia::render('Diff/Edit', [ 'diff' => $diff]);
+        return Inertia::render('Diff/Edit', [ 'diff' => $diff, 'me' => Auth::user() ]);
 
     }
 
     public function new()
     {
-        return Inertia::render('Diff/Edit');
+        return Inertia::render('Diff/Edit', ['me' => Auth::user() ]);
 
     }
 
