@@ -1,8 +1,8 @@
 <template>
     <div >
-        <div class="flex w-full">
-            <div class="flex-glow w-full">
-                <textarea v-model="form.sourceText" rows="5" class="w-full"></textarea>
+        <div class="flex">
+            <div class="w-full p-2 w-1/2">
+                <textarea v-model="form.sourceText" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
                 <div class="result">
                     <span 
                         v-for="(part,  index) in compared" :key="part.value + index"
@@ -21,8 +21,8 @@
                     </span>
                 </div>
             </div>
-            <div class="flex-glow w-full">
-                <textarea v-model="form.comparedText" rows="5" class="w-full"></textarea>
+            <div class="w-full p-2 w-1/2">
+                <textarea v-model="form.comparedText" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
                 <div class="result">
                     <span 
                         v-for="(part,  index) in compared" :key="part.value + index"

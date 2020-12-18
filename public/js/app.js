@@ -49951,8 +49951,8 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "flex w-full" }, [
-      _c("div", { staticClass: "flex-glow w-full" }, [
+    _c("div", { staticClass: "flex" }, [
+      _c("div", { staticClass: "w-full p-2 w-1/2" }, [
         _c("textarea", {
           directives: [
             {
@@ -49962,7 +49962,8 @@ var render = function() {
               expression: "form.sourceText"
             }
           ],
-          staticClass: "w-full",
+          staticClass:
+            "w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none",
           attrs: { rows: "5" },
           domProps: { value: _vm.form.sourceText },
           on: {
@@ -50003,7 +50004,7 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "flex-glow w-full" }, [
+      _c("div", { staticClass: "w-full p-2 w-1/2" }, [
         _c("textarea", {
           directives: [
             {
@@ -50013,7 +50014,8 @@ var render = function() {
               expression: "form.comparedText"
             }
           ],
-          staticClass: "w-full",
+          staticClass:
+            "w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none",
           attrs: { rows: "5" },
           domProps: { value: _vm.form.comparedText },
           on: {
