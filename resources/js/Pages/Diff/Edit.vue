@@ -97,7 +97,7 @@ export default {
                         }
                     });
                 }else{
-                    this.$inertia.post(this.route('diffs.update', this.diff.id), this.form, {
+                    this.$inertia.put(this.route('diffs.update', this.diff.id), this.form, {
                         onFinish(){
                             console.log("保存完了")
                         }
