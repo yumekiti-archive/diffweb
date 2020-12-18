@@ -7,15 +7,15 @@
                 
                     <div class="p-6 sm:px-10 bg-white border-b border-gray-200">
                         <label class="text-gray-600 font-light">タイトル</label>
-                        <input type='text' placeholder="Enter your input here" class="w-full mt-2 mb-6 px-6 py-3 border rounded-lg text-lg text-gray-700 focus:outline-none" v-bind="title"/>
+                        <input type='text' placeholder="Enter your input here" class="w-full mt-2 mb-6 px-6 py-3 border rounded-lg text-lg text-gray-700 focus:outline-none" v-model="form.title"/>
                         <p>二つのテキストの差分を表示します。</p>
                         <div class="flex">
                             <div class="w-full w-1/2 pr-2">
-                                <textarea v-model="form.sourceText" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
+                                <textarea v-model="form.source_text" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
                                 <text-result :isAdded="true" :result="compared"></text-result>
                             </div>
                             <div class="w-full w-1/2 pl-2">
-                                <textarea v-model="form.comparedText" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
+                                <textarea v-model="form.compared_text" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
                                 <text-result :isRemoved="true" :result="compared"></text-result>
                             </div>
 
@@ -55,8 +55,8 @@ export default {
     data(){
         return {
             form: {
-                sourceText: '',
-                comparedText: '',
+                source_text: '',
+                compared_text: '',
                 title: ''
             },
         }
@@ -68,8 +68,8 @@ export default {
 
     computed: {
         compared(){
-            if(this.form.sourceText !=null && this.form.comparedText != null){
-                let diffs = Diff.diffChars(this.form.sourceText, this.form.comparedText);
+            if(this.form.source_text !=null && this.form.compared_text != null){
+                let diffs = Diff.diffChars(this.form.source_text, this.form.compared_text);
                 console.log(diffs);
                 return diffs;
             }
@@ -81,19 +81,27 @@ export default {
 
     created(){
         if(this.diff != null ){
-            this.form.sourceText = this.diff.source_text;
-            this.form.comparedText = this.diff.compared_text;
+            this.form.source_text = this.diff.source_text;
+            this.form.compared_text = this.diff.compared_text;
             this.form.title = this.diff.title;
         }
     },
 
     methods: {
         trySave(){
-            if(this.locked){
+            if(!this.locked){
                 if(this.diff == null){
-                    this.$inertia.post(this.route('diffs.create'), this.form);
+                    this.$inertia.post(this.route('diffs.create'), this.form, {
+                        onFinish(){
+                            console.log("保存完了")
+                        }
+                    });
                 }else{
-                    this.$inertia.post(this.route('diffs.update', this.diff.id), this.form);
+                    this.$inertia.post(this.route('diffs.update', this.diff.id), this.form, {
+                        onFinish(){
+                            console.log("保存完了")
+                        }
+                    });
                 }
             }
         }

@@ -3511,8 +3511,8 @@ var Diff = __webpack_require__(/*! diff */ "./node_modules/diff/dist/diff.js");
   data: function data() {
     return {
       form: {
-        sourceText: '',
-        comparedText: '',
+        source_text: '',
+        compared_text: '',
         title: ''
       }
     };
@@ -3523,8 +3523,8 @@ var Diff = __webpack_require__(/*! diff */ "./node_modules/diff/dist/diff.js");
   },
   computed: {
     compared: function compared() {
-      if (this.form.sourceText != null && this.form.comparedText != null) {
-        var diffs = Diff.diffChars(this.form.sourceText, this.form.comparedText);
+      if (this.form.source_text != null && this.form.compared_text != null) {
+        var diffs = Diff.diffChars(this.form.source_text, this.form.compared_text);
         console.log(diffs);
         return diffs;
       }
@@ -3535,18 +3535,26 @@ var Diff = __webpack_require__(/*! diff */ "./node_modules/diff/dist/diff.js");
   },
   created: function created() {
     if (this.diff != null) {
-      this.form.sourceText = this.diff.source_text;
-      this.form.comparedText = this.diff.compared_text;
+      this.form.source_text = this.diff.source_text;
+      this.form.compared_text = this.diff.compared_text;
       this.form.title = this.diff.title;
     }
   },
   methods: {
     trySave: function trySave() {
-      if (this.locked) {
+      if (!this.locked) {
         if (this.diff == null) {
-          this.$inertia.post(this.route('diffs.create'), this.form);
+          this.$inertia.post(this.route('diffs.create'), this.form, {
+            onFinish: function onFinish() {
+              console.log("保存完了");
+            }
+          });
         } else {
-          this.$inertia.post(this.route('diffs.update', this.diff.id), this.form);
+          this.$inertia.post(this.route('diffs.update', this.diff.id), this.form, {
+            onFinish: function onFinish() {
+              console.log("保存完了");
+            }
+          });
         }
       }
     }
@@ -50072,22 +50080,28 @@ var render = function() {
                   _vm._v("タイトル")
                 ]),
                 _vm._v(" "),
-                _c(
-                  "input",
-                  _vm._b(
+                _c("input", {
+                  directives: [
                     {
-                      staticClass:
-                        "w-full mt-2 mb-6 px-6 py-3 border rounded-lg text-lg text-gray-700 focus:outline-none",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Enter your input here"
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.title,
+                      expression: "form.title"
+                    }
+                  ],
+                  staticClass:
+                    "w-full mt-2 mb-6 px-6 py-3 border rounded-lg text-lg text-gray-700 focus:outline-none",
+                  attrs: { type: "text", placeholder: "Enter your input here" },
+                  domProps: { value: _vm.form.title },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
                       }
-                    },
-                    "input",
-                    _vm.title,
-                    false
-                  )
-                ),
+                      _vm.$set(_vm.form, "title", $event.target.value)
+                    }
+                  }
+                }),
                 _vm._v(" "),
                 _c("p", [_vm._v("二つのテキストの差分を表示します。")]),
                 _vm._v(" "),
@@ -50101,14 +50115,14 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.form.sourceText,
-                            expression: "form.sourceText"
+                            value: _vm.form.source_text,
+                            expression: "form.source_text"
                           }
                         ],
                         staticClass:
                           "w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none",
                         attrs: { rows: "5" },
-                        domProps: { value: _vm.form.sourceText },
+                        domProps: { value: _vm.form.source_text },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
@@ -50116,7 +50130,7 @@ var render = function() {
                             }
                             _vm.$set(
                               _vm.form,
-                              "sourceText",
+                              "source_text",
                               $event.target.value
                             )
                           }
@@ -50139,14 +50153,14 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.form.comparedText,
-                            expression: "form.comparedText"
+                            value: _vm.form.compared_text,
+                            expression: "form.compared_text"
                           }
                         ],
                         staticClass:
                           "w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none",
                         attrs: { rows: "5" },
-                        domProps: { value: _vm.form.comparedText },
+                        domProps: { value: _vm.form.compared_text },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
@@ -50154,7 +50168,7 @@ var render = function() {
                             }
                             _vm.$set(
                               _vm.form,
-                              "comparedText",
+                              "compared_text",
                               $event.target.value
                             )
                           }

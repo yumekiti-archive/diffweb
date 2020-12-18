@@ -43,9 +43,9 @@ class DiffController extends Controller
      */
     public function create(EditDiff $request)
     {
-        $me = Auth::attempt(['email' => $email, 'password' => $password]);
+        $me = Auth::user();
         $diff = \DB::transaction(function() use ($request, $me){
-            $diff = Diff::create($request->only(['title', 'source_text', 'compated_text']));
+            $diff = Diff::create($request->only(['title', 'source_text', 'compared_text']));
 
             $diff->members()->attach($me);
 
