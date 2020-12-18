@@ -6,6 +6,8 @@
                     
                 
                     <div class="p-6 sm:px-10 bg-white border-b border-gray-200">
+                        <label class="text-gray-600 font-light">タイトル</label>
+                        <input type='text' placeholder="Enter your input here" class="w-full mt-2 mb-6 px-6 py-3 border rounded-lg text-lg text-gray-700 focus:outline-none" v-bind="title"/>
                         <p>二つのテキストの差分を表示します。</p>
                         <div class="flex">
                             <div class="w-full w-1/2 pr-2">

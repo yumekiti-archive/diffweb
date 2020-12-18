@@ -3490,6 +3490,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 var Diff = __webpack_require__(/*! diff */ "./node_modules/diff/dist/diff.js");
 
 
@@ -50066,6 +50068,27 @@ var render = function() {
               "div",
               { staticClass: "p-6 sm:px-10 bg-white border-b border-gray-200" },
               [
+                _c("label", { staticClass: "text-gray-600 font-light" }, [
+                  _vm._v("タイトル")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "input",
+                  _vm._b(
+                    {
+                      staticClass:
+                        "w-full mt-2 mb-6 px-6 py-3 border rounded-lg text-lg text-gray-700 focus:outline-none",
+                      attrs: {
+                        type: "text",
+                        placeholder: "Enter your input here"
+                      }
+                    },
+                    "input",
+                    _vm.title,
+                    false
+                  )
+                ),
+                _vm._v(" "),
                 _c("p", [_vm._v("二つのテキストの差分を表示します。")]),
                 _vm._v(" "),
                 _c("div", { staticClass: "flex" }, [
