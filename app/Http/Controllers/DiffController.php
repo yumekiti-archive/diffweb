@@ -61,6 +61,10 @@ class DiffController extends Controller
     public function update(EditDiff $request, $diffId)
     {
 
+        $me = Auth::user();
+        $diff = Diff::where('id', $diffId)->lockForUpdate()->firstOrFail();
+        $diff->update($request->only('title', 'source_text', 'compared_text'));
+        return redirect()->route('diffs.show', ['diffId' => $diff->id ]);
     }
 
     /**
