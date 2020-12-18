@@ -3487,6 +3487,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 var Diff = __webpack_require__(/*! diff */ "./node_modules/diff/dist/diff.js");
 
 
@@ -50128,7 +50131,9 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("div", [
+                _c("div", { staticClass: "mt-6" }, [
+                  _c("div", [_c("div", [_vm._v("ロックされています。")])]),
+                  _vm._v(" "),
                   _c(
                     "button",
                     {

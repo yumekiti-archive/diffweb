@@ -18,7 +18,10 @@
                             </div>
 
                         </div>
-                        <div>
+                        <div class="mt-6">
+                            <div>
+                                <div>ロックされています。</div>
+                            </div>
                             <button type="button" class="bg-blue-600 text-gray-200 rounded hover:bg-blue-500 px-4 py-2 focus:outline-none" @click="trySave">保存</button>
                         </div>
                         

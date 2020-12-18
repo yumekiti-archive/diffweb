@@ -12,7 +12,7 @@ class Diff extends Model
 
     protected $fillable = ['source_text', 'compared_text'];
 
-    public function updatingUser(){
+    public function lockedUser(){
         return $this->belongsTo(User::class, 'updating_user_id', 'id');
     }
 
