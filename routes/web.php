@@ -33,6 +33,7 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
 
     // Diffを新規作成します。
     Route::post('/diffs', [DiffController::class, 'create']);
+    Route::get('/create', [DiffController::class, 'new'])->name('diffs.create');
 
 
     Route::group(['middleware' => ['member']], function () {

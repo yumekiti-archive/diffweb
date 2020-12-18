@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Diff;
 use App\Http\Requests\EditDiff;
+use Inertia\Inertia;
 
 class DiffController extends Controller
 {
@@ -15,7 +16,6 @@ class DiffController extends Controller
      */
     public function index()
     {
-        
     }
 
     /**
@@ -24,6 +24,12 @@ class DiffController extends Controller
     public function show($diffId)
     {
         
+    }
+
+    public function new()
+    {
+        return Inertia::render('Diff/Edit');
+
     }
 
     /**
