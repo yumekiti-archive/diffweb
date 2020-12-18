@@ -17,11 +17,12 @@ class CreateDiffsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->text('title');
-            $table->text('source_text');
-            $table->text('compared_text');
-            $table->bigInteger('updating_user_id')->unsigned()->index();
+            $table->text('source_text')->nullable();
+            $table->text('compared_text')->nullable();
+            $table->bigInteger('updating_user_id')->nullable()->unsigned()->index();
 
-            $table->foreign('updating_user_id')->references('id')->on('users');
+            $table->foreign('updating_user_id')->references('id')->on('users')
+                ->onDelete('set null');
         });
     }
 
