@@ -3454,6 +3454,18 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Layouts/AppLayout */ "./resources/js/Layouts/AppLayout.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3506,6 +3518,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 var Diff = __webpack_require__(/*! diff */ "./node_modules/diff/dist/diff.js");
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     diff: {
@@ -3522,6 +3535,9 @@ var Diff = __webpack_require__(/*! diff */ "./node_modules/diff/dist/diff.js");
         title: ''
       }
     };
+  },
+  components: {
+    'app-layout': _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   computed: {
     compared: function compared() {
@@ -49950,109 +49966,133 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "flex" }, [
-      _c("div", { staticClass: "w-full p-2 w-1/2" }, [
-        _c("textarea", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.form.sourceText,
-              expression: "form.sourceText"
-            }
-          ],
-          staticClass:
-            "w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none",
-          attrs: { rows: "5" },
-          domProps: { value: _vm.form.sourceText },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.form, "sourceText", $event.target.value)
-            }
-          }
-        }),
-        _vm._v(" "),
+  return _c("app-layout", [
+    _c("div", { staticClass: "py-12" }, [
+      _c("div", { staticClass: "max-w-7xl mx-auto sm:px-6 lg:px-8" }, [
         _c(
           "div",
-          { staticClass: "result" },
-          _vm._l(_vm.compared, function(part, index) {
-            return _c("span", { key: part.value + index }, [
-              part.added
-                ? _c("span", { staticClass: "added" })
-                : part.removed
-                ? _c("span", { staticClass: "removed" }, [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(part.value) +
-                        "\n                    "
+          { staticClass: "bg-white overflow-hidden shadow-xl sm:rounded-lg" },
+          [
+            _c(
+              "div",
+              { staticClass: "p-6 sm:px-20 bg-white border-b border-gray-200" },
+              [
+                _c("p", { staticClass: "px-2" }, [
+                  _vm._v("二つのテキストの差分を表示します。")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "flex" }, [
+                  _c("div", { staticClass: "w-full p-2 w-1/2" }, [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.sourceText,
+                          expression: "form.sourceText"
+                        }
+                      ],
+                      staticClass:
+                        "w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none",
+                      attrs: { rows: "5" },
+                      domProps: { value: _vm.form.sourceText },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "sourceText", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "break-all" },
+                      _vm._l(_vm.compared, function(part, index) {
+                        return _c("span", { key: part.value + index }, [
+                          part.added
+                            ? _c("span", { staticClass: "added" })
+                            : part.removed
+                            ? _c("span", { staticClass: "removed" }, [
+                                _vm._v(
+                                  "\n                                        " +
+                                    _vm._s(part.value) +
+                                    "\n                                    "
+                                )
+                              ])
+                            : _c("span", [
+                                _vm._v(
+                                  "\n                                        " +
+                                    _vm._s(part.value) +
+                                    "\n                                    "
+                                )
+                              ])
+                        ])
+                      }),
+                      0
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "w-full p-2 w-1/2" }, [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.comparedText,
+                          expression: "form.comparedText"
+                        }
+                      ],
+                      staticClass:
+                        "w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none",
+                      attrs: { rows: "5" },
+                      domProps: { value: _vm.form.comparedText },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.form,
+                            "comparedText",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "break-all" },
+                      _vm._l(_vm.compared, function(part, index) {
+                        return _c("span", { key: part.value + index }, [
+                          part.added
+                            ? _c("span", { staticClass: "added" }, [
+                                _vm._v(
+                                  "\n                                        " +
+                                    _vm._s(part.value) +
+                                    "\n\n                                    "
+                                )
+                              ])
+                            : part.removed
+                            ? _c("span", { staticClass: "removed" })
+                            : _c("span", [
+                                _vm._v(
+                                  "\n                                        " +
+                                    _vm._s(part.value) +
+                                    "\n                                    "
+                                )
+                              ])
+                        ])
+                      }),
+                      0
                     )
                   ])
-                : _c("span", [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(part.value) +
-                        "\n                    "
-                    )
-                  ])
-            ])
-          }),
-          0
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "w-full p-2 w-1/2" }, [
-        _c("textarea", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.form.comparedText,
-              expression: "form.comparedText"
-            }
-          ],
-          staticClass:
-            "w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none",
-          attrs: { rows: "5" },
-          domProps: { value: _vm.form.comparedText },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.form, "comparedText", $event.target.value)
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "result" },
-          _vm._l(_vm.compared, function(part, index) {
-            return _c("span", { key: part.value + index }, [
-              part.added
-                ? _c("span", { staticClass: "added" }, [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(part.value) +
-                        "\n\n                    "
-                    )
-                  ])
-                : part.removed
-                ? _c("span", { staticClass: "removed" })
-                : _c("span", [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(part.value) +
-                        "\n                    "
-                    )
-                  ])
-            ])
-          }),
-          0
+                ])
+              ]
+            )
+          ]
         )
       ])
     ])
