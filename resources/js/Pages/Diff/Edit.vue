@@ -1,54 +1,26 @@
 <template>
     <app-layout>
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto sm:px-4 lg:px-6">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     
                 
-                    <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
-                        <p class="px-2">二つのテキストの差分を表示します。</p>
+                    <div class="p-6 sm:px-10 bg-white border-b border-gray-200">
+                        <p>二つのテキストの差分を表示します。</p>
                         <div class="flex">
-                            <div class="w-full p-2 w-1/2">
+                            <div class="w-full w-1/2 pr-2">
                                 <textarea v-model="form.sourceText" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
-                                <div class="break-all">
-                                    <span 
-                                        v-for="(part,  index) in compared" :key="part.value + index"
-                                    >
-                                    
-                                        
-                                        <span v-if="part.removed" class="removed">
-                                            {{ part.value }}
-                                        </span>
-                                        
-                                        <span v-else-if="!part.added">
-                                            {{ part.value}}
-                                        </span>
-                                    </span>
-                                </div>
+                                <text-result :isAdded="true" :result="compared"></text-result>
                             </div>
-                            <div class="w-full p-2 w-1/2">
+                            <div class="w-full w-1/2 pl-2">
                                 <textarea v-model="form.comparedText" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
-                                <div class="break-all">
-                                    <span 
-                                        v-for="(part,  index) in compared" :key="part.value + index"
-                                    >
-                                        <span v-if="part.added" class="added">
-                                            {{ part.value }}
-
-                                        </span>
-                                        
-                                        <span v-else-if="part.removed" class="removed">
-                                        </span>
-                                        
-                                        <span v-else>
-                                            {{ part.value}}
-                                        </span>
-                                    </span>
-                                </div>
+                                <text-result :isRemoved="true" :result="compared"></text-result>
                             </div>
 
                         </div>
-                        
+                        <div>
+                            <button type="button" class="bg-blue-600 text-gray-200 rounded hover:bg-blue-500 px-4 py-2 focus:outline-none" @click="trySave">保存</button>
+                        </div>
                         
 
                     </div>
@@ -60,6 +32,7 @@
 <script>
 const Diff = require('diff');
 import AppLayout from '@/Layouts/AppLayout';
+import TextDiffResult from './TextDiffResult';
 
 export default {
     props: {
@@ -80,7 +53,8 @@ export default {
         }
     },
     components: {
-        'app-layout': AppLayout
+        'app-layout': AppLayout,
+        'text-result':TextDiffResult
     },
 
     computed: {
@@ -94,21 +68,23 @@ export default {
     },
 
     created(){
-        /*if(diff != null ){
+        if(this.diff != null ){
             this.form.sourceText = this.diff.source_text;
             this.form.comparedText = this.diff.compared_text;
             this.form.title = this.diff.title;
-        }*/
+        }
+    },
+
+    methods: {
+        trySave(){
+
+        }
     }
+    
 }
 </script>
 <style scoped>
-.removed{
-    color: #ff7575;
-}
-.added{
-    color: #90ff99
-}
+
 
 .area1{
     background-color: #e2e2e2;
