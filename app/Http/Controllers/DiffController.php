@@ -87,7 +87,7 @@ class DiffController extends Controller
         });
 
         //return Inertia::render('Diff/Edit', ['diff' => $result, 'me' => Auth::user()]);
-        return Redirect::back();
+        return Redirect::back()->with('success', 'ロックしました');
     }
 
     /**
@@ -95,7 +95,7 @@ class DiffController extends Controller
      */
     public function unlock($diffId)
     {
-        $result = \DB::transaction(function() use($diff){
+        $result = \DB::transaction(function() use($diffId){
             $diff = Diff::lockForUpdate()->findOrFail($diffId);
             $user = Auth::user();
             $locked = $diff->lockedUser()->first();
@@ -103,12 +103,12 @@ class DiffController extends Controller
                 $diff->lockedUser()->dissociate();
                 $diff->save();
             }else if(isset($locked) && $locked !== $user->id){
-                abort(403);
+                return Redirect::back()->with('error', '他のユーザーによってロックされています。');
             }
             return $diff;
         });
 
-        return Redirect::back();
+        return Redirect::back()->with('success', 'ロックを解除しました。');
     }
 
    
