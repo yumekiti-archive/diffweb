@@ -62,9 +62,18 @@ class DiffController extends Controller
     public function update(EditDiff $request, $diffId)
     {
 
-        $me = Auth::user();
-        $diff = Diff::where('id', $diffId)->lockForUpdate()->firstOrFail();
-        $diff->update($request->only('title', 'source_text', 'compared_text'));
+        \DB::transaction(function () use ($request, $diffId){
+            $me = Auth::user();
+            $diff = Diff::where('id', $diffId)->lockForUpdate()->firstOrFail();
+            $lockedUser = $diff->lockedUser()->first();
+            if(isset($lockedUser) && $lockedUser->id !== $me->id){
+                return Redirect::back()->with('error', '他のユーザーによってロックされています。');
+            }
+            $diff->update($request->only('title', 'source_text', 'compared_text'));
+            $diff->lockedUser()->dissociate();
+            $diff->save();
+        });
+        
         return Redirect::back()->with('success', '保存に成功しました。');
     }
 
