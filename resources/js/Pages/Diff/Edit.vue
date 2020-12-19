@@ -99,6 +99,7 @@ export default {
                 }else{
                     this.$inertia.put(this.route('diffs.update', this.diff.id), this.form, {
                         onFinish(){
+                            console.log(this.$page.props);
                             console.log("保存完了")
                         }
                     });

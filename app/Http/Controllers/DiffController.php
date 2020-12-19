@@ -65,7 +65,7 @@ class DiffController extends Controller
         $me = Auth::user();
         $diff = Diff::where('id', $diffId)->lockForUpdate()->firstOrFail();
         $diff->update($request->only('title', 'source_text', 'compared_text'));
-        return redirect()->route('diffs.show', ['diffId' => $diff->id ]);
+        return Redirect::back()->with('success', '保存に成功しました。');
     }
 
     /**
