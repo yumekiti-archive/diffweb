@@ -1,7 +1,7 @@
 <template>
     <app-layout>
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-4 lg:px-6">
+        <div>
+            <div>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     
                 
@@ -21,10 +21,17 @@
 
                         </div>
                         <div class="mt-6">
-                            <div>
-                                <div v-if="locked">{{ diff.lockd_user.user_name }}によってロックされています。</div>
+                            <div class="bg-yellow-200 rounded justify-between items-center mb-4">
+                                <i class=""></i>
+                                <div v-if="diff && diff.locked_user" class="p-3 text-sm font-midium">{{ diff.locked_user.user_name }}によってロックされています。</div>
                             </div>
-                            <button type="button" class="bg-blue-600 text-gray-200 rounded hover:bg-blue-500 px-4 py-2 focus:outline-none" @click="trySave">保存</button>
+                            <div class="flex">
+                                <button v-if="diff && diff.locked_user && diff.locked_user.id === me.id" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
+                                <button v-else-if="diff !== null" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="lock">ロック</button>
+
+                                <button type="button" class="bg-blue-600 text-gray-200 rounded hover:bg-blue-500 px-4 py-2 focus:outline-none" @click="trySave">保存</button>
+
+                            </div>
                         </div>
                         
 
@@ -99,12 +106,31 @@ export default {
                 }else{
                     this.$inertia.put(this.route('diffs.update', this.diff.id), this.form, {
                         onFinish(){
+                            console.log(this.$page.props);
                             console.log("保存完了")
                         }
                     });
                 }
             }
-        }
+        },
+        lock(){
+            if(this.diff != null && !this.diff.locked_user){
+                this.$inertia.put(this.route('diffs.lock', this.diff.id), null, {
+                    onFinish(){
+                        console.log('ロック完了');
+                    }
+                })
+            }
+        },
+        unlock(){
+            if(this.diff != null && this.diff.locked_user != null && this.diff.locked_user.id == this.me.id){
+                this.$inertia.delete(this.route('diffs.unlock', this.diff.id), {
+                    onFinish(){
+                        console.log('ロック解除完了');
+                    }
+                })
+            }
+        },
     }
     
 }

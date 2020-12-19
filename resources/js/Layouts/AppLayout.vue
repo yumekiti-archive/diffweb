@@ -201,7 +201,15 @@
 
         <!-- Page Content -->
         <main>
-            <slot></slot>
+            <div class="py-12">
+            
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <flash-message />
+                    <slot></slot>
+                    
+                </div>
+            </div>
+            
         </main>
 
         <!-- Modal Portal -->
@@ -216,6 +224,7 @@
     import JetDropdownLink from '@/Jetstream/DropdownLink'
     import JetNavLink from '@/Jetstream/NavLink'
     import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink'
+    import FlashMessage from '@/Components/FlashMessage';
 
     export default {
         components: {
@@ -224,6 +233,7 @@
             JetDropdownLink,
             JetNavLink,
             JetResponsiveNavLink,
+            'flash-message': FlashMessage
         },
 
         data() {
