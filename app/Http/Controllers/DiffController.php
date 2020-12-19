@@ -7,6 +7,7 @@ use App\Models\Diff;
 use App\Http\Requests\EditDiff;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 
 
@@ -72,7 +73,21 @@ class DiffController extends Controller
      */
     public function lock($diffId)
     {
+        $result = \DB::transaction(function() use($diffId){
+            $diff = Diff::lockForUpdate()->findOrFail($diffId);
+            $user = Auth::user();
+            
+            $locked = $diff->lockedUser()->first();
+            if(isset($locked) && $locked->id === $user->id){
+                return Redirect::back()->with('error', '他のユーザーによってロックされています。');
+            }
+            $diff->lockedUser()->associate($user);
+            $diff->save();
+            return $diff->load(['lockedUser']);
+        });
 
+        //return Inertia::render('Diff/Edit', ['diff' => $result, 'me' => Auth::user()]);
+        return Redirect::back();
     }
 
     /**
@@ -80,7 +95,20 @@ class DiffController extends Controller
      */
     public function unlock($diffId)
     {
+        $result = \DB::transaction(function() use($diff){
+            $diff = Diff::lockForUpdate()->findOrFail($diffId);
+            $user = Auth::user();
+            $locked = $diff->lockedUser()->first();
+            if(isset($locked) && $locked->id === $user->id){
+                $diff->lockedUser()->dissociate();
+                $diff->save();
+            }else if(isset($locked) && $locked !== $user->id){
+                abort(403);
+            }
+            return $diff;
+        });
 
+        return Redirect::back();
     }
 
    
