@@ -53,7 +53,7 @@ class DiffController extends Controller
             return $diff;
         });
 
-        return redirect()->route('diffs.show', ['diffId' => $diff->id ]);
+        return redirect()->route('diffs.show', ['diffId' => $diff->id ])->with('success', '作成に成功しました');
     }
 
     /**

@@ -201,8 +201,15 @@
 
         <!-- Page Content -->
         <main>
-            <flash-message />
-            <slot></slot>
+            <div class="py-12">
+            
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <flash-message />
+                    <slot></slot>
+                    
+                </div>
+            </div>
+            
         </main>
 
         <!-- Modal Portal -->
