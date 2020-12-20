@@ -1,5 +1,17 @@
 <template>
     <app-layout>
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('diffs')">Diff一覧</inertia-link>
+                /
+                <span v-if="route().current('diffs.show')">
+                    {{ form.title }}
+                </span>
+                <span v-else>
+                    新規作成
+                </span>
+            </h2>
+        </template>
         <div>
             <div>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">

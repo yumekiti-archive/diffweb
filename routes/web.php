@@ -29,7 +29,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Route::group(['middlware' => ['auth:sanctum']], function () {
     
     // アクセス可能なDiffを一覧表示します
-    Route::get('/', [DiffController::class, 'index'])->name('diffs.all');
+    Route::get('/', [DiffController::class, 'index'])->name('diffs');
 
     // Diffを新規作成します。
     Route::post('/diffs', [DiffController::class, 'create'])->name('diffs.create');
