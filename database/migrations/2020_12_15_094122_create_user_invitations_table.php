@@ -21,8 +21,12 @@ class CreateUserInvitationsTable extends Migration
 
             $table->foreign('invited_partner_id')->references('id')->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('invited_member_id')->references('id')->on('members')
-                ->onDelete('cascade')->onUpdate('cascade');
+
+            /**
+             * usersはあくまでも作成者情報であってどのメンバーによって発行されているので、membersには属さない。
+             */
+            $table->foreign('invited_author_id')->references('id')->on('users')
+                ->onDelete('set null')->onUpdate('cascade');
 
             // 同じメンバーが同じユーザーに対して複数回招待できないようにする。
             $table->unique('invited_member_id', 'invited_partner_id');
