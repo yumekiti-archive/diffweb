@@ -105,6 +105,7 @@ export default {
     },
 
     created(){
+        console.log(this);
         if(this.diff != null ){
             this.form.source_text = this.diff.source_text;
             this.form.compared_text = this.diff.compared_text;
