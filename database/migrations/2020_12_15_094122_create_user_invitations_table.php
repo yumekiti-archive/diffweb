@@ -34,7 +34,7 @@ class CreateUserInvitationsTable extends Migration
                 ->onDelete('cascade')->onUpdate('cascade');
 
             // 同じメンバーが同じユーザーに対して複数回招待できないようにする。
-            $table->unique('author_id', 'invited_partner_id', 'diff_id');
+            $table->unique(['author_id', 'invited_partner_id', 'diff_id']);
         });
     }
 

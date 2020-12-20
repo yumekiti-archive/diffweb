@@ -22,7 +22,9 @@ class DiffFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => $this->faker->sentence,
+            'source_text' => $this->faker->text,
+            'compared_text' => $this->faker->text,
         ];
     }
 }
