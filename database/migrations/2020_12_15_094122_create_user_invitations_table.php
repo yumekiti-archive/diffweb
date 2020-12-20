@@ -16,7 +16,7 @@ class CreateUserInvitationsTable extends Migration
         Schema::create('user_invitations', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->bigInteger('invited_member_id')->unsigned()->index();
+            $table->bigInteger('author_id')->unsigned()->index();
             $table->bigInteger('invited_partner_id')->unsigned()->index();
 
             $table->foreign('invited_partner_id')->references('id')->on('users')
@@ -25,11 +25,11 @@ class CreateUserInvitationsTable extends Migration
             /**
              * usersはあくまでも作成者情報であってどのメンバーによって発行されているので、membersには属さない。
              */
-            $table->foreign('invited_author_id')->references('id')->on('users')
+            $table->foreign('author_id')->references('id')->on('users')
                 ->onDelete('set null')->onUpdate('cascade');
 
             // 同じメンバーが同じユーザーに対して複数回招待できないようにする。
-            $table->unique('invited_member_id', 'invited_partner_id');
+            $table->unique('author_id', 'invited_partner_id');
         });
     }
 
