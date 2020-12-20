@@ -17,6 +17,7 @@ class CreateUserInvitationsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->bigInteger('author_id')->unsigned()->nullable()->index();
+            $table->bigInteger('diff_id')->unsigned()->index();
         
             $table->bigInteger('invited_partner_id')->unsigned()->index();
 
@@ -29,8 +30,11 @@ class CreateUserInvitationsTable extends Migration
             $table->foreign('author_id')->references('id')->on('users')
                 ->onDelete('set null')->onUpdate('cascade');
 
+            $table->foreign('diff_id')->references('id')->on('diffs')
+                ->onDelete('cascade')->onUpdate('cascade');
+
             // 同じメンバーが同じユーザーに対して複数回招待できないようにする。
-            $table->unique('author_id', 'invited_partner_id');
+            $table->unique('author_id', 'invited_partner_id', 'diff_id');
         });
     }
 
