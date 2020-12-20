@@ -16,7 +16,8 @@ class CreateUserInvitationsTable extends Migration
         Schema::create('user_invitations', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->bigInteger('author_id')->unsigned()->index();
+            $table->bigInteger('author_id')->unsigned()->nullable()->index();
+        
             $table->bigInteger('invited_partner_id')->unsigned()->index();
 
             $table->foreign('invited_partner_id')->references('id')->on('users')
