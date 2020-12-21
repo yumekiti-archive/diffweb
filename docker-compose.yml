@@ -21,6 +21,11 @@ services:
           - ./:/var/www/html
       depends_on:
         - db
+      enviroment:
+        - USER_NAME
+        - USER_ID
+        - GROUP_NAME
+        - GROUP_ID
   # MySQL
   db:
     image: mysql:5.7
