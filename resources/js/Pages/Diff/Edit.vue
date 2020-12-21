@@ -35,8 +35,12 @@
                     </div>
                     <div class="mt-6">
                         <div class="bg-yellow-200 rounded justify-between items-center mb-4">
-                            <i class=""></i>
-                            <div v-if="diff && diff.locked_user" class="p-3 text-sm font-midium">{{ diff.locked_user.user_name }}によってロックされています。</div>
+                            <!--font awesome test-->
+                            <div v-if="diff && diff.locked_user" class="p-3 text-sm font-midium">
+                                <i class="fas fas fa-lock"></i>
+
+                                {{ diff.locked_user.user_name }}によってロックされています。
+                            </div>
                         </div>
                         <div class="flex">
                             <button v-if="diff && diff.locked_user && diff.locked_user.id === me.id" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
@@ -46,8 +50,6 @@
 
                         </div>
                     </div>
-                        
-
                 </d-card-content>
             </div>
         </div>

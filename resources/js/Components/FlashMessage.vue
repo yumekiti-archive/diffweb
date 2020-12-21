@@ -2,8 +2,10 @@
     <div>
         <!--成功したことを表すメッセージsuccessフラッシュを表示します。-->
         <div v-if="$page.flash.success && isShow" class="mb-8 flex items-center justify-between bg-green-500 rounded">
-            <div class="flex items-cneter">
+            <div class="flex items-center">
                 <i class="ml-4 mr-2 flex-shrink-0 w-4 h-4 fill-white fas fa-check"></i>
+
+                
                 <div class="py-4 text-white text-sm font-midium">
                     <!-- success なフラッシュメッセージを表示します。 -->
                     {{ $page.flash.success}}
@@ -11,7 +13,13 @@
             </div>
             <!-- フラッシュメッセージを非表示にします。 -->
             <button type="button" class="group mr-2 p-2" @click="isShow = false">
-                <i class="object-fill block w-2 h-2 fill-green-800 group-hover:fill-white fas fa-times"></i>
+                
+                <i class="w-2 h-2 fill-green-800 group-hover:text-white fas fa-times"></i>
+                
+                <!--<div class="w-2 h2 bg-green-800 group-hover:bg-white">
+                    hoge
+                </div>
+                -->
             </button>
         </div>
 
