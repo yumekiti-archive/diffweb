@@ -7,4 +7,5 @@ RUN docker-php-ext-install pdo_mysql mbstring zip xml gd
 WORKDIR /var/www/html
 
 COPY entrypoint.sh /var/tmp
-CMD bash -E /var/tmp/entrypoint.sh && /bin/bash
+
+CMD ["bash", "-E", "/var/tmp/entrypoint.sh", "&&", "/bin/bash"]
