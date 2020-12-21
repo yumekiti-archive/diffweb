@@ -32,10 +32,10 @@ services:
       MYSQL_PASSWORD: test
       TZ: 'Asia/Tokyo'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    ports:
-    - 3306:3306
+    expose:
+    - 3306
   redis:
     container_name: diffweb_redis
     image: redis:6.0.9
-    ports:
-      - "6379:6379"
+    expose:
+      - "6379"
