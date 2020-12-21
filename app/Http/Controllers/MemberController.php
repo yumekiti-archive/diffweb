@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Diff;
 use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Hash;
+
 
 class MemberController extends Controller
 {
@@ -30,6 +33,16 @@ class MemberController extends Controller
      */
     public function destroy(Request $request, $diffId, $userId)
     {
-        
+        $diff = Diff::findOrFail($diffId);
+        $me = User::findOrFail($userId);
+        if(Hash::check($me->password, $request->password)){
+
+            $diff->members()->findOrFail($userId)->delete();
+            
+            return Redirect::back()->with('success', 'メンバーを除外しました。');
+
+        }
+        return Redirect::back()->with('error', 'パスワードを正しく入力してください。');
+
     }
 }
