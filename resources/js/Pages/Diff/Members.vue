@@ -6,12 +6,21 @@
         <d-card-content>
             <d-diff-nav :diff="diff" />
             <div>
-                <div v-for="member in users.data" :key="member.id">
-                    {{ member.user_name }}
+                <div v-for="member in users.data" :key="member.id" class="flex items-center justify-between rounded">
+                    
+                    <div>{{ member.user_name }}</div>
+                    <div>
+                        <button>除名</button>
+                    </div>
                 </div>
             </div>
-            <div>
+            <div class="mt-3 -mb-1 flex flex-wrap" v-for="(link, key) in users.links" :key="key">
 
+                <!-- 適当UIですまんなんとかして-->
+                <div v-if="link.url !== null">
+                    <inertia-link :href="link.url">{{ link.label }}</inertia-link>
+                </div>
+                
             </div>
         </d-card-content>
     </app-layout>
