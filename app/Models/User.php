@@ -10,6 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Diff;
+use App\Models\UserInvitation;
 
 class User extends Authenticatable
 {
@@ -67,5 +68,13 @@ class User extends Authenticatable
      */
     public function diffs(){
         return $this->belongsToMany(Diff::class, 'members', 'user_id', 'diff_id');
+    }
+
+    /**
+     * 自分への招待
+     */
+    public function invitationsToMe()
+    {
+        return $this->hasMany(UserInvitation::class, 'invited_partner_id');
     }
 }

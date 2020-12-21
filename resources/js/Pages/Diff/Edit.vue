@@ -1,42 +1,56 @@
 <template>
     <app-layout>
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('diffs')">Diff一覧</inertia-link>
+                /
+                <span v-if="route().current('diffs.show')">
+                    {{ form.title }}
+                </span>
+                <span v-else>
+                    新規作成
+                </span>
+            </h2>
+        </template>
         <div>
             <div>
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     
-                
-                    <div class="p-6 sm:px-10 bg-white border-b border-gray-200">
-                        <label class="text-gray-600 font-light">タイトル</label>
-                        <input type='text' placeholder="Enter your input here" class="w-full mt-2 mb-6 px-6 py-3 border rounded-lg text-lg text-gray-700 focus:outline-none" v-model="form.title"/>
-                        <p>二つのテキストの差分を表示します。</p>
-                        <div class="flex">
-                            <div class="w-full w-1/2 pr-2">
-                                <textarea v-model="form.source_text" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
-                                <text-result :isAdded="true" :result="compared"></text-result>
-                            </div>
-                            <div class="w-full w-1/2 pl-2">
-                                <textarea v-model="form.compared_text" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
-                                <text-result :isRemoved="true" :result="compared"></text-result>
-                            </div>
-
-                        </div>
-                        <div class="mt-6">
-                            <div class="bg-yellow-200 rounded justify-between items-center mb-4">
-                                <i class=""></i>
-                                <div v-if="diff && diff.locked_user" class="p-3 text-sm font-midium">{{ diff.locked_user.user_name }}によってロックされています。</div>
-                            </div>
-                            <div class="flex">
-                                <button v-if="diff && diff.locked_user && diff.locked_user.id === me.id" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
-                                <button v-else-if="diff !== null" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="lock">ロック</button>
-
-                                <button type="button" class="bg-blue-600 text-gray-200 rounded hover:bg-blue-500 px-4 py-2 focus:outline-none" @click="trySave">保存</button>
-
-                            </div>
-                        </div>
+                <d-card-content>
+                        <!-- Diff内Navigation -->
                         
+                    <d-nav-diff :diff="diff" />
+                    <label class="text-gray-600 font-light">タイトル</label>
+                    <input type='text' placeholder="Enter your input here" class="w-full mt-2 mb-6 px-6 py-3 border rounded-lg text-lg text-gray-700 focus:outline-none" v-model="form.title"/>
+                    <p>二つのテキストの差分を表示します。</p>
+                    <div class="flex">
+                        <div class="w-full w-1/2 pr-2">
+                            <textarea v-model="form.source_text" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
+                            <text-result :isAdded="true" :result="compared"></text-result>
+                        </div>
+                        <div class="w-full w-1/2 pl-2">
+                            <textarea v-model="form.compared_text" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
+                            <text-result :isRemoved="true" :result="compared"></text-result>
+                        </div>
 
                     </div>
-                </div>
+                    <div class="mt-6">
+                        <div class="bg-yellow-200 rounded justify-between items-center mb-4">
+                            <!--font awesome test-->
+                            <div v-if="diff && diff.locked_user" class="p-3 text-sm font-midium">
+                                <i class="fas fas fa-lock"></i>
+
+                                {{ diff.locked_user.user_name }}によってロックされています。
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <button v-if="diff && diff.locked_user && diff.locked_user.id === me.id" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
+                            <button v-else-if="diff !== null" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="lock">ロック</button>
+
+                            <button type="button" class="bg-blue-600 text-gray-200 rounded hover:bg-blue-500 px-4 py-2 focus:outline-none" @click="trySave">保存</button>
+
+                        </div>
+                    </div>
+                </d-card-content>
             </div>
         </div>
     </app-layout>
@@ -45,6 +59,9 @@
 const Diff = require('diff');
 import AppLayout from '@/Layouts/AppLayout';
 import TextDiffResult from './TextDiffResult';
+import JetNavLink from '@/Jetstream/NavLink'
+import DiffNav from './DiffNav';
+import CardContent from './../../Templetes/CardContent';
 
 export default {
     props: {
@@ -70,7 +87,10 @@ export default {
     },
     components: {
         'app-layout': AppLayout,
-        'text-result':TextDiffResult
+        'text-result':TextDiffResult,
+        'd-nav-diff': DiffNav,
+        JetNavLink,
+        'd-card-content': CardContent
     },
 
     computed: {
@@ -87,6 +107,7 @@ export default {
     },
 
     created(){
+        console.log(this);
         if(this.diff != null ){
             this.form.source_text = this.diff.source_text;
             this.form.compared_text = this.diff.compared_text;

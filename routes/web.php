@@ -29,7 +29,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Route::group(['middlware' => ['auth:sanctum']], function () {
     
     // アクセス可能なDiffを一覧表示します
-    Route::get('/', [DiffController::class, 'index'])->name('diffs.all');
+    Route::get('/', [DiffController::class, 'index'])->name('diffs');
 
     // Diffを新規作成します。
     Route::post('/diffs', [DiffController::class, 'create'])->name('diffs.create');
@@ -55,7 +55,7 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
         Route::delete('/diffs/{diffId}/lock', [DiffController::class, 'unlock'])->name('diffs.unlock');
 
         // Diffにアクセスすることのできるメンバーを一覧表示します。
-        Route::get('/diffs/{diffId}/users', [MemberController::class, 'index'])->name('diffs.members.index');
+        Route::get('/diffs/{diffId}/users', [MemberController::class, 'index'])->name('diffs.members');
 
         // 一定期間内でパスワードを確認済みであればメンバーを削除します
         // リクエストパラメーターにパスワードを含めてそのパスワードを検証します。

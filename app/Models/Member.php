@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Diff;
+use App\Models\UserInvitation;
 
 class Member extends Model
 {
@@ -25,5 +26,13 @@ class Member extends Model
     public function diff()
     {
         return $this->belongsTo(Diff::class, 'diff_id');
+    }
+
+    /**
+     * 発行した招待
+     */
+    public function invitations()
+    {
+        return $this->hasMany(UserInvitation::class, 'invited_member_id');
     }
 }
