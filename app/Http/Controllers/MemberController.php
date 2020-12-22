@@ -8,6 +8,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 
 class MemberController extends Controller
@@ -34,8 +35,8 @@ class MemberController extends Controller
     public function destroy(Request $request, $diffId, $userId)
     {
         $diff = Diff::findOrFail($diffId);
-        $me = User::findOrFail($userId);
-        if(Hash::check($me->password, $request->password)){
+        $me = Auth::user();
+        if(Hash::check($request->input('password'), $me->password)){
 
             $diff->members()->findOrFail($userId)->delete();
             

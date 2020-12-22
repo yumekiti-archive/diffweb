@@ -59,7 +59,7 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
 
         // 一定期間内でパスワードを確認済みであればメンバーを削除します
         // リクエストパラメーターにパスワードを含めてそのパスワードを検証します。
-        Route::delete('/diffs/{diffId}/users/{userId}', [MemberController::class, 'destroy'])->name('diffs.members.destroy');
+        Route::post('/diffs/{diffId}/users/{userId}/remove', [MemberController::class, 'destroy'])->name('diffs.members.destroy');
 
         // diffへの招待を一覧表示します。
         Route::get('/diffs/{diffId}/invitations', [InvitationController::class, 'diffsInvitations'])->name('diffs.invitations');
