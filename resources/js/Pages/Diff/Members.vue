@@ -97,10 +97,12 @@ export default {
         confirmDeleteMember(user){
             this.confirmMemberDelection.isShow = true;
             this.confirmMemberDelection.member = user;
+            this.form.password = '';
         },
 
         cancelMemberDelection(){
             this.confirmMemberDelection.isShow =false;
+            this.form.password = '';
         }
     }
 }
