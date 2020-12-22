@@ -5,3 +5,5 @@ RUN apt update && apt install -y git zip unzip vim libonig-dev libzip-dev libxml
 RUN docker-php-ext-install pdo_mysql mbstring zip xml gd
 
 WORKDIR /var/www/html
+
+COPY entrypoint.sh /var/tmp
