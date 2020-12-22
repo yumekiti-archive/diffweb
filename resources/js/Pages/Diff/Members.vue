@@ -85,19 +85,13 @@ export default {
     },
     methods: {
         deleteMember(userId){
-            this.$inertia.visit(route('diffs.members.destroy', {
+            this.confirmMemberDelection.isShow = false;
+            this.$inertia.post(route('diffs.members.destroy', {
                 'diffId': this.diff.id,
                 'userId': userId
             }), 
-            'delete',
             {
                     password: this.confirmMemberDelection.password,
-            },
-            {   
-                onFinish(){
-                    this.confirmedPassword = false;
-                    this.deleteMemberId = null;
-                }
             });
         },
         confirmDeleteMember(user){
