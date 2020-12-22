@@ -23,4 +23,13 @@ class DiffInvitationController extends Controller
 
     }
 
+    /**
+     * ユーザーを招待します
+     * @param $diffId 招待するDiff
+     * @param $userId 招待するユーザー
+     */
+    public function invite($diffId, $userId)
+    {
+
+    }
 }

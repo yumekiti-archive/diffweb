@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiffController;
 use App\Http\Controllers\MemberController;
-use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DiffInvitationController;
+use App\Http\Controllers\UserInvitationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,7 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
     Route::get('/create', [DiffController::class, 'new'])->name('diffs.new');
 
 
-    Route::group(['middleware' => ['member']], function () {
+    Route::group(['middleware' => ['auth:sanctum','member']], function () {
         // アクセス可能なDiffをDiffのIdで取得しDiffを画面に表示します
         // 現在編集モードで編集しているユーザーがいたらそれを表示してください。
         // 他のユーザーが編集している時は編集できないようにしてください。
@@ -62,14 +63,14 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
         Route::post('/diffs/{diffId}/users/{userId}/remove', [MemberController::class, 'destroy'])->name('diffs.members.destroy');
 
         // diffへの招待を一覧表示します。
-        Route::get('/diffs/{diffId}/invitations', [InvitationController::class, 'diffsInvitations'])->name('diffs.invitations');
+        Route::get('/diffs/{diffId}/invitations', [DiffInvitationController::class, 'invitations'])->name('diffs.invitations');
 
         // ユーザーを招待します。
         // user_idをpostパラメーターに含めるようにしてください。
-        Route::post('/diffs/{diffId}/invitations', [InvitationController::class, 'create'])->name('diffs.invitations.create');
+        Route::post('/diffs/{diffId}/invitations', [DiffInvitationController::class, 'invite'])->name('diffs.invitations.create');
 
         // ユーザーへの招待を取り下げます。
-        Route::delete('/diffs/{diffId}/invitations/{invitationId}', [InvitationController::class, 'cancelInvitation'])->name('diffs.invitations.cancel');
+        Route::delete('/diffs/{diffId}/invitations/{invitationId}', [DiffInvitationController::class, 'cancel'])->name('diffs.invitations.cancel');
         
 
 
@@ -77,13 +78,13 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
 
     // 自分への招待を一覧表示します。
     // またDiffのタイトルとDiffのIdを含めるようにしてください。
-    Route::get('/invitations', [InvitationController::class, 'invitations'])->name('invitations');
+    Route::get('/invitations', [UserInvitationController::class, 'invitations'])->name('invitations');
 
     // 招待をacceptします。
-    Route::post('/invitations/{invitationId}/accept', [InvitationController::class, 'accept']);
+    Route::post('/invitations/{invitationId}/accept', [UserInvitationController::class, 'accept']);
     
     // 招待を拒否します。
-    Route::post('/invitations/{invitationId}/reject', [InvitationController::class, 'reject']);
+    Route::post('/invitations/{invitationId}/reject', [UserInvitationController::class, 'reject']);
 
 
     
