@@ -21,11 +21,6 @@ services:
           - ./:/var/www/html
       depends_on:
         - db
-      environment:
-        - USER_NAME
-        - USER_ID
-        - GROUP_NAME
-        - GROUP_ID
   # MySQL
   db:
     image: mysql:5.7
@@ -37,10 +32,10 @@ services:
       MYSQL_PASSWORD: test
       TZ: 'Asia/Tokyo'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    expose:
-    - 3306
+    ports:
+    - 3306:3306
   redis:
     container_name: diffweb_redis
     image: redis:6.0.9
-    expose:
-      - "6379"
+    ports:
+      - "6379:6379"
