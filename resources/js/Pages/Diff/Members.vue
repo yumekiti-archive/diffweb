@@ -1,7 +1,17 @@
 <template>
     <app-layout>
         <template #header>
-
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('diffs')">Diff一覧</inertia-link>
+                /
+                <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('diffs.show', diff.id)">
+                    {{ diff.title }}
+                </inertia-link>
+                /
+                <span>
+                    メンバー一覧
+                </span>
+            </h2>
         </template>
         <d-card-content>
             <d-diff-nav :diff="diff" />
