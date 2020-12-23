@@ -72,6 +72,7 @@ class Diff extends Model
         }
 
         $this->lockedUser()->associate($user);
+        $this->save();
 
         return true;
 
@@ -90,6 +91,9 @@ class Diff extends Model
         $locked = $this->lockedUser()->first();
         if(isset($locked) && $locked->id === $user->id){
             $this->lockedUser()->dissociate($user);
+            $this->save();
+            return true;
+
         }
 
         return false;
