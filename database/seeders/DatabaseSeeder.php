@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
                 $diff->members()->attach($lockedUser);
                 $diff->save();
 
-                $diff->lockedUser()->associate($lockedUser);
+                $diff->lock($lockedUser);
                 $diff->save();
             }
         });
