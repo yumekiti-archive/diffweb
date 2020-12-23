@@ -9,6 +9,8 @@ use App\Models\UserInvitation;
 use App\Exceptions\InvitedUserInvitedException;
 use App\Exceptions\InvitedUserMemberedException;
 use App\Exceptions\InvalidAccessException;
+use App\Models\DiffLock;
+use App\Models\Member;
 
 class Diff extends Model
 {
@@ -16,8 +18,11 @@ class Diff extends Model
 
     protected $fillable = ['source_text', 'compared_text', 'title'];
 
-    public function lockedUser(){
-        return $this->belongsTo(User::class, 'updating_user_id', 'id');
+    
+
+    public function locked()
+    {
+        return $this->hasOne(DiffLock::class, 'diff_id');
     }
 
     public function members(){
@@ -61,18 +66,18 @@ class Diff extends Model
      */
     public function lock(User $user): bool
     {
-        $user = $this->members()->find($user->id);
-        if($user === null){
+        $member = Member::where('diff_id', $this->id)->where('user_id', $user->id)->first();
+
+        if($member === null){
             throw new InvalidAccessException();
         }
 
-        $locked = $this->lockedUser()->first();
+        $locked = $this->locked()->first();
         if(isset($locked)){
             return false;
         }
 
-        $this->lockedUser()->associate($user);
-        $this->save();
+        $this->locked()->create(['member_id' => $member->id]);
 
         return true;
 
@@ -83,15 +88,15 @@ class Diff extends Model
      */
     public function unlock(User $user): bool
     {
-        $user = $this->members()->find($user->id);
-        if($user === null){
+        $member = Member::where('diff_id', $this->id)->where('user_id', $user->id)->first();
+
+        if($member === null){
             throw new InvalidAccessException();
         }
 
-        $locked = $this->lockedUser()->first();
-        if(isset($locked) && $locked->id === $user->id){
-            $this->lockedUser()->dissociate($user);
-            $this->save();
+        $locked = $this->locked()->first();
+        if(isset($locked) && $locked->member()->first()->user_id === $user->id){
+            $this->locked()->delete();
             return true;
 
         }

@@ -35,7 +35,7 @@ class DiffLockTest extends TestCase
     public function testLock()
     {
         $this->diff->lock($this->me);
-        Assert::assertNotNull($this->diff->lockedUser()->first());
+        Assert::assertNotNull($this->diff->locked()->first());
     }
 
     /**
@@ -45,7 +45,7 @@ class DiffLockTest extends TestCase
     {
         $this->diff->lock($this->me);
         $this->diff->unlock($this->me);
-        Assert::assertNull($this->diff->lockedUser()->first());
+        Assert::assertNull($this->diff->locked()->first());
     }
 
     /**
@@ -55,7 +55,7 @@ class DiffLockTest extends TestCase
     {
         $this->diff->lock($this->me);
         Assert::assertFalse($this->diff->lock($this->member));
-        Assert::assertEquals($this->diff->lockedUser()->first()->id, $this->me->id);
+        Assert::assertEquals($this->diff->locked()->first()->member()->first()->user_id, $this->me->id);
 
     }
 
@@ -66,7 +66,7 @@ class DiffLockTest extends TestCase
     {
         $this->diff->lock($this->me);
         Assert::assertFalse($this->diff->unlock($this->member));
-        Assert::assertEquals($this->diff->lockedUser()->first()->id, $this->me->id);
+        Assert::assertEquals($this->diff->locked()->first()->user()->first()->id, $this->me->id);
     }
 
     /**

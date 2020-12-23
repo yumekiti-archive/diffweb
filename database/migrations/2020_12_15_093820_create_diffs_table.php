@@ -19,10 +19,7 @@ class CreateDiffsTable extends Migration
             $table->text('title');
             $table->text('source_text')->nullable();
             $table->text('compared_text')->nullable();
-            $table->bigInteger('updating_user_id')->nullable()->unsigned()->index();
-
-            $table->foreign('updating_user_id')->references('id')->on('users')
-                ->onDelete('set null');
+            
         });
     }
 
