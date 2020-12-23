@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\UserInvitation;
 use App\Exceptions\InvitedUserInvitedException;
 use App\Exceptions\InvitedUserMemberedException;
+use App\Exceptions\InvalidAccessException;
 
 class Diff extends Model
 {
@@ -53,5 +54,46 @@ class Diff extends Model
             'diff_id' => $this->id
         ]);
 
+    }
+
+    /**
+     * Diffをロックする
+     */
+    public function lock(User $user): boolean
+    {
+        $user = $this->members()->find($user->id);
+        if($user === null){
+            throw new InvalidAccessException();
+        }
+
+        $locked = $this->lockedUser()->first();
+        if(isset($locked)){
+            return false;
+        }
+
+        $this->lockedUser()->associate($user);
+
+        return true;
+
+    }
+
+    /**
+     * Diffのロックを解除する
+     */
+    public function unlock(User $user): boolean
+    {
+        $user = $this->members()->find($user->id);
+        if($user === null){
+            throw new InvalidAccessException();
+        }
+
+        $locked = $this->lockedUser()->first();
+        if(isset($locked) && $locked->id === $user->id){
+            $this->lockedUser()->dissociate($user);
+        }
+
+        return false;
+
+        
     }
 }
