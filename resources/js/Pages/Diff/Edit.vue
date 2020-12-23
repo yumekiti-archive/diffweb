@@ -44,9 +44,14 @@
                         </div>
                         <div class="flex">
                             <button v-if="diff && diff.locked_user && diff.locked_user.id === me.id" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
-                            <button v-else-if="diff !== null" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="lock">ロック</button>
+                            <button 
+                                v-else-if="diff !== null" 
+                                type="button" 
+                                class="rounded px-4 py-2 focus:outline-none mr-2"
+                                :class="[ locked ? 'text-gray-300 bg-gray-500' : 'text-white hover:bg-gray-500 bg-gray-600 ']"
+                                @click="lock">ロック</button>
 
-                            <button type="button" class="bg-blue-600 text-gray-200 rounded hover:bg-blue-500 px-4 py-2 focus:outline-none" @click="trySave">保存</button>
+                            <button type="button" class="rounded  px-4 py-2 focus:outline-none" @click="trySave" :class="[locked ? 'text-gray-300 bg-blue-500' : 'text-gray-200 hover:bg-blue-500 bg-blue-600']">保存</button>
 
                         </div>
                     </div>
