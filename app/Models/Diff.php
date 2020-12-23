@@ -47,9 +47,10 @@ class Diff extends Model
             throw new InvitedUserInvitedException();
         }
 
-        return $this->members()->create([
+        return UserInvitation::create([
             'invited_partner_id' => $partner->id,
-            'author_id' => $user->id
+            'author_id' => $user->id,
+            'diff_id' => $this->id
         ]);
 
     }

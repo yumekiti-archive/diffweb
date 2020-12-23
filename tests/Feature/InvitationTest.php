@@ -55,4 +55,50 @@ class InvitationTest extends TestCase
     }
 
 
+    /**
+     * 招待の発行をテストします。
+     */
+    public function testInvite()
+    {
+        $me = User::factory()->create();
+        $diff = Diff::factory()->make();
+        $me->diffs()->save($diff);
+        $partner = User::factory()->create();
+
+        Assert::assertNotNull($diff->invite($me, $partner));
+    }
+
+    /**
+     * メンバーに対して招待を発行した時にエラーが発生することをテストします。
+     * @test
+     * @expectedException App\Exceptions\InvitedUserMemberedException
+     */
+    public function testInvalidMemberedFail()
+    {
+        $this->expectException(\App\Exceptions\InvitedUserMemberedException::class);
+        $me = User::factory()->create();
+        $diff = Diff::factory()->make();
+        $me->diffs()->save($diff);
+        $member = User::factory()->make();
+        $diff->members()->save($member);
+
+        $diff->invite($me, $member);
+    }
+
+    /**
+     * 招待済みのユーザーに対して招待を発行した時にエラーが発生することをテストします。
+     * @test
+     * @exceptedException App\Exceptions\InvitedUserInvitedException
+     */
+    public function testInvalidInvitedFail()
+    {
+        $this->expectException(\App\Exceptions\InvitedUserInvitedException::class);
+        $me = User::factory()->create();
+        $diff = Diff::factory()->make();
+        $me->diffs()->save($diff);
+        $invited = User::factory()->create();
+        $diff->invite($me, $invited);
+
+        $diff->invite($me, $invited);
+    }
 }
