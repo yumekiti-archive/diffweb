@@ -43,5 +43,13 @@ class UserInvitation extends Model
         return $this->belongsTo(User::class, 'author_id');
     }
 
+    /**
+     * 招待の取り下げ
+     */
+    public function cancel()
+    {
+        $this->delete();
+    }
+
   
 }
