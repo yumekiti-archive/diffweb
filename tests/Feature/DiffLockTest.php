@@ -55,7 +55,7 @@ class DiffLockTest extends TestCase
     {
         $this->diff->lock($this->me);
         Assert::assertFalse($this->diff->lock($this->member));
-        Assert::assertThat($this->diff->lockedUser()->first()->id, $this->me->id);
+        Assert::assertEquals($this->diff->lockedUser()->first()->id, $this->me->id);
 
     }
 
@@ -66,7 +66,7 @@ class DiffLockTest extends TestCase
     {
         $this->diff->lock($this->me);
         Assert::assertFalse($this->diff->unlock($this->member));
-        Assert::assertThat($this->diff->lockedUser()->first()->id, $this->me->id);
+        Assert::assertEquals($this->diff->lockedUser()->first()->id, $this->me->id);
     }
 
     /**
