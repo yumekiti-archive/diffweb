@@ -101,4 +101,51 @@ class InvitationTest extends TestCase
 
         $diff->invite($me, $invited);
     }
+
+    /**
+     * 招待承認テスト
+     */
+    public function testAcceptInvitation()
+    {
+        $me = User::factory()->create();
+        $diff = Diff::factory()->create();
+        $member = User::factory()->create();
+        $diff->members()->attach($member);
+
+        $userInvitation = $diff->invite($member, $me);
+
+        $userInvitation->accept();
+
+        Assert::assertNotNull($diff->members()->find($me->id));
+
+    }
+
+    /**
+     * 招待拒否テスト
+     */
+    public function testRejectInvitation()
+    {
+        $me = User::factory()->create();
+        $diff= Diff::factory()->create();
+        $member = User::factory()->create();
+        $diff->members()->attach($member);
+        $userInvitation = $diff->invite($member, $me);
+        $userInvitation->reject();
+        Assert::assertNull($diff->invitations()->where('invited_partner_id', $me->id)->first());
+
+    }
+
+    /**
+     * 招待キャンセルテスト
+     */
+    public function testCancelInvitation()
+    {
+        $me = User::factory()->create();
+        $diff = Diff::factory()->create();
+        $member = User::factory()->create();
+        $diff->members()->attach($member);
+        $userInvitation = $diff->invite($member, $me);
+        $userInvitation->cancel();
+        Assert::assertNull($diff->invitations()->where('invited_partner_id', $me->id)->first());
+    }
 }
