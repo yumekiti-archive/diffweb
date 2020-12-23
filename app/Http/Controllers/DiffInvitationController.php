@@ -20,7 +20,7 @@ class DiffInvitationController extends Controller
     {
         $diff = Auth::user()->diffs()->findOrFail($diffId);
         $invitations = $diff->invitations()->paginat();
-        return Inertia::render('Diff/Invitation/Index', [
+        return Inertia::render('Diff/Invitations', [
             'invitations' => $invitations,
             'diff' => $diff
         ]);
