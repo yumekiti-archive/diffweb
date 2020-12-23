@@ -82,21 +82,18 @@ class DiffController extends Controller
      */
     public function lock($diffId)
     {
-        $result = \DB::transaction(function() use($diffId){
-            $diff = Diff::lockForUpdate()->findOrFail($diffId);
-            $user = Auth::user();
-            
-            $locked = $diff->lockedUser()->first();
-            if(isset($locked) && $locked->id === $user->id){
+        
+        $user = Auth::user();
+        return \DB::transaction(function() use (&$user, $diffId){
+            $diff = $user->diffs()->lockForUpdate()->findOrFail($diffId);
+            $result = $diff->lock($user);
+            if($result){
+                return Redirect::back()->with('success', 'ロックしました。');
+            }else{
                 return Redirect::back()->with('error', '他のユーザーによってロックされています。');
             }
-            $diff->lockedUser()->associate($user);
-            $diff->save();
-            return $diff->load(['lockedUser']);
         });
 
-        //return Inertia::render('Diff/Edit', ['diff' => $result, 'me' => Auth::user()]);
-        return Redirect::back()->with('success', 'ロックしました');
     }
 
     /**
@@ -104,20 +101,15 @@ class DiffController extends Controller
      */
     public function unlock($diffId)
     {
-        $result = \DB::transaction(function() use($diffId){
-            $diff = Diff::lockForUpdate()->findOrFail($diffId);
+        return \DB::transaction(function() use ($diffId){
             $user = Auth::user();
-            $locked = $diff->lockedUser()->first();
-            if(isset($locked) && $locked->id === $user->id){
-                $diff->lockedUser()->dissociate();
-                $diff->save();
-            }else if(isset($locked) && $locked !== $user->id){
+            $diff = $user->diffs()->lockForUpdate()->findOrFail($diffId);
+            if($diff->unlock($user)){
+                return Redirect::back()->with('success', 'ロックを解除しました。');
+            }else{
                 return Redirect::back()->with('error', '他のユーザーによってロックされています。');
             }
-            return $diff;
         });
-
-        return Redirect::back()->with('success', 'ロックを解除しました。');
     }
 
    
