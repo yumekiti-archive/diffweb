@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <div class="flex">
-                            <button v-if="diff && diff.locked && diff.locked_user.id === me.id" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
+                            <button v-if="diff && diff.locked && diff.locked.user.id === me.id" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
                             <button 
                                 v-else-if="diff !== null" 
                                 type="button" 
