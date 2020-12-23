@@ -36,14 +36,14 @@
                     <div class="mt-6">
                         <div class="bg-yellow-200 rounded justify-between items-center mb-4">
                             <!--font awesome test-->
-                            <div v-if="diff && diff.locked_user" class="p-3 text-sm font-midium">
+                            <div v-if="diff && diff.locked" class="p-3 text-sm font-midium">
                                 <i class="fas fas fa-lock"></i>
 
-                                {{ diff.locked_user.user_name }}によってロックされています。
+                                {{ diff.locked.user.user_name }}によってロックされています。
                             </div>
                         </div>
                         <div class="flex">
-                            <button v-if="diff && diff.locked_user && diff.locked_user.id === me.id" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
+                            <button v-if="diff && diff.locked && diff.locked.user.id === me.id" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
                             <button v-else-if="diff !== null" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="lock">ロック</button>
 
                             <button type="button" class="bg-blue-600 text-gray-200 rounded hover:bg-blue-500 px-4 py-2 focus:outline-none" @click="trySave">保存</button>
@@ -102,7 +102,7 @@ export default {
             }
         },
         locked(){
-            return this.diff != null && this.diff.locked_user != null && this.diff.locked_user.id !== this.me.id;
+            return this.diff != null && this.diff.locked != null && this.diff.locked.user.id !== this.me.id;
         }
     },
 
@@ -135,7 +135,7 @@ export default {
             }
         },
         lock(){
-            if(this.diff != null && !this.diff.locked_user){
+            if(this.diff != null && !this.diff.locked){
                 this.$inertia.put(this.route('diffs.lock', this.diff.id), null, {
                     onFinish(){
                         console.log('ロック完了');
@@ -144,7 +144,7 @@ export default {
             }
         },
         unlock(){
-            if(this.diff != null && this.diff.locked_user != null && this.diff.locked_user.id == this.me.id){
+            if(this.diff != null && this.diff.locked != null && this.diff.locked.user.id == this.me.id){
                 this.$inertia.delete(this.route('diffs.unlock', this.diff.id), {
                     onFinish(){
                         console.log('ロック解除完了');
