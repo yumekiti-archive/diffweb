@@ -5,18 +5,18 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\Diff;
 
 class DiffLockTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testExample()
-    {
-        $response = $this->get('/');
+    public $diff;
+    public $me;
+    public $member;
 
-        $response->assertStatus(200);
+    public function setUp(){
+        parent::setUp();
+
+
     }
 }
