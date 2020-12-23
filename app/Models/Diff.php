@@ -59,7 +59,7 @@ class Diff extends Model
     /**
      * Diffをロックする
      */
-    public function lock(User $user): boolean
+    public function lock(User $user): bool
     {
         $user = $this->members()->find($user->id);
         if($user === null){
@@ -80,7 +80,7 @@ class Diff extends Model
     /**
      * Diffのロックを解除する
      */
-    public function unlock(User $user): boolean
+    public function unlock(User $user): bool
     {
         $user = $this->members()->find($user->id);
         if($user === null){
