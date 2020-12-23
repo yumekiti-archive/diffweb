@@ -23,7 +23,14 @@ class UserInvitationController extends Controller
      */
     public function accept($invitationId)
     {
+        $me = Auth::me();
+        return \DB::transaction(function() use ($me, $invitationId){
+            $invitation = $me->invitationsToMe()->lockForUpdate()->findOrFail($invitationId);
 
+            $invitations->accept();
+
+            return Redirect::back()->with('success', '招待を受け入れました。');
+        });
     }
 
     /**
@@ -34,7 +41,7 @@ class UserInvitationController extends Controller
         
         $me = Auth::me();
         return \DB::transaction(function() use ($me, $invitationId){
-            $me->invitationsToMe()->lockForUpdate()->findOrFail($invitationId)->delete();
+            $me->invitationsToMe()->lockForUpdate()->findOrFail($invitationId)->reject();
 
             return Redirect::back()->with('success', '招待を拒否しました。');
         });
