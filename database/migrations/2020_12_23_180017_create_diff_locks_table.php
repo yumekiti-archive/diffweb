@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDiffsTable extends Migration
+class CreateDiffLocksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateDiffsTable extends Migration
      */
     public function up()
     {
-        Schema::create('diffs', function (Blueprint $table) {
+        Schema::create('diff_locks', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->text('title');
-            $table->text('source_text')->nullable();
-            $table->text('compared_text')->nullable();
-            
         });
     }
 
@@ -30,6 +26,6 @@ class CreateDiffsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('diffs');
+        Schema::dropIfExists('diff_locks');
     }
 }
