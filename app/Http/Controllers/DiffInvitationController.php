@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\Diff;
+use App\Models\UserInvitation;
+use Illuminate\Support\Facades\Redirect;
 
 class DiffInvitationController extends Controller
 {
@@ -20,7 +25,9 @@ class DiffInvitationController extends Controller
      */
     public function cancel($diffId, $invitationId)
     {
-
+        $diff = $me->diffs()->firstOrFail($diffId);
+        $diff->invitations()->lockForUpdate()->findOrFail($invitationId)->delete();
+        return Redirect::back()->with('success', '招待を取り下げました');
     }
 
     /**
@@ -30,6 +37,20 @@ class DiffInvitationController extends Controller
      */
     public function invite($diffId, $userId)
     {
+        $me = Auth::user();
+        $diff = $me->diffs()->findOrFail($diffId);
+        $user = User::findOrFail($userId);
+        \DB::beginTransaction();
+        try{
+            $diff->invite($me, $user);
+        }catch(\Exception $e){
+            \DB::rollback();
+            return Redirect::back()->with('error', '無効な招待です。');
+        }
+    
+        \DB::commit();
 
+        return Redirect::back()->with('success', '招待を作成しました。');
+        
     }
 }

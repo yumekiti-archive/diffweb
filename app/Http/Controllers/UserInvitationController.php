@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Redirect;
 
 class UserInvitationController extends Controller
 {
@@ -20,7 +23,14 @@ class UserInvitationController extends Controller
      */
     public function accept($invitationId)
     {
+        $me = Auth::me();
+        return \DB::transaction(function() use ($me, $invitationId){
+            $invitation = $me->invitationsToMe()->lockForUpdate()->findOrFail($invitationId);
 
+            $invitations->accept();
+
+            return Redirect::back()->with('success', '招待を受け入れました。');
+        });
     }
 
     /**
@@ -28,6 +38,12 @@ class UserInvitationController extends Controller
      */
     public function reject($invitationId)
     {
+        
+        $me = Auth::me();
+        return \DB::transaction(function() use ($me, $invitationId){
+            $me->invitationsToMe()->lockForUpdate()->findOrFail($invitationId)->reject();
 
+            return Redirect::back()->with('success', '招待を拒否しました。');
+        });
     }
 }

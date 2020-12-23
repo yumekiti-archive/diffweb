@@ -12,6 +12,9 @@ class Member extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id', 'diff_id'
+    ];
     /**
      * dbのカラム user_id references id on users;
      */
