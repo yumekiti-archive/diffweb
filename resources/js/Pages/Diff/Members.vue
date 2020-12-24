@@ -36,10 +36,10 @@
                     </jet-danger-button>
                 </template>
             </jet-dialog-modal>
-            <pagination class="mt-4" :links="users.links" />
 
 
         </d-card-content>
+        <pagination class="mt-4" :links="users.links" />
 
 
     </app-layout>
