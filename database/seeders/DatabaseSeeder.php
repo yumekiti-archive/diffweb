@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $testUser->diffs()->get()->each(function($diff) use ($lockedUser){
-            $diff->members()->saveMany(User::factory()->count( 20 )->create());
+            $diff->members()->saveMany(User::factory()->count( 40 )->create());
             $diff->invitations()->saveMany(User::factory()->count( 20 ));
             if( $diff->id %  3 === 0){
                 $diff->members()->attach($lockedUser);
