@@ -5,7 +5,8 @@
 
         </template>
         <card-content>
-
+            <item-user v-for="invitation in invitations.data" :key="invitation.id" :user="invitation.invited_partner_user">
+            </item-user>
         </card-content>
         <pagination class="mt-4" :links="invitations.links" />
     </app-layout>

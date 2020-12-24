@@ -19,7 +19,7 @@ class DiffInvitationController extends Controller
     public function invitations($diffId)
     {
         $diff = Auth::user()->diffs()->findOrFail($diffId);
-        $invitations = $diff->invitations()->paginate();
+        $invitations = $diff->invitations()->with(['invitedPartnerUser', 'author'])->paginate();
         return Inertia::render('Diff/Invitations', [
             'invitations' => $invitations,
             'diff' => $diff

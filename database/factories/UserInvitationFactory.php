@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Model;
+use App\Models\UserInvitation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class InvitationFactory extends Factory
+class UserInvitationFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Model::class;
+    protected $model = UserInvitation::class;
 
     /**
      * Define the model's default state.
