@@ -16,16 +16,15 @@
         <d-card-content>
             <d-diff-nav :diff="diff" />
             <div>
-                <div v-for="member in users.data" :key="member.id" class="flex items-center justify-between border-t py-2 pl-4 pr-4">
+                <item-user v-for="member in users.data" :key="member.id" :user="member">
                     
-                    <div>{{ member.user_name }}</div>
                     <div>
                         <button @click="confirmDeleteMember(member)">
                             <i class="fas fa-user-times"></i>
                             除名
                         </button>
                     </div>
-                </div>
+                </item-user>
             </div>
             <div class="mt-3 -mb-1 flex flex-wrap" v-for="(link, key) in users.links" :key="key">
 
@@ -66,6 +65,7 @@ import JetDialogModal from '@/Jetstream/DialogModal';
 import JetDangerButton from '@/Jetstream/DangerButton';
 import JetSecondaryButton from '@/Jetstream/SecondaryButton';
 import JetInput from '@/Jetstream/Input';
+import ItemUser from '../../Components/ItemUser';
 export default {
     props:{
         users: Object,
@@ -90,7 +90,8 @@ export default {
         JetDialogModal,
         JetDangerButton,
         JetSecondaryButton,
-        JetInput
+        JetInput,
+        ItemUser
 
     },
     methods: {
