@@ -1,10 +1,10 @@
 <template>
     <app-layout>
         <template #header>
+            <diff-nav :diff="diff"></diff-nav>
 
         </template>
         <card-content>
-            <diff-nav :diff="diff"></diff-nav>
 
         </card-content>
     </app-layout>

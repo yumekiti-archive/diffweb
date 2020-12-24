@@ -1,6 +1,7 @@
 <template>
     <app-layout>
         <template #header>
+            <!--
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('diffs')">Diff一覧</inertia-link>
                 /
@@ -11,14 +12,17 @@
                     新規作成
                 </span>
             </h2>
+            -->
+            <d-nav-diff :diff="diff" />
+
         </template>
         <div>
             <div>
                     
+
                 <d-card-content>
                         <!-- Diff内Navigation -->
                         
-                    <d-nav-diff :diff="diff" />
                     <label class="text-gray-600 font-light">タイトル</label>
                     <input type='text' placeholder="Enter your input here" class="w-full mt-2 mb-6 px-6 py-3 border rounded-lg text-lg text-gray-700 focus:outline-none" v-model="form.title"/>
                     <p>二つのテキストの差分を表示します。</p>
@@ -33,16 +37,19 @@
                         </div>
 
                     </div>
-                    <div class="mt-6">
-                        <div class="bg-yellow-200 rounded justify-between items-center mb-4">
+                    
+                </d-card-content>
+                <div class="bg-yellow-200 rounded justify-between items-center mt-4">
                             <!--font awesome test-->
-                            <div v-if="diff && diff.locked" class="p-3 text-sm font-midium">
-                                <i class="fas fas fa-lock"></i>
+                    <div v-if="diff && diff.locked" class="p-3 text-sm font-midium">
+                            <i class="fas fas fa-lock"></i>
 
-                                {{ diff.locked.user.user_name }}によってロックされています。
-                            </div>
-                        </div>
-                        <div class="flex">
+                        {{ diff.locked.user.user_name }}によってロックされています。
+                    </div>
+                </div>
+                <div class="mt-4">
+                        
+                        <div class="flex float-right mb-5">
                             <button v-if="diff && diff.locked && diff.locked.user.id === me.id" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
                             <button 
                                 v-else-if="diff !== null" 
@@ -55,7 +62,6 @@
 
                         </div>
                     </div>
-                </d-card-content>
             </div>
         </div>
     </app-layout>

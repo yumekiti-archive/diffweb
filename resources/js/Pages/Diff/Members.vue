@@ -1,20 +1,11 @@
 <template>
     <app-layout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('diffs')">Diff一覧</inertia-link>
-                /
-                <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('diffs.show', diff.id)">
-                    {{ diff.title }}
-                </inertia-link>
-                /
-                <span>
-                    メンバー一覧
-                </span>
-            </h2>
-        </template>
-        <d-card-content>
             <d-diff-nav :diff="diff" />
+
+        </template>
+
+        <d-card-content>
             <div>
                 <item-user v-for="member in users.data" :key="member.id" :user="member">
                     
@@ -25,14 +16,6 @@
                         </button>
                     </div>
                 </item-user>
-            </div>
-            <div class="mt-3 -mb-1 flex flex-wrap" v-for="(link, key) in users.links" :key="key">
-
-                <!-- 適当UIですまんなんとかして-->
-                <div v-if="link.url !== null">
-                    <inertia-link :href="link.url">{{ link.label }}</inertia-link>
-                </div>
-                
             </div>
             <jet-dialog-modal :show="confirmMemberDelection.isShow && confirmMemberDelection.member" @close="confirmMemberDelection.isShow = false">
                 <template #title>
@@ -53,7 +36,11 @@
                     </jet-danger-button>
                 </template>
             </jet-dialog-modal>
+            <pagination class="mt-4" :links="users.links" />
+
+
         </d-card-content>
+
 
     </app-layout>
 </template>
@@ -66,6 +53,8 @@ import JetDangerButton from '@/Jetstream/DangerButton';
 import JetSecondaryButton from '@/Jetstream/SecondaryButton';
 import JetInput from '@/Jetstream/Input';
 import ItemUser from '../../Components/ItemUser';
+import Pagination from '../../Components/Pagination';
+
 export default {
     props:{
         users: Object,
@@ -91,7 +80,8 @@ export default {
         JetDangerButton,
         JetSecondaryButton,
         JetInput,
-        ItemUser
+        ItemUser,
+        Pagination
 
     },
     methods: {
