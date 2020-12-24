@@ -31,7 +31,8 @@ class DiffInvitationController extends Controller
      */
     public function cancel($diffId, $invitationId)
     {
-        $diff = $me->diffs()->firstOrFail($diffId);
+        $me = Auth::user();
+        $diff = $me->diffs()->findOrFail($diffId);
         $diff->invitations()->lockForUpdate()->findOrFail($invitationId)->delete();
         return Redirect::back()->with('success', '招待を取り下げました');
     }
