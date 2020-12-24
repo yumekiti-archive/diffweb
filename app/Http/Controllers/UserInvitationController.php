@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class UserInvitationController extends Controller
 {
@@ -15,7 +16,10 @@ class UserInvitationController extends Controller
      */
     public function invitations()
     {
-
+        $invitations = Auth::user()->invitationsToMe()->paginate();
+        return Inertia::render('Invitation/Index', [
+            'invitations' => $invitaitons
+        ]);
     }
 
     /**

@@ -1,39 +1,21 @@
 <template>
     <app-layout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('diffs')">Diff一覧</inertia-link>
-                /
-                <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('diffs.show', diff.id)">
-                    {{ diff.title }}
-                </inertia-link>
-                /
-                <span>
-                    メンバー一覧
-                </span>
-            </h2>
-        </template>
-        <d-card-content>
             <d-diff-nav :diff="diff" />
+
+        </template>
+
+        <d-card-content>
             <div>
-                <div v-for="member in users.data" :key="member.id" class="flex items-center justify-between border-t py-2 pl-4 pr-4">
+                <item-user v-for="member in users.data" :key="member.id" :user="member">
                     
-                    <div>{{ member.user_name }}</div>
                     <div>
                         <button @click="confirmDeleteMember(member)">
                             <i class="fas fa-user-times"></i>
                             除名
                         </button>
                     </div>
-                </div>
-            </div>
-            <div class="mt-3 -mb-1 flex flex-wrap" v-for="(link, key) in users.links" :key="key">
-
-                <!-- 適当UIですまんなんとかして-->
-                <div v-if="link.url !== null">
-                    <inertia-link :href="link.url">{{ link.label }}</inertia-link>
-                </div>
-                
+                </item-user>
             </div>
             <jet-dialog-modal :show="confirmMemberDelection.isShow && confirmMemberDelection.member" @close="confirmMemberDelection.isShow = false">
                 <template #title>
@@ -54,7 +36,11 @@
                     </jet-danger-button>
                 </template>
             </jet-dialog-modal>
+
+
         </d-card-content>
+        <pagination class="mt-4" :links="users.links" />
+
 
     </app-layout>
 </template>
@@ -66,6 +52,9 @@ import JetDialogModal from '@/Jetstream/DialogModal';
 import JetDangerButton from '@/Jetstream/DangerButton';
 import JetSecondaryButton from '@/Jetstream/SecondaryButton';
 import JetInput from '@/Jetstream/Input';
+import ItemUser from '../../Components/ItemUser';
+import Pagination from '../../Components/Pagination';
+
 export default {
     props:{
         users: Object,
@@ -90,7 +79,9 @@ export default {
         JetDialogModal,
         JetDangerButton,
         JetSecondaryButton,
-        JetInput
+        JetInput,
+        ItemUser,
+        Pagination
 
     },
     methods: {

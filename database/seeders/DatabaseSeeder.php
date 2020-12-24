@@ -34,8 +34,16 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $testUser->diffs()->get()->each(function($diff) use ($lockedUser){
-            $diff->members()->saveMany(User::factory()->count( $diff->id % 5 + 1)->create());
-            if( $diff->id %  7 === 0){
+            $diff->members()->saveMany(User::factory()->count( 40 )->create());
+            /*$diff->invitations()->saveMany(UserInvitation::factory()->count(20)->create([
+                'invited_partner_id' => User::factory()->create()->id,
+                'author_id' => $diff->members()->inRandomOrder()->first(),
+                'diff_id' => $diff->id
+            ]));*/
+            for($i = 0; $i < 20; $i++){
+                $diff->invite($diff->members()->inRandomOrder()->first(), User::factory()->create());
+            }
+            if( $diff->id %  3 === 0){
                 $diff->members()->attach($lockedUser);
                 $diff->save();
 
@@ -61,8 +69,6 @@ class DatabaseSeeder extends Seeder
             'author_id' => $testUser->id,
         ]);
         $diff->invitations()->save($invitation);
-        
-
-        
+                
     }
 }

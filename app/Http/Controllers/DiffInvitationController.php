@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Diff;
 use App\Models\UserInvitation;
 use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class DiffInvitationController extends Controller
 {
@@ -17,7 +18,12 @@ class DiffInvitationController extends Controller
      */
     public function invitations($diffId)
     {
-
+        $diff = Auth::user()->diffs()->findOrFail($diffId);
+        $invitations = $diff->invitations()->with(['invitedPartnerUser', 'author'])->paginate();
+        return Inertia::render('Diff/Invitations', [
+            'invitations' => $invitations,
+            'diff' => $diff
+        ]);
     }
 
     /**
@@ -25,7 +31,8 @@ class DiffInvitationController extends Controller
      */
     public function cancel($diffId, $invitationId)
     {
-        $diff = $me->diffs()->firstOrFail($diffId);
+        $me = Auth::user();
+        $diff = $me->diffs()->findOrFail($diffId);
         $diff->invitations()->lockForUpdate()->findOrFail($invitationId)->delete();
         return Redirect::back()->with('success', '招待を取り下げました');
     }
