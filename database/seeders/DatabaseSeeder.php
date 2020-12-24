@@ -34,8 +34,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $testUser->diffs()->get()->each(function($diff) use ($lockedUser){
-            $diff->members()->saveMany(User::factory()->count( $diff->id % 5 + 1)->create());
-            if( $diff->id %  7 === 0){
+            $diff->members()->saveMany(User::factory()->count( 20 )->create());
+            $diff->invitations()->saveMany(User::factory()->count( 20 ));
+            if( $diff->id %  3 === 0){
                 $diff->members()->attach($lockedUser);
                 $diff->save();
 
@@ -61,8 +62,6 @@ class DatabaseSeeder extends Seeder
             'author_id' => $testUser->id,
         ]);
         $diff->invitations()->save($invitation);
-        
-
-        
+                
     }
 }
