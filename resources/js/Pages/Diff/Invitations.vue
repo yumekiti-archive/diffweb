@@ -4,6 +4,10 @@
             <diff-nav :diff="diff"></diff-nav>
 
         </template>
+        <div class="p-2 mb-4 bg-white rounded-lg">
+            <input class="relative w-full  py-2 px-1 rounded-r focus:shadow-outline" autocomplete="off" type="text" name="search" placeholder="ユーザーを検索..." v-model="form.search" />
+
+        </div>
         <card-content>
             <item-user v-for="user in users.data" :key="user.id" :user="user">
                 <button v-if="user.is_invited" @click="confirmCancelInvitation(user)">
@@ -56,6 +60,8 @@ import ItemUser from '../../Components/ItemUser';
 import Pagination from '../../Components/Pagination';
 import SimpleDialog from '../../Components/SimpleDialog';
 import ConfirmDeleteMemberDialog from './ConfirmDeleteMemberDialog';
+import throttle from 'lodash/throttle'
+
 
 export default {
     components: {
@@ -76,7 +82,11 @@ export default {
         users: {
             type: Object,
             required: true
-        }
+        },
+        user_name: {
+            type: String,
+            required: false
+        },
     },
     data(){
         return {
@@ -92,8 +102,20 @@ export default {
                 user: null,
                 isShow: false,
 
-            }
+            },
+            form: {
+                search: this.user_name
+            },
         }
+    },
+    watch: {
+        'form.search': throttle(function(){
+            this.$inertia.replace(route('diffs.invitations', {
+                'diffId': this.diff.id,
+                'user_name': this.form.search
+
+            }));
+        }, 150)
     },
     methods: {
         cancelInvitation(user){
