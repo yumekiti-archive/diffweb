@@ -39,6 +39,7 @@ class SearchUserTest extends TestCase
 
         // 累計ユーザー数 135
         // Diff数 10 + 10 = 20
+        // 非所属メンバ 25
         
     }
 
@@ -50,5 +51,47 @@ class SearchUserTest extends TestCase
     public function testテストデータのDiff数チェック()
     {
         Assert::assertEquals(20, Diff::count());
+    }
+
+    public function test非所属メンバーの取得()
+    {
+        $count = User::leftJoin('members', 'users.id', '=', 'members.user_id')
+            ->whereNull('members.id')->count();
+        Assert::assertEquals(25, $count);
+    }
+
+    public function testDiff以外のメンバーの取得()
+    {
+        // 基準となるDiffの選出
+        $diff = Diff::withCount('members')->orderBy('members_count', 'desc')->first();
+        Assert::assertNotNull($diff);
+
+        $count = User::leftJoin('members', 'users.id', '=', 'members.user_id')
+            ->where('members.diff_id', '<>', $diff->id)->count();
+        Assert::assertEquals(135 - $diff->members()->count() - 25, $count);
+    }
+
+    public function testDiff以外のメンバーとどこにも属していないメンバーの取得()
+    {
+        $diff = Diff::withCount('members')->orderBy('members_count', 'desc')->first();
+        Assert::assertNotNull($diff);
+
+        $count = User::notDiffMembers($diff)->count();
+        Assert::assertEquals(135 - $diff->members()->count(), $count);
+        
+    }
+
+    public function testDiff以外のメンバーのLIKE句を利用した検索()
+    {
+        $diff = Diff::withCount('members')->orderBy('members_count', 'desc')->first();
+        Assert::assertNotNull($diff);
+
+        User::factory()->create([
+            'user_name' => 'hogehogepiyo'
+        ]);
+        $name = 'piyopiyohogehoge';
+        $diff->members()->save(User::factory()->make(['user_name' => $name ]));
+        $count = User::notDiffMembers($diff)->where('user_name', 'like', "%piyo%")->count();
+        Assert::assertEquals(1, $count);
     }
 }

@@ -77,4 +77,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserInvitation::class, 'invited_partner_id');
     }
+
+    public function scopeNotDiffMembers($query, Diff $diff)
+    {
+        return $query->leftJoin('members', 'users.id', '=','members.user_id')
+            ->where(function($query) use ($diff){
+                $query->where('members.diff_id', '<>', $diff->id)
+                    ->orWhereNull('members.id');
+            });
+    }
 }
