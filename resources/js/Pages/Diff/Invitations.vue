@@ -6,9 +6,18 @@
         </template>
         <card-content>
             <item-user v-for="user in users.data" :key="user.id" :user="user">
-                <button @click="confirmCancelInvitation(user)">
+                <button v-if="user.is_invited" @click="confirmCancelInvitation(user)">
                     <i class="fas fa-minus"></i>
                         取り下げ
+                </button>
+                <button v-else-if="user.is_member" >
+                    <i class="fas fa-user-times"></i>
+                    除名
+
+                </button>
+                <button v-else>
+                    <i class="fas fa-plus"/>
+                    招待
                 </button>
             </item-user>
         </card-content>
