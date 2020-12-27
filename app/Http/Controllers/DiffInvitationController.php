@@ -29,7 +29,7 @@ class DiffInvitationController extends Controller
     /**
      * 発行した招待を取り下げます
      */
-    public function cancel($diffId, $invitationId)
+    public function delete($diffId, $invitationId)
     {
         $me = Auth::user();
         $diff = $me->diffs()->findOrFail($diffId);
@@ -42,7 +42,7 @@ class DiffInvitationController extends Controller
      * @param $diffId 招待するDiff
      * @param $userId 招待するユーザー
      */
-    public function invite($diffId, $userId)
+    public function create($diffId, $userId)
     {
         $me = Auth::user();
         $diff = $me->diffs()->findOrFail($diffId);
@@ -58,6 +58,11 @@ class DiffInvitationController extends Controller
         \DB::commit();
 
         return Redirect::back()->with('success', '招待を作成しました。');
+        
+    }
+
+    public function new(Request $request, $diffId)
+    {
         
     }
 }
