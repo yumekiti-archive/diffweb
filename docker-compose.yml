@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   nginx:
@@ -12,15 +12,15 @@ services:
     depends_on:
       - php
   php:
-      container_name: diffweb_php
-      user: ${user}
-      build:
-          context: .
-          dockerfile: php.dockerfile
-      volumes:
-          - ./:/var/www/html
-      depends_on:
-        - db
+    container_name: diffweb_php
+    user: ${user}
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - db
   # MySQL
   db:
     image: mysql:5.7
@@ -30,12 +30,23 @@ services:
       MYSQL_DATABASE: test
       MYSQL_USER: test
       MYSQL_PASSWORD: test
-      TZ: 'Asia/Tokyo'
+      TZ: "Asia/Tokyo"
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     ports:
-    - 3306:3306
+      - 3306:3306
   redis:
     container_name: diffweb_redis
     image: redis:6.0.9
     ports:
       - "6379:6379"
+  # Echo Server
+  laravel-echo-server:
+    container_name: diffweb_echo_server
+    build:
+      context: .
+      dockerfile: laravel-echo-server.dockerfile
+      expose:
+        - 6001
+      volumes:
+        - ./:/work:cached
+      working_dir: /work
