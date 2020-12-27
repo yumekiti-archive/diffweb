@@ -7,4 +7,7 @@ docker-compose exec php php artisan config:clear && \
 docker-compose exec php php artisan route:clear && \
 docker-compose exec php php artisan view:clear && \
 docker-compose exec php php artisan key:generate && \
-docker-compose exec php php artisan migrate
+docker-compose exec php php artisan migrate && \
+sudo apt -y install npm && \
+npm install && \
+npm run dev
