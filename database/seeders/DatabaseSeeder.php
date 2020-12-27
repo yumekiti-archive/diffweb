@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('testtest'),
             'name' => 'てすと太郎',
         ]);
-        User::factory()->count(10)->create();
         $testUser->diffs()->saveMany(Diff::factory()->count(10)->make());
         $lockedUser = User::create([
             'email' => 'testlock@test.jp',
@@ -34,8 +33,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'ろっく太郎',
         ]);
 
+        User::factory()->count(100)->create();
+
+        $testUser->diffs()->first()->members()->saveMany(User::factory()->count( 40 )->make());
+
         $testUser->diffs()->get()->each(function($diff) use ($lockedUser){
-            $diff->members()->saveMany(User::factory()->count( 40 )->create());
+            $diff->members()->saveMany(User::factory()->count( 40 )->make());
             /*$diff->invitations()->saveMany(UserInvitation::factory()->count(20)->create([
                 'invited_partner_id' => User::factory()->create()->id,
                 'author_id' => $diff->members()->inRandomOrder()->first(),
