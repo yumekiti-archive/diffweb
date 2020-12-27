@@ -54,6 +54,7 @@ import JetSecondaryButton from '@/Jetstream/SecondaryButton';
 import JetInput from '@/Jetstream/Input';
 import ItemUser from '../../Components/ItemUser';
 import Pagination from '../../Components/Pagination';
+import ConfirmDeleteMemberDialog from './ConfirmDeleteMemberDialog';
 
 export default {
     props:{
@@ -81,7 +82,8 @@ export default {
         JetSecondaryButton,
         JetInput,
         ItemUser,
-        Pagination
+        Pagination,
+        ConfirmDeleteMemberDialog
 
     },
     methods: {
