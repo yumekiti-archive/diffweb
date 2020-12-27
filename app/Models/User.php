@@ -52,6 +52,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_invited' => 'boolean',
+        'is_member' => 'boolean'
     ];
 
     /**
@@ -76,5 +78,20 @@ class User extends Authenticatable
     public function invitationsToMe()
     {
         return $this->hasMany(UserInvitation::class, 'invited_partner_id');
+    }
+
+    public function scopeNotDiffMembers($query, Diff $diff)
+    {
+        
+        return $query->whereDoesntHave('diffs', function($query) use ($diff){
+            $query->where('diff_id', '=', $diff->id);
+        });
+    }
+
+    public function scopeNotDiffInvitedUsers($query, Diff $diff)
+    {
+        return $query->whereDoesntHave('invitationsToMe', function($query) use ($diff){
+            $query->where('diff_id', '=', $diff->id);
+        });
     }
 }
