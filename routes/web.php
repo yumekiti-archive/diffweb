@@ -69,7 +69,7 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
 
         // ユーザーを招待します。
         // user_idをpostパラメーターに含めるようにしてください。
-        Route::post('/diffs/{diffId}/invitations', [DiffInvitationController::class, 'create'])->name('diffs.invitations.create');
+        Route::post('/diffs/{diffId}/invitations/{userId}', [DiffInvitationController::class, 'create'])->name('diffs.invitations.create');
 
         // ユーザーへの招待を取り下げます。
         Route::delete('/diffs/{diffId}/invitations/{userId}', [DiffInvitationController::class, 'delete'])->name('diffs.invitations.cancel');

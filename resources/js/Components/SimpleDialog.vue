@@ -1,5 +1,5 @@
 <template>
-    <jet-dialog-modal :show="isShow" @close="$emit('close')">
+    <jet-dialog-modal :show="show" @close="$emit('close')">
         <template #title>
             {{ title }}
         </template>
@@ -16,6 +16,9 @@
 import JetDialogModal from '@/Jetstream/DialogModal';
 
 export default {
-    props: ['title', 'text', 'show']
+    props: ['title', 'text', 'show'],
+    components: {
+        JetDialogModal
+    }
 }
 </script>
