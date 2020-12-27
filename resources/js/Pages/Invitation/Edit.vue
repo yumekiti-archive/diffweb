@@ -1,8 +1,8 @@
 <template>
     <app-layout>
         <template #header>
-            <inertia-link :href="route('diffs.show', diff.id)">{{ diff.title }}</inertia-link>
-            / 招待作成
+            <diff-nav :diff="diff"></diff-nav>
+
         </template>
         {{ users}}
     </app-layout>
@@ -10,11 +10,13 @@
 <script>
 import AppLayout from '../../Layouts/AppLayout';
 import CardContent from '../../Templetes/CardContent';
+import DiffNav from '../Diff/DiffNav';
 
 export default {
     components: {
         AppLayout,
-        CardContent
+        CardContent,
+        DiffNav
     },
     props: {
         diff: {
