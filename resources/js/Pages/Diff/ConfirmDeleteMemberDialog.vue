@@ -8,12 +8,12 @@
             除名する場合はパスワードを入力してください。
         <div>
         <jet-input type="password" class="mt-1 block w-3/4" placeholder="パスワード"
-            ref="password" v-model="confirmMemberDelection.password" />
+            ref="password" v-model="password" />
             </div>
         </template>
         <template #footer>
             <jet-secondary-button @click.native="$emit('close')">キャンセル</jet-secondary-button>
-            <jet-danger-button class="ml-2" @click.native="$emit('delete', user)">
+            <jet-danger-button class="ml-2" @click.native="$emit('delete', { user, password})">
                 除名
             </jet-danger-button>
         </template>
@@ -33,7 +33,6 @@ export default {
         },
         user: {
             type: Object,
-            required: true
         }
     },
     components: {
@@ -41,6 +40,11 @@ export default {
         JetDangerButton,
         JetSecondaryButton,
         JetInput
+    },
+    data(){
+        return {
+            password: ''
+        }
     }
 }
 </script>
