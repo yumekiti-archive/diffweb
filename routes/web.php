@@ -65,6 +65,8 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
         // diffへの招待を一覧表示します。
         Route::get('/diffs/{diffId}/invitations', [DiffInvitationController::class, 'invitations'])->name('diffs.invitations');
 
+        Route::post('/diffs/{diffid}/invitations', [DiffInvitationController::class, 'new'])->name('diffs.invitations.new');
+
         // ユーザーを招待します。
         // user_idをpostパラメーターに含めるようにしてください。
         Route::post('/diffs/{diffId}/invitations', [DiffInvitationController::class, 'invite'])->name('diffs.invitations.create');
