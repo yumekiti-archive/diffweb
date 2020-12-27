@@ -45,8 +45,8 @@ services:
     build:
       context: .
       dockerfile: laravel-echo-server.dockerfile
-      expose:
-        - 6001
-      volumes:
-        - ./:/work:cached
-      working_dir: /work
+    ports:
+      - 6001:6001
+    volumes:
+      - ./:/work:cached
+    working_dir: /work
