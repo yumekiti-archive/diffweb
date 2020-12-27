@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('testtest'),
             'name' => 'てすと太郎',
         ]);
+        User::factory()->count(10)->create();
         $testUser->diffs()->saveMany(Diff::factory()->count(10)->make());
         $lockedUser = User::create([
             'email' => 'testlock@test.jp',
