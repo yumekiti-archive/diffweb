@@ -90,7 +90,9 @@ class SearchUserTest extends TestCase
             'user_name' => 'hogehogepiyo'
         ]);
         $name = 'piyopiyohogehoge';
-        $diff->members()->save(User::factory()->make(['user_name' => $name ]));
+        $user = User::factory()->make(['user_name' => $name ]);
+        $diff->members()->save($user);
+        $user->diffs()->save(Diff::factory()->make());
         $count = User::notDiffMembers($diff)->where('user_name', 'like', "%piyo%")->count();
         Assert::assertEquals(1, $count);
     }

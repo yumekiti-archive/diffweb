@@ -84,6 +84,6 @@ class User extends Authenticatable
             ->where(function($query) use ($diff){
                 $query->where('members.diff_id', '<>', $diff->id)
                     ->orWhereNull('members.id');
-            });
+            })->addSelect('users.*')->distinct('users.id');
     }
 }

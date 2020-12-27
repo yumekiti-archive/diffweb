@@ -63,6 +63,17 @@ class DiffInvitationController extends Controller
 
     public function new(Request $request, $diffId)
     {
-        
+        $diff = Auth::user()->diffs()->findOrFail($diffId);
+        $users = User::notDiffMembers($diff)
+            ->when($request->input('user_name_search') ?? null, function($query, $userNameSearch){
+                $userNameSearch = str_replace('%', '\%', $userNameSearch);
+                $query->where('user_name', 'like', "%{$userNameSearch}%");
+            })->distinct('users.id')->paginate();
+
+        return Inertia::render('Invitation/Edit',[
+            'diff' => $diff,
+            'users' => $users,
+            'user_name_search' => $request->input('user_name_search')
+        ]);
     }
 }

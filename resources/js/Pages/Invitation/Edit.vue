@@ -1,10 +1,10 @@
 <template>
     <app-layout>
         <template #header>
-            <inertia-link :to="route('diffs.show', diff.id)">{{ diff.title }}</inertia-link>
+            <inertia-link :href="route('diffs.show', diff.id)">{{ diff.title }}</inertia-link>
             / 招待作成
         </template>
-
+        {{ users}}
     </app-layout>
 </template>
 <script>
