@@ -40,4 +40,15 @@ class SearchUserTest extends TestCase
         Assert::assertEquals($leftJoinCount,  User::count());
     }
 
+    public function testLeftJoinから未所属のユーザーを正常に取得できるか()
+    {
+        $notMemberCount = User::leftJoin('members', 'users.id', '=', 'members.id')->where('members.diff_id', '<>', $this->diff->id)->count();
+        $notAnyMemberCount = User::leftJoin('members', 'users.id', '=', 'members.id')->whereNull('members.id')->count();
+
+        $diffMemberCount = $this->diff->members()->count();
+
+        Assert::assertEquals(User::count(), $notMemberCount + $notAnyMemberCount + $diffMemberCount);
+        
+    }
+
 }
