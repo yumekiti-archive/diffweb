@@ -63,7 +63,7 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
         Route::post('/diffs/{diffId}/users/{userId}/remove', [MemberController::class, 'destroy'])->name('diffs.members.destroy');
 
         // diffへの招待を一覧表示します。
-        Route::get('/diffs/{diffId}/invitations', [DiffInvitationController::class, 'invitations'])->name('diffs.invitations');
+        Route::get('/diffs/{diffId}/invitations', [DiffInvitationController::class, 'search'])->name('diffs.invitations');
 
         Route::get('/diffs/{diffId}/invitations/new', [DiffInvitationController::class, 'new'])->name('diffs.invitations.new');
 
@@ -72,7 +72,7 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
         Route::post('/diffs/{diffId}/invitations', [DiffInvitationController::class, 'create'])->name('diffs.invitations.create');
 
         // ユーザーへの招待を取り下げます。
-        Route::delete('/diffs/{diffId}/invitations/{invitationId}', [DiffInvitationController::class, 'delete'])->name('diffs.invitations.cancel');
+        Route::delete('/diffs/{diffId}/invitations/{userId}', [DiffInvitationController::class, 'delete'])->name('diffs.invitations.cancel');
         
 
 

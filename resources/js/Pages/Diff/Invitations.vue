@@ -5,27 +5,27 @@
 
         </template>
         <card-content>
-            <item-user v-for="invitation in invitations.data" :key="invitation.id" :user="invitation.invited_partner_user">
-                <button @click="confirmCancelInvitation(invitation)">
+            <item-user v-for="user in users.data" :key="user.id" :user="user">
+                <button @click="confirmCancelInvitation(user)">
                     <i class="fas fa-minus"></i>
                         取り下げ
                 </button>
             </item-user>
         </card-content>
-        <pagination class="mt-4" :links="invitations.links"/>
+        <pagination class="mt-4" :links="users.links"/>
         <jet-dialog-modal :show="isShow" @close="isShow = false">
             <template #title>
                 招待を取り下げます
             </template>
             <template #content>
-                <span v-if="targetInvitation">
-                    {{ targetInvitation.invited_partner_user.user_name}}
+                <span v-if="targetUser">
+                    {{ targetUser.user_name}}
                     への招待を取り下げますか？
                 </span>
             </template>
             <template #footer>
                 <button @click="isShow = false">キャンセル</button>
-                <button @click="cancelInvitation(targetInvitation)">取り下げます</button>
+                <button @click="cancelInvitation(targetUser)">取り下げます</button>
             </template>
         </jet-dialog-modal>
     </app-layout>
@@ -53,27 +53,27 @@ export default {
             type: Object,
             required: true
         },
-        invitations: {
+        users: {
             type: Object,
             required: true
         }
     },
     data(){
         return {
-            targetInvitation: null,
+            targetUser: null,
             isShow: false
         }
     },
     methods: {
-        cancelInvitation(invitation){
+        cancelInvitation(user){
             this.isShow = false;
             this.$inertia.delete(route('diffs.invitations.cancel', {
-                'diffId': invitation.diff_id,
-                'invitationId': invitation.id
+                'diffId': this.diff.id,
+                'userId': user.id
             }), );
         },
-        confirmCancelInvitation(invitation){
-            this.targetInvitation = invitation;
+        confirmCancelInvitation(user){
+            this.targetUser = user;
             this.isShow = true;
         }
     }
