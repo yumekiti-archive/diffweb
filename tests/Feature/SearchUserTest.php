@@ -53,23 +53,7 @@ class SearchUserTest extends TestCase
         Assert::assertEquals(20, Diff::count());
     }
 
-    public function test非所属メンバーの取得()
-    {
-        $count = User::leftJoin('members', 'users.id', '=', 'members.user_id')
-            ->whereNull('members.id')->count();
-        Assert::assertEquals(25, $count);
-    }
-
-    public function testDiff以外のメンバーの取得()
-    {
-        // 基準となるDiffの選出
-        $diff = Diff::withCount('members')->orderBy('members_count', 'desc')->first();
-        Assert::assertNotNull($diff);
-
-        $count = User::leftJoin('members', 'users.id', '=', 'members.user_id')
-            ->where('members.diff_id', '<>', $diff->id)->count();
-        Assert::assertEquals(135 - $diff->members()->count() - 25, $count);
-    }
+   
 
     public function testDiff以外のメンバーとどこにも属していないメンバーの取得()
     {

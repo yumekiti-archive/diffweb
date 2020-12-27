@@ -80,10 +80,16 @@ class User extends Authenticatable
 
     public function scopeNotDiffMembers($query, Diff $diff)
     {
-        return $query->leftJoin('members', 'users.id', '=','members.user_id')
-            ->where(function($query) use ($diff){
-                $query->where('members.diff_id', '<>', $diff->id)
-                    ->orWhereNull('members.id');
-            })->addSelect('users.*')->distinct('users.id');
+        
+        return $query->whereDoesntHave('diffs', function($query) use ($diff){
+            $query->where('diff_id', '=', $diff->id);
+        });
+    }
+
+    public function scopeNotDiffInvitedUsers($query, Diff $diff)
+    {
+        return $query->whereDoesntHave('invitationsToMe', function($query) use ($diff){
+            $query->where('diff_id', '=', $diff->id);
+        });
     }
 }

@@ -64,7 +64,7 @@ class DiffInvitationController extends Controller
     public function new(Request $request, $diffId)
     {
         $diff = Auth::user()->diffs()->findOrFail($diffId);
-        $users = User::notDiffMembers($diff)
+        $users = User::notDiffMembers($diff)->notDiffInvitedUsers($diff)
             ->when($request->input('user_name_search') ?? null, function($query, $userNameSearch){
                 $userNameSearch = str_replace('%', '\%', $userNameSearch);
                 $query->where('user_name', 'like', "%{$userNameSearch}%");
