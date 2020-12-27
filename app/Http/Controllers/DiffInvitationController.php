@@ -52,11 +52,12 @@ class DiffInvitationController extends Controller
             $query = User::where('user_name', 'like', "%{$userName}%");
 
         }
-        $page = $query->select($columns)->paginate();
+        $page = $query->select($columns)->paginate()->appends(['user_name' => $request->input('user_name')]);
 
         return Inertia::render('Diff/Invitations', [
             'users' => $page,
-            'diff' => $diff
+            'diff' => $diff,
+            'user_name' => $request->input('user_name')
         ]);
     }
 
