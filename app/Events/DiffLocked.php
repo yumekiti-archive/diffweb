@@ -15,7 +15,7 @@ class DiffLocked implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $diffLock;
+    public $lock;
 
 
     /**
@@ -26,7 +26,7 @@ class DiffLocked implements ShouldBroadcast
     public function __construct(DiffLock $lock)
     {
         //
-        $this->lock;
+        $this->lock = $lock;
     }
 
     /**
@@ -36,7 +36,7 @@ class DiffLocked implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        $diffId = $this->lock->diff()->first();
-        return new PrivateChannel('diffs.locked.' . $diffId);
+        $diff = $this->lock->diff()->first();
+        return new PrivateChannel('diffs.locked.' . $diff->id);
     }
 }
