@@ -21,3 +21,6 @@ yarn-error.log
 laravel-echo-server.lock
 
 docker/
+
+/public/css
+/public/js
