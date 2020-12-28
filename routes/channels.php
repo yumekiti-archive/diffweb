@@ -24,3 +24,7 @@ Broadcast::channel('diffs.updated.{diffId}', function($user, $diffId){
 Broadcast::channel('diffs.locked.{diffId}', function($user, $diffId){
     return $user->diffs()->find($diffId) !== null;
 });
+
+Broadcast::channel('diffs.unlocked.{diffId}', function($user, $diffId){
+    return $user->diffs()->find($diffId) !== null;
+});

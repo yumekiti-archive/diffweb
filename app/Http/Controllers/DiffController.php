@@ -8,6 +8,7 @@ use App\Http\Requests\EditDiff;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use App\Events\DiffUpdated;
 
 
 
@@ -62,7 +63,7 @@ class DiffController extends Controller
     public function update(EditDiff $request, $diffId)
     {
 
-        \DB::transaction(function () use ($request, $diffId){
+        $diff = \DB::transaction(function () use ($request, $diffId){
             $me = Auth::user();
             $diff = Diff::where('id', $diffId)->lockForUpdate()->firstOrFail();
             $locked = $diff->locked()->first();
@@ -72,7 +73,9 @@ class DiffController extends Controller
             $diff->update($request->only('title', 'source_text', 'compared_text'));
             $diff->unlock($me);
             $diff->save();
+            return $diff;
         });
+        DiffUpdated::dispatch($diff);
         
         return Redirect::back()->with('success', '保存に成功しました。');
     }

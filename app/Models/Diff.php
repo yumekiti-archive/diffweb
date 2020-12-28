@@ -11,6 +11,7 @@ use App\Exceptions\InvitedUserMemberedException;
 use App\Exceptions\InvalidAccessException;
 use App\Models\DiffLock;
 use App\Models\Member;
+use App\Events\DiffLocked;
 
 class Diff extends Model
 {
@@ -77,7 +78,8 @@ class Diff extends Model
             return false;
         }
 
-        $this->locked()->create(['member_id' => $member->id]);
+        $diffLocked = $this->locked()->create(['member_id' => $member->id]);
+        DiffLocked::dispatch($diffLocked);
 
         return true;
 
