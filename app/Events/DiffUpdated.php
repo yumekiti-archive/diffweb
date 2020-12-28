@@ -34,6 +34,6 @@ class DiffUpdated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('diffs.updated' . $this->diff->id);
+        return new PrivateChannel('diffs.updated.' . $this->diff->id);
     }
 }

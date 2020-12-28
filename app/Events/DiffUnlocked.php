@@ -34,6 +34,6 @@ class DiffUnlocked implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('diffs.unlocked' . $this->diff->id);
+        return new PrivateChannel('diffs.unlocked.' . $this->diff->id);
     }
 }
