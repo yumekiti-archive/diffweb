@@ -126,6 +126,7 @@ export default {
                 console.log(e);
                 this.form.source_text = e.diff.source_text;
                 this.form.compared_text = e.diff.compared_text;
+                this.form.title = e.diff.title;
                 this.$inertia.replace(route('diffs.show', this.diff.id));
 
             });
