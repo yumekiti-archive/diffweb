@@ -17,3 +17,7 @@ yarn-error.log
 /dist
 
 /public/fonts/
+
+laravel-echo-server.lock
+
+docker/

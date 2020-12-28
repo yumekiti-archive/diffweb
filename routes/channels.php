@@ -16,3 +16,15 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+Broadcast::channel('diffs.updated.{diffId}', function($user, $diffId){
+    return $user->diffs()->find($diffId) !== null;
+});
+
+Broadcast::channel('diffs.locked.{diffId}', function($user, $diffId){
+    return $user->diffs()->find($diffId) !== null;
+});
+
+Broadcast::channel('diffs.unlocked.{diffId}', function($user, $diffId){
+    return $user->diffs()->find($diffId) !== null;
+});
