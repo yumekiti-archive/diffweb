@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * Diffを作成・編集する時のルールなどをここに実装します。
  */
-class EditDiff extends FormRequest
+class CreateDiffRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,7 @@ class EditDiff extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'max:20']
+            'title' => ['required', 'max:30']
         ];
     }
 }
