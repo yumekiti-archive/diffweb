@@ -16,15 +16,17 @@ class DiffUpdated implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $diff;
+    public $client_id;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Diff $diff)
+    public function __construct(Diff $diff, string $client_id)
     {
         $this->diff = $diff;
+        $this->client_id = $client_id;
     }
 
     /**

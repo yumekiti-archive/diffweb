@@ -9,7 +9,8 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use App\Events\DiffUpdated;
-
+use Session;
+use Illuminate\Support\Str;
 
 
 class DiffController extends Controller
@@ -30,7 +31,8 @@ class DiffController extends Controller
     {
         $diff = Diff::with('locked.user')->findOrFail($diffId);
 
-        return Inertia::render('Diff/Edit', [ 'diff' => $diff, 'me' => Auth::user() ]);
+        
+        return Inertia::render('Diff/Edit', [ 'diff' => $diff, 'me' => Auth::user(), 'client_id' => Str::uuid()]);
 
     }
 
@@ -76,7 +78,7 @@ class DiffController extends Controller
             $diff->save();
             return $diff;
         });
-        DiffUpdated::dispatch($diff);
+        DiffUpdated::dispatch($diff, $request->input('client_id'));
         
         return Redirect::back()->with('success', '保存に成功しました。');
     }
