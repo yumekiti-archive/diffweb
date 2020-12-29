@@ -110,7 +110,7 @@ export default {
             handler: throttle(function(){
                 console.log("変更があった");
                 if(this.lockedByMe){
-                    this.trySave();
+                    this.update();
                 }
             }, 200),
             deep: true
@@ -178,6 +178,19 @@ export default {
                 }
             }
         },
+        update(){
+            if(this.lockedByMe){
+                let data = {
+                    source_text: this.form.source_text,
+                    compared_text: this.form.compared_text,
+                    title: this.form.title,
+                    unlock: true
+                };
+                console.log(data);
+                this.$inertia.put(this.route('diffs.update', this.diff.id), data);
+            }
+        },
+
         lock(){
             if(this.diff != null && !this.diff.locked){
                 this.$inertia.put(this.route('diffs.lock', this.diff.id), null, {
