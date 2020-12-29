@@ -248,7 +248,8 @@ export default {
         tryUpdate: throttle(
             function(){
                 this.update();
-            }
+            },
+            500
         )
     }
     
