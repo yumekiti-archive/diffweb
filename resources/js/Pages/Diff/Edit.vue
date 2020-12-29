@@ -24,15 +24,15 @@
                         <!-- Diff内Navigation -->
                         
                     <label class="text-gray-600 font-light">タイトル</label>
-                    <input type='text' placeholder="Enter your input here" class="w-full mt-2 mb-6 px-6 py-3 border rounded-lg text-lg text-gray-700 focus:outline-none" v-model="form.title"/>
+                    <input type='text' placeholder="Enter your input here" class="w-full mt-2 mb-6 px-6 py-3 border rounded-lg text-lg text-gray-700 focus:outline-none" @input="inputTitle" :value="form.title" />
                     <p>二つのテキストの差分を表示します。</p>
                     <div class="flex">
                         <div class="w-full w-1/2 pr-2">
-                            <textarea v-model="form.source_text" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
+                            <textarea @input="inputSourceText" :value="form.source_text" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
                             <text-result :isAdded="true" :result="compared"></text-result>
                         </div>
                         <div class="w-full w-1/2 pl-2">
-                            <textarea v-model="form.compared_text" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
+                            <textarea @input="inputComparedText" :value="form.compared_text" rows="5" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"></textarea>
                             <text-result :isRemoved="true" :result="compared"></text-result>
                         </div>
 
@@ -73,6 +73,8 @@ import TextDiffResult from './TextDiffResult';
 import JetNavLink from '@/Jetstream/NavLink'
 import DiffNav from './DiffNav';
 import CardContent from './../../Templetes/CardContent';
+import throttle from 'lodash/throttle'
+
 
 export default {
     props: {
@@ -84,6 +86,10 @@ export default {
         me: {
             type: Object,
             required: true,
+        },
+        client_id: {
+            type: String,
+            required: true
         }
     },
 
@@ -103,6 +109,17 @@ export default {
         JetNavLink,
         'd-card-content': CardContent
     },
+    /*watch: {
+        form: {
+            handler: throttle(function(){
+                console.log("変更があった");
+                if(this.lockedByMe){
+                    this.update();
+                }
+            }, 200),
+            deep: true
+        }
+    },*/
 
     computed: {
         compared(){
@@ -114,6 +131,9 @@ export default {
         },
         locked(){
             return this.diff != null && this.diff.locked != null && this.diff.locked.user.id !== this.me.id;
+        },
+        lockedByMe(){
+            return this.diff != null && this.diff.locked != null && this.diff.locked.user.id === this.me.id;
         }
     },
 
@@ -123,11 +143,16 @@ export default {
 
         this.$echo.private('diffs.updated.' + this.diff.id)
             .listen('DiffUpdated', (e)=>{
-                console.log(e);
-                this.form.source_text = e.diff.source_text;
-                this.form.compared_text = e.diff.compared_text;
-                this.form.title = e.diff.title;
-                this.$inertia.replace(route('diffs.show', this.diff.id));
+                    console.log(this.client_id == e.client_id);
+
+                if(this.client_id != e.client_id){
+                    console.log(e);
+                    this.form.source_text = e.diff.source_text;
+                    this.form.compared_text = e.diff.compared_text;
+                    this.form.title = e.diff.title;
+                    this.$inertia.replace(route('diffs.show', this.diff.id));
+                }
+                
 
             });
         this.$echo.private('diffs.locked.' + this.diff.id)
@@ -162,6 +187,21 @@ export default {
                 }
             }
         },
+        update(){
+            if(this.lockedByMe){
+                console.assert(this.client_id != null, 'client_idが異常値である');
+                let data = {
+                    source_text: this.form.source_text,
+                    compared_text: this.form.compared_text,
+                    title: this.form.title,
+                    unlock: false,
+                    client_id: this.client_id
+                };
+                console.log(data);
+                this.$inertia.put(this.route('diffs.update', this.diff.id), data);
+            }
+        },
+
         lock(){
             if(this.diff != null && !this.diff.locked){
                 this.$inertia.put(this.route('diffs.lock', this.diff.id), null, {
@@ -180,6 +220,36 @@ export default {
                 })
             }
         },
+
+        inputTitle(e){
+            let value = e.target.value;
+            if(value !== this.form.title){
+                this.form.title = value;
+                this.tryUpdate();
+
+            }
+        },
+        inputSourceText(e){
+            let value = e.target.value;
+            if(value !== this.form.source_text){
+                this.form.source_text = value;
+                this.tryUpdate();
+
+            }
+        },
+        inputComparedText(e){
+            let value = e.target.value;
+            if(value !== this.form.compared_text){
+                this.form.compared_text = value;
+                this.tryUpdate();
+            }
+        },
+
+        tryUpdate: throttle(
+            function(){
+                this.update();
+            }
+        )
     }
     
 }

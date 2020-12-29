@@ -9,7 +9,8 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use App\Events\DiffUpdated;
-
+use Session;
+use Illuminate\Support\Str;
 
 
 class DiffController extends Controller
@@ -30,7 +31,8 @@ class DiffController extends Controller
     {
         $diff = Diff::with('locked.user')->findOrFail($diffId);
 
-        return Inertia::render('Diff/Edit', [ 'diff' => $diff, 'me' => Auth::user() ]);
+        
+        return Inertia::render('Diff/Edit', [ 'diff' => $diff, 'me' => Auth::user(), 'client_id' => Str::uuid()]);
 
     }
 
@@ -58,7 +60,7 @@ class DiffController extends Controller
     }
 
     /**
-     * Diffを更新します。
+     * Diffを更新ます。
      */
     public function update(EditDiff $request, $diffId)
     {
@@ -66,22 +68,24 @@ class DiffController extends Controller
         $diff = \DB::transaction(function () use ($request, $diffId){
             $me = Auth::user();
             $diff = Diff::where('id', $diffId)->lockForUpdate()->firstOrFail();
-            $locked = $diff->locked()->first();
-            if(isset($locked) && $locked->user()->first()->id !== $me->id){
+            if($diff->isLockedByUser($me)){
                 return Redirect::back()->with('error', '他のユーザーによってロックされています。');
             }
             $diff->update($request->only('title', 'source_text', 'compared_text'));
-            $diff->unlock($me);
+            if($request->input('unlock') === 'true'){
+                $diff->unlock($me);
+            }
             $diff->save();
             return $diff;
         });
-        DiffUpdated::dispatch($diff);
+        DiffUpdated::dispatch($diff, $request->input('client_id'));
         
         return Redirect::back()->with('success', '保存に成功しました。');
     }
 
+
     /**
-     * Diffをロックします。
+     * Diffを編集ロックします。
      */
     public function lock($diffId)
     {
