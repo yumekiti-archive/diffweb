@@ -58,7 +58,7 @@ class DiffController extends Controller
     }
 
     /**
-     * Diffを更新します。
+     * Diffを更新ます。
      */
     public function update(EditDiff $request, $diffId)
     {
@@ -66,12 +66,13 @@ class DiffController extends Controller
         $diff = \DB::transaction(function () use ($request, $diffId){
             $me = Auth::user();
             $diff = Diff::where('id', $diffId)->lockForUpdate()->firstOrFail();
-            $locked = $diff->locked()->first();
-            if(isset($locked) && $locked->user()->first()->id !== $me->id){
+            if($diff->isLockedByUser($me)){
                 return Redirect::back()->with('error', '他のユーザーによってロックされています。');
             }
             $diff->update($request->only('title', 'source_text', 'compared_text'));
-            $diff->unlock($me);
+            if($request->input('unlock') === 'true'){
+                $diff->unlock($me);
+            }
             $diff->save();
             return $diff;
         });
@@ -80,8 +81,9 @@ class DiffController extends Controller
         return Redirect::back()->with('success', '保存に成功しました。');
     }
 
+
     /**
-     * Diffをロックします。
+     * Diffを編集ロックします。
      */
     public function lock($diffId)
     {

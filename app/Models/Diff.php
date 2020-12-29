@@ -109,4 +109,13 @@ class Diff extends Model
 
         
     }
+
+    /**
+     * ユーザーによってロックされているか
+     */
+    public function scopeIsLockedByUser(User $user): bool
+    {
+        $locked = $this->locked()->first();
+        return isset($locked) && $locked->user()->first()->id !== $user->id;
+    }
 }
