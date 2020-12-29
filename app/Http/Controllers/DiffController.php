@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Diff;
-use App\Http\Requests\EditDiff;
+use App\Http\Requests\CreateDiffRequest;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use App\Events\DiffUpdated;
 use Session;
 use Illuminate\Support\Str;
+use App\Http\Requests\UpdateDiffRequest;
 
 
 class DiffController extends Controller
@@ -45,7 +46,7 @@ class DiffController extends Controller
     /**
      * Diffを作成します。
      */
-    public function create(EditDiff $request)
+    public function create(CreateDiffRequest $request)
     {
         $me = Auth::user();
         $diff = \DB::transaction(function() use ($request, $me){
@@ -62,7 +63,7 @@ class DiffController extends Controller
     /**
      * Diffを更新ます。
      */
-    public function update(EditDiff $request, $diffId)
+    public function update(UpdateDiffRequest $request, $diffId)
     {
 
         $diff = \DB::transaction(function () use ($request, $diffId){

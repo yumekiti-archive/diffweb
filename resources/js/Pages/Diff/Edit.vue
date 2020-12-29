@@ -13,7 +13,7 @@
                 </span>
             </h2>
             -->
-            <d-nav-diff :diff="diff" />
+            <d-nav-diff :diff="diff" v-if="diff" />
 
         </template>
         <div>
@@ -89,16 +89,16 @@ export default {
         },
         client_id: {
             type: String,
-            required: true
+            required: false
         }
     },
 
     data(){
         return {
             form: {
-                source_text: this.diff.source_text,
-                compared_text: this.diff.compared_text,
-                title: this.diff.title
+                source_text: this.diff ?this.diff.source_text : '',
+                compared_text: this.diff ? this.diff.compared_text : '',
+                title: this.diff ? this.diff.title : ''
             },
         }
     },
@@ -140,32 +140,10 @@ export default {
     created(){
         console.log(this);
         
-
-        this.$echo.private('diffs.updated.' + this.diff.id)
-            .listen('DiffUpdated', (e)=>{
-                    console.log(this.client_id == e.client_id);
-
-                if(this.client_id != e.client_id){
-                    console.log(e);
-                    this.form.source_text = e.diff.source_text;
-                    this.form.compared_text = e.diff.compared_text;
-                    this.form.title = e.diff.title;
-                    this.$inertia.replace(route('diffs.show', this.diff.id));
-                }
-                
-
-            });
-        this.$echo.private('diffs.locked.' + this.diff.id)
-            .listen('DiffLocked', (e)=>{
-                console.log(e);
-                this.$inertia.replace(route('diffs.show', this.diff.id));
-            });
-
-        this.$echo.private('diffs.unlocked.' + this.diff.id)
-            .listen('DiffUnlocked', (e)=>{
-                console.log(e);
-                this.$inertia.replace(route('diffs.show', this.diff.id));
-            })    
+        if(this.diff){
+            this.startListen();
+        }
+           
     },
 
     methods: {
@@ -250,7 +228,35 @@ export default {
                 this.update();
             },
             500
-        )
+        ),
+
+        startListen(){
+            this.$echo.private('diffs.updated.' + this.diff.id)
+                .listen('DiffUpdated', (e)=>{
+                        console.log(this.client_id == e.client_id);
+
+                    if(this.client_id != e.client_id){
+                        console.log(e);
+                        this.form.source_text = e.diff.source_text;
+                        this.form.compared_text = e.diff.compared_text;
+                        this.form.title = e.diff.title;
+                        this.$inertia.replace(route('diffs.show', this.diff.id));
+                    }
+                    
+
+                });
+            this.$echo.private('diffs.locked.' + this.diff.id)
+                .listen('DiffLocked', (e)=>{
+                    console.log(e);
+                    this.$inertia.replace(route('diffs.show', this.diff.id));
+                });
+
+            this.$echo.private('diffs.unlocked.' + this.diff.id)
+                .listen('DiffUnlocked', (e)=>{
+                    console.log(e);
+                    this.$inertia.replace(route('diffs.show', this.diff.id));
+                }) 
+            }
     }
     
 }
