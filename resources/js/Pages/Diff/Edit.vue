@@ -73,6 +73,8 @@ import TextDiffResult from './TextDiffResult';
 import JetNavLink from '@/Jetstream/NavLink'
 import DiffNav from './DiffNav';
 import CardContent from './../../Templetes/CardContent';
+import throttle from 'lodash/throttle'
+
 
 export default {
     props: {
@@ -103,6 +105,17 @@ export default {
         JetNavLink,
         'd-card-content': CardContent
     },
+    watch: {
+        form: {
+            handler: throttle(function(){
+                console.log("変更があった");
+                if(this.lockedByMe){
+                    this.trySave();
+                }
+            }, 200),
+            deep: true
+        }
+    },
 
     computed: {
         compared(){
@@ -114,6 +127,9 @@ export default {
         },
         locked(){
             return this.diff != null && this.diff.locked != null && this.diff.locked.user.id !== this.me.id;
+        },
+        lockedByMe(){
+            return this.diff != null && this.diff.locked != null && this.diff.locked.user.id === this.me.id;
         }
     },
 
