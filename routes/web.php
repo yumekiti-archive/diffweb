@@ -83,10 +83,10 @@ Route::group(['middlware' => ['auth:sanctum']], function () {
     Route::get('/invitations', [UserInvitationController::class, 'invitations'])->name('invitations');
 
     // 招待をacceptします。
-    Route::post('/invitations/{invitationId}/accept', [UserInvitationController::class, 'accept']);
+    Route::post('/invitations/{invitationId}/accept', [UserInvitationController::class, 'accept'])->name('invitations.accept');
     
     // 招待を拒否します。
-    Route::post('/invitations/{invitationId}/reject', [UserInvitationController::class, 'reject']);
+    Route::post('/invitations/{invitationId}/reject', [UserInvitationController::class, 'reject'])->name('invitations.reject');
 
 
     

@@ -56,10 +56,12 @@ class UserInvitation extends Model
      */
     public function accept()
     {
-        return Member::create([
+        $member = Member::create([
             'user_id' => $this->invitedPartnerUser()->first()->id,
             'diff_id' => $this->diff()->first()->id
         ]);
+        $this->delete();
+        return $member;
     }
 
     /**

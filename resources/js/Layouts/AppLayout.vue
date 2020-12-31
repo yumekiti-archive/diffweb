@@ -16,7 +16,10 @@
                     
                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex" >
                             <jet-nav-link :href="route('diffs')" :active="route().current('diffs')">
-                                Home
+                                ホーム
+                            </jet-nav-link>
+                            <jet-nav-link :href="route('invitations')" :active="route().current('invitations')">
+                                招待
                             </jet-nav-link>
                         </div>
                     </div>

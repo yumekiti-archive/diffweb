@@ -16,9 +16,9 @@ class UserInvitationController extends Controller
      */
     public function invitations()
     {
-        $invitations = Auth::user()->invitationsToMe()->paginate();
+        $invitations = Auth::user()->invitationsToMe()->with(['diff', 'author'])->paginate();
         return Inertia::render('Invitation/Index', [
-            'invitations' => $invitaitons
+            'invitations' => $invitations
         ]);
     }
 
@@ -27,11 +27,11 @@ class UserInvitationController extends Controller
      */
     public function accept($invitationId)
     {
-        $me = Auth::me();
+        $me = Auth::user();
         return \DB::transaction(function() use ($me, $invitationId){
             $invitation = $me->invitationsToMe()->lockForUpdate()->findOrFail($invitationId);
 
-            $invitations->accept();
+            $invitation->accept();
 
             return Redirect::back()->with('success', '招待を受け入れました。');
         });
@@ -43,7 +43,7 @@ class UserInvitationController extends Controller
     public function reject($invitationId)
     {
         
-        $me = Auth::me();
+        $me = Auth::user();
         return \DB::transaction(function() use ($me, $invitationId){
             $me->invitationsToMe()->lockForUpdate()->findOrFail($invitationId)->reject();
 
