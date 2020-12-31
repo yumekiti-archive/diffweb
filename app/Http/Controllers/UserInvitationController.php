@@ -16,7 +16,7 @@ class UserInvitationController extends Controller
      */
     public function invitations()
     {
-        $invitations = Auth::user()->invitationsToMe()->paginate();
+        $invitations = Auth::user()->invitationsToMe()->with('diff', 'author')->paginate();
         return Inertia::render('Invitation/Index', [
             'invitations' => $invitaitons
         ]);
