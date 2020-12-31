@@ -43,10 +43,10 @@ import PaginationLinks from './../../Components/Pagination';
 
 
 export default {
-    layout: AppLayout,
     components: {
         CardContent,
-        PaginationLinks
+        PaginationLinks,
+        AppLayout
     },
     props: {
         invitations: {
