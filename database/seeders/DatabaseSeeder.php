@@ -73,6 +73,13 @@ class DatabaseSeeder extends Seeder
             'author_id' => $testUser->id,
         ]);
         $diff->invitations()->save($invitation);
+
+        Diff::factory()->count(30)->create()->each(function(Diff $diff) use ($invitationPartner){
+            $user = User::factory()->create();
+            $diff->members()->attach($user);
+            $diff->invite($user, $invitationPartner);
+            $diff->save();
+        });
                 
     }
 }
