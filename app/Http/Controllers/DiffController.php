@@ -16,13 +16,14 @@ use App\Http\Requests\UpdateDiffRequest;
 
 class DiffController extends Controller
 {
-    
+
     /**
      * Pages/Diff/Index.vueを返すようにしてください。
      * paginationを使用してページングできるようにしてください。　
      */
     public function index()
     {
+      return Inertia::render('Diff/Index', ['me' => Auth::user() ]);
     }
 
     /**
@@ -32,7 +33,7 @@ class DiffController extends Controller
     {
         $diff = Diff::with('locked.user')->findOrFail($diffId);
 
-        
+
         return Inertia::render('Diff/Edit', [ 'diff' => $diff, 'me' => Auth::user(), 'client_id' => Str::uuid()]);
 
     }
@@ -80,7 +81,7 @@ class DiffController extends Controller
             return $diff;
         });
         DiffUpdated::dispatch($diff, $request->input('client_id'));
-        
+
         return Redirect::back()->with('success', '保存に成功しました。');
     }
 
@@ -90,7 +91,7 @@ class DiffController extends Controller
      */
     public function lock($diffId)
     {
-        
+
         $user = Auth::user();
         return \DB::transaction(function() use (&$user, $diffId){
             $diff = $user->diffs()->lockForUpdate()->findOrFail($diffId);
@@ -120,6 +121,6 @@ class DiffController extends Controller
         });
     }
 
-   
+
 
 }
