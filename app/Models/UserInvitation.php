@@ -60,6 +60,7 @@ class UserInvitation extends Model
             'user_id' => $this->invitedPartnerUser()->first()->id,
             'diff_id' => $this->diff()->first()->id
         ]);
+        $this->delete();
     }
 
     /**
