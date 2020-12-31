@@ -1,13 +1,12 @@
 <template>
   <app-layout>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+      <h1 class="font-semibold text-xl text-gray-800 leading-tight">
         <inertia-link href="/create">新規作成</inertia-link>
-      </h2>
+      </h1>
     </template>
     <div class="font-semibold text-xl text-gray-800 leading-tight text-center">
-      diff一覧：
-      {{ me.user_name }}
+      diff一覧
     </div>
   </app-layout>
 </template>
