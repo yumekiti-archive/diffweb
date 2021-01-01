@@ -3,6 +3,9 @@
     <template #header>
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Diff List
+            <div class="text-base text-xl text-right mr-10">
+                <inertia-link href="/create">新規作成</inertia-link>
+            </div>
         </h2>
     </template>
 
@@ -16,13 +19,13 @@
         </thead>
         <tbody>
             <tr class="text-left text-lg" height="60" v-for="diff in diffs.data">
-                <td width="500">
+                <td width="800">
                     <CardContent>
                         <inertia-link :href="`/diffs/${diff.id}`">{{diff.title}}</inertia-link>
                     </CardContent>
                 </td>
-                <td width="200">{{diff.created_at | moment}}</td>
-                <td width="200">{{diff.updated_at | moment}}</td>
+                <td class="text-center" width="200">{{diff.created_at | moment}}</td>
+                <td class="text-center" width="200">{{diff.updated_at | moment}}</td>
             </tr>
         </tbody>
     </table>
