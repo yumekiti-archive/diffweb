@@ -1,25 +1,25 @@
 <template>
-  <app-layout>
+<app-layout>
     <template #header>
-      <h1 class="font-semibold text-xl text-gray-800 leading-tight">
-        <inertia-link href="/create">新規作成</inertia-link>
-      </h1>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Diff List
+        </h2>
     </template>
-    <div class="font-semibold text-xl text-gray-800 leading-tight text-center">
-      diff一覧
+    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+        asd
     </div>
-  </app-layout>
+
+</app-layout>
 </template>
 
 <script>
+import AppLayout from '@/Layouts/AppLayout'
+import Welcome from '@/Jetstream/Welcome'
 
-  import AppLayout from '@/Layouts/AppLayout'
-
-  export default {
+export default {
     components: {
-    AppLayout,
+        AppLayout,
+        Welcome,
     },
-    props: ['me']
-  }
-
+}
 </script>
