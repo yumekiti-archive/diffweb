@@ -156,12 +156,14 @@ export default {
                         }
                     });
                 }else{
-                    this.$inertia.put(this.route('diffs.update', this.diff.id), this.form, {
-                        onFinish(){
-                            console.log(this.$page.props);
-                            console.log("保存完了")
-                        }
-                    });
+                    let data = {
+                        source_text: this.form.source_text,
+                        compared_text: this.form.compared_text,
+                        title: this.form.title,
+                        unlock: true,
+                        client_id: this.client_id
+                    }
+                    this.$inertia.put(this.route('diffs.update', this.diff.id), data);
                 }
             }
         },
