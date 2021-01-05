@@ -1,12 +1,15 @@
 <template>
 <app-layout>
     <template #header>
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Diff List
-            <div class="text-base text-xl text-right mr-10">
-                <inertia-link href="/create">新規作成</inertia-link>
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                Diff List
+                
+            </h2>
+            <div class="text-base text-right text-white justify-center rounded-full hover:bg-blue-500 bg-blue-600 p-2">
+                <inertia-link href="/create" >新規作成</inertia-link>
             </div>
-        </h2>
+        </div>
     </template>
 
     <card-content>
