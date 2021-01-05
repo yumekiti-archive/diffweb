@@ -19,11 +19,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="text-left text-lg" height="60" v-for="diff in diffs.data" :key="diff.id">
-                    <td width="800">
+                <tr class="text-left text-lg border-t" height="60" v-for="diff in diffs.data" :key="diff.id">
+                    <td width="800 border-r">
                             <inertia-link :href="`/diffs/${diff.id}`">{{diff.title}}</inertia-link>
                     </td>
-                    <td class="text-center" width="200">{{diff.created_at | moment}}</td>
+                    <td class="text-center border-r" width="200">{{diff.created_at | moment}}</td>
                     <td class="text-center" width="200">{{diff.updated_at | moment}}</td>
                 </tr>
             </tbody>
