@@ -9,26 +9,26 @@
         </h2>
     </template>
 
-    <table class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-        <thead>
-            <tr class="text-center text-base">
-                <th>タイトル</th>
-                <th>作成日</th>
-                <th>更新日</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="text-left text-lg" height="60" v-for="diff in diffs.data">
-                <td width="800">
-                    <CardContent>
-                        <inertia-link :href="`/diffs/${diff.id}`">{{diff.title}}</inertia-link>
-                    </CardContent>
-                </td>
-                <td class="text-center" width="200">{{diff.created_at | moment}}</td>
-                <td class="text-center" width="200">{{diff.updated_at | moment}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <card-content>
+        <table>
+            <thead>
+                <tr class="text-center text-base">
+                    <th>タイトル</th>
+                    <th>作成日</th>
+                    <th>更新日</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="text-left text-lg" height="60" v-for="diff in diffs.data" :key="diff.id">
+                    <td width="800">
+                            <inertia-link :href="`/diffs/${diff.id}`">{{diff.title}}</inertia-link>
+                    </td>
+                    <td class="text-center" width="200">{{diff.created_at | moment}}</td>
+                    <td class="text-center" width="200">{{diff.updated_at | moment}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </card-content>
 </app-layout>
 </template>
 
