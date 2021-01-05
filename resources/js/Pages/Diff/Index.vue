@@ -12,7 +12,7 @@
         </div>
     </template>
 
-    <card-content>
+    <card-content class="mb-4">
         <table>
             <thead>
                 <tr class="text-center text-base">
@@ -32,6 +32,7 @@
             </tbody>
         </table>
     </card-content>
+    <pagination-links :links="diffs.links" />
 </app-layout>
 </template>
 
@@ -40,6 +41,7 @@ import AppLayout from '@/Layouts/AppLayout'
 import ItemUser from '../../Components/ItemUser';
 import moment from '../../../../node_modules/moment';
 import CardContent from '../../Templetes/CardContent';
+import PaginationLinks from '../../Components/Pagination';
 
 export default {
     filters: {
@@ -52,6 +54,7 @@ export default {
         AppLayout,
         ItemUser,
         CardContent,
+        PaginationLinks
     },
 }
 </script>
