@@ -12,7 +12,7 @@
         </div>
     </template>
 
-    <card-content class="mb-4">
+    <card-content>
         <table>
             <thead>
                 <tr class="text-center text-base">
