@@ -32,6 +32,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.1",
-        "laravel-echo": "^1.10.0"
+        "laravel-echo": "^1.10.0",
+        "vue-moment": "^4.1.0"
     }
 }

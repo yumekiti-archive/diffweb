@@ -23,6 +23,14 @@ class DiffController extends Controller
      */
     public function index()
     {
+        // 現在ログイン中のユーザー
+        $user = Auth::user();
+        // ユーザーがアクセス可能なDiffをすべて取得
+        $diffs = $user->diffs()->paginate();
+
+        return Inertia::render('Diff/Index', [
+        'diffs' => $diffs,
+        ]);
     }
 
     /**
