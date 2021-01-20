@@ -36,9 +36,9 @@ export default {
 </script>
 <style scoped>
 .removed{
-    color: #ff7575;
+    color: #ce4343;
 }
 .added{
-    color: #90ff99
+    color: #05a012
 }
 </style>
