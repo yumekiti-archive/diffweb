@@ -41,7 +41,7 @@
                 </d-card-content>
                 <div class="bg-yellow-200 rounded justify-between items-center mt-4">
                             <!--font awesome test-->
-                    <div v-if="diff && diff.locked" class="p-3 text-sm font-midium">
+                    <div v-if="diff && diff.locked && !alone" class="p-3 text-sm font-midium">
                             <i class="fas fas fa-lock"></i>
 
                         {{ diff.locked.user.user_name }}によってロックされています。
@@ -50,9 +50,9 @@
                 <div class="mt-4">
                         
                         <div class="flex float-right mb-5">
-                            <button v-if="diff && diff.locked && diff.locked.user.id === me.id" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
+                            <button v-if="diff && diff.locked && diff.locked.user.id === me.id && !alone" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
                             <button 
-                                v-else-if="diff !== null" 
+                                v-else-if="diff !== null && !alone" 
                                 type="button" 
                                 class="rounded px-4 py-2 focus:outline-none mr-2"
                                 :class="[ locked ? 'text-gray-300 bg-gray-500' : 'text-white hover:bg-gray-500 bg-gray-600 ']"
@@ -131,6 +131,9 @@ export default {
         },
         locked(){
             return this.diff != null && this.diff.locked != null && this.diff.locked.user.id !== this.me.id;
+        },
+        alone(){
+            return this.diff.members_count == 1;
         },
         lockedByMe(){
             return this.diff != null && this.diff.locked != null && this.diff.locked.user.id === this.me.id;

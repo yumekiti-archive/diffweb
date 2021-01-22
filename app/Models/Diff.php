@@ -21,8 +21,12 @@ class Diff extends Model
     use HasFactory;
 
     protected $fillable = ['source_text', 'compared_text', 'title'];
+    protected $appends = ['members_count'];
 
-    
+    public function getMembersCountAttribute()
+    {
+        return $this->members()->count();
+    }
 
     public function locked()
     {
