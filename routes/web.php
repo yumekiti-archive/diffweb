@@ -18,13 +18,7 @@ use App\Http\Controllers\UserInvitationController;
 |
 */
 
-Route::get('/welcome', function () {
-    return view('welcome');
-});
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia\Inertia::render('Dashboard');
-})->name('dashboard');
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
