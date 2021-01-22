@@ -31,6 +31,21 @@ class Diff extends Model
         return $this->belongsToMany(User::class, 'members', 'diff_id', 'user_id');
     }
 
+    public function addMember(User $user): ?Member
+    {
+        $member = new Member([
+            'diff_id' => $this->id,
+            'user_id' => $user->id
+        ]);
+        return $member->save() ? $member : null;
+    }
+
+    public function deleteMember(User $user): bool
+    {
+        $member = $this->members()->find($user);
+        return isset($member) && $member->delete() == 1;
+    }
+
     /**
      * 発行した招待
      */

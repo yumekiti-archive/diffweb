@@ -17,7 +17,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\DiffUpdated' => [],
         'App\Events\DiffLocked' => [],
-        'App\Events\DiffUnlocked' => []
+        'App\Events\DiffUnlocked' => [],
+        'App\Events\DiffAddedMember' => [],
+        'App\Events\DiffRemovedMember' => []
     ];
 
     /**

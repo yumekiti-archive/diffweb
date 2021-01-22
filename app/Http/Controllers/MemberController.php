@@ -38,7 +38,7 @@ class MemberController extends Controller
         $me = Auth::user();
         if(Hash::check($request->input('password'), $me->password)){
             $user = $diff->members()->findOrFail($userId);
-            $diff->members()->detach($user);
+            $diff->deleteMember($user);
             if($user->id == $me->id){
                 return Redirect::route('diffs')->with('success', 'メンバーから抜けました。');
             }
