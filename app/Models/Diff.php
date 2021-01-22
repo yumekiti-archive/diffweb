@@ -13,6 +13,8 @@ use App\Models\DiffLock;
 use App\Models\Member;
 use App\Events\DiffLocked;
 use App\Events\DiffUnlocked;
+use App\Events\DiffAddedMember;
+use App\Events\DiffRemovedMember;
 
 class Diff extends Model
 {
@@ -37,13 +39,22 @@ class Diff extends Model
             'diff_id' => $this->id,
             'user_id' => $user->id
         ]);
-        return $member->save() ? $member : null;
+        $result = $member->save() ? $member : null;
+        if($result){
+            DiffAddedMember::dispatch($member);
+        }
+        return $result;
     }
 
     public function deleteMember(User $user): bool
     {
-        $member = $this->members()->find($user);
-        return isset($member) && $member->delete() == 1;
+        $member = Member::where('user_id', '=', $user->id)->where('diff_id', '=', $this->id)->first();
+        $result =  isset($member) && $member->delete() == 1;
+
+        if($result){
+            DiffRemovedMember::dispatch($member);
+        }
+        return $result;
     }
 
     /**

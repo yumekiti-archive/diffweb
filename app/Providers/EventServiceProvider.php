@@ -18,8 +18,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\DiffUpdated' => [],
         'App\Events\DiffLocked' => [],
         'App\Events\DiffUnlocked' => [],
-        'App\Events\DiffAddedMember' => [],
-        'App\Events\DiffRemovedMember' => []
+        'App\Events\DiffAddedMember' => [
+            'App\Listeners\DiffAddedMemberListener'
+        ],
+        'App\Events\DiffRemovedMember' => [
+            'App\Listeners\DiffRemovedMemberListener'
+        ]
     ];
 
     /**
