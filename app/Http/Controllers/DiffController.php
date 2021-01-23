@@ -60,7 +60,7 @@ class DiffController extends Controller
         $diff = \DB::transaction(function() use ($request, $me){
             $diff = Diff::create($request->only(['title', 'source_text', 'compared_text']));
 
-            $diff->members()->attach($me);
+            $diff->addMember($me);
 
             return $diff;
         });

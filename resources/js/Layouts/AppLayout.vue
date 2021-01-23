@@ -7,7 +7,7 @@
                     <div class="flex">
                         <!-- Logo -->
                         <div class="flex-shrink-0 flex items-center">
-                            <inertia-link :href="route('dashboard')">
+                            <inertia-link :href="route('diffs')">
                                 <jet-application-mark class="block h-9 w-auto" />
                             </inertia-link>
                         </div>

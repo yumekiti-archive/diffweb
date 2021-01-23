@@ -13,14 +13,20 @@ use App\Models\DiffLock;
 use App\Models\Member;
 use App\Events\DiffLocked;
 use App\Events\DiffUnlocked;
+use App\Events\DiffAddedMember;
+use App\Events\DiffRemovedMember;
 
 class Diff extends Model
 {
     use HasFactory;
 
     protected $fillable = ['source_text', 'compared_text', 'title'];
+    protected $appends = ['members_count'];
 
-    
+    public function getMembersCountAttribute()
+    {
+        return $this->members()->count();
+    }
 
     public function locked()
     {
@@ -29,6 +35,30 @@ class Diff extends Model
 
     public function members(){
         return $this->belongsToMany(User::class, 'members', 'diff_id', 'user_id');
+    }
+
+    public function addMember(User $user): ?Member
+    {
+        $member = new Member([
+            'diff_id' => $this->id,
+            'user_id' => $user->id
+        ]);
+        $result = $member->save() ? $member : null;
+        if($result){
+            DiffAddedMember::dispatch($member);
+        }
+        return $result;
+    }
+
+    public function deleteMember(User $user): bool
+    {
+        $member = Member::where('user_id', '=', $user->id)->where('diff_id', '=', $this->id)->first();
+        $result =  isset($member) && $member->delete() == 1;
+
+        if($result){
+            DiffRemovedMember::dispatch($member);
+        }
+        return $result;
     }
 
     /**
