@@ -3,9 +3,7 @@
     <template #header>
         <div class="flex justify-between items-center">
             <content-title>Diff一覧</content-title>
-            <div class="text-base text-right text-white justify-center rounded-full hover:bg-blue-500 bg-blue-600 p-2">
-                <inertia-link href="/create" >新規作成</inertia-link>
-            </div>
+            
         </div>
     </template>
 
@@ -30,6 +28,11 @@
         </table>
     </card-content>
     <pagination-links :links="diffs.links" />
+    <template #fab>
+        <div class="text-base text-right text-white justify-center rounded-full hover:bg-blue-500 bg-blue-600 p-2 ">
+            <inertia-link href="/create" >新規作成</inertia-link>
+        </div>
+    </template>
 </app-layout>
 </template>
 
