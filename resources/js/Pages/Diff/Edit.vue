@@ -140,14 +140,7 @@ export default {
         }
     },
 
-    created(){
-        console.log(this);
-        
-        if(this.diff){
-            this.startListen();
-        }
-           
-    },
+    
 
     methods: {
         trySave(){
@@ -166,7 +159,7 @@ export default {
                         unlock: true,
                         client_id: this.client_id
                     }
-                    this.$inertia.put(this.route('diffs.update', this.diff.id), data);
+                    this.$inertia.put(this.route('diffs.save', this.diff.id), data);
                 }
             }
         },
@@ -241,7 +234,6 @@ export default {
                         console.log(this.client_id == e.client_id);
 
                     if(this.client_id != e.client_id){
-                        console.log(e);
                         this.form.source_text = e.diff.source_text;
                         this.form.compared_text = e.diff.compared_text;
                         this.form.title = e.diff.title;
@@ -262,7 +254,19 @@ export default {
                     this.$inertia.replace(route('diffs.show', this.diff.id));
                 }) 
             }
-    }
+    },
+    beforeDestroy(){
+        this.$echo.leave('diffs.updated.' + this.diff.id)
+    },
+
+    mounted(){
+        
+        if(this.diff){
+
+            this.startListen();
+        }
+           
+    },
     
 }
 </script>

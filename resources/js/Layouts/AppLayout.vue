@@ -1,5 +1,9 @@
 <template>
     <div class="min-h-screen bg-gray-100">
+        <div class="fixed bottom-8 right-8">
+            <slot name="fab" />
+        </div>
+        
         <nav class="bg-white border-b border-gray-100">
             <!-- Primary Navigation Menu -->
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -213,8 +217,7 @@
                     <slot></slot>
                     
                 </div>
-            </div>
-            
+            </div>    
         </main>
 
         <!-- Modal Portal -->

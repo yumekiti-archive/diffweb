@@ -1,7 +1,9 @@
 <template>
 <app-layout>
     <template #header>
-        招待一覧
+        <content-title>
+            招待一覧
+        </content-title>
     </template>
     <card-content>
         <div 
@@ -40,13 +42,15 @@
 import AppLayout from '@/Layouts/AppLayout';
 import CardContent from './../../Templetes/CardContent';
 import PaginationLinks from './../../Components/Pagination';
+import ContentTitle from '../../Components/ContentTitle';
 
 
 export default {
     components: {
         CardContent,
         PaginationLinks,
-        AppLayout
+        AppLayout,
+        ContentTitle
     },
     props: {
         invitations: {
