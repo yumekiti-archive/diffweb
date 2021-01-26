@@ -26,7 +26,7 @@ class DiffController extends Controller
         // 現在ログイン中のユーザー
         $user = Auth::user();
         // ユーザーがアクセス可能なDiffをすべて取得
-        $diffs = $user->diffs()->paginate();
+        $diffs = $user->diffs()->orderBy("updated_at", "desc")->paginate();
 
         return Inertia::render('Diff/Index', [
         'diffs' => $diffs,
