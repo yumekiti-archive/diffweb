@@ -12,6 +12,7 @@ use App\Events\DiffUpdated;
 use Session;
 use Illuminate\Support\Str;
 use App\Http\Requests\UpdateDiffRequest;
+use DB;
 
 
 class DiffController extends Controller
@@ -81,15 +82,33 @@ class DiffController extends Controller
                 return Redirect::back()->with('error', '他のユーザーによってロックされています。');
             }
             $diff->update($request->only('title', 'source_text', 'compared_text'));
-            if($request->input('unlock') == true && $diff->members_count > 1){
-                $diff->unlock($me);
-            }
-            $diff->save();
+            
             return $diff;
         });
         DiffUpdated::dispatch($diff, $request->input('client_id'));
         
+        return Redirect::back();
+    }
+
+    /**
+     * Diffを保存します。
+     */
+    public function save(UpdateDiffRequest $request, $diffId){
+        $me = Auth::user();
+        $diff = DB::transaction(function() use($request, $diffId){
+            $diff = Diff::where('id', $diffId)->lockForUpdate()->firstOrFail();
+            if($diff->isLockedByUser($me)){
+                return Redirect::back()->with('error', '他のユーザーによってロックされています。');
+            }
+            $diff->update($request->only('title', 'source_text', 'compared_text'));
+            if($request->input('unlock') == true && $diff->members_count > 1){
+                $diff->unlock($me);
+            }
+            return $diff;
+        });
+        
         return Redirect::back()->with('success', '保存に成功しました。');
+
     }
 
 
