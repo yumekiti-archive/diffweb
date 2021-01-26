@@ -2,10 +2,7 @@
 <app-layout>
     <template #header>
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Diff List
-                
-            </h2>
+            <content-title>Diff一覧</content-title>
             <div class="text-base text-right text-white justify-center rounded-full hover:bg-blue-500 bg-blue-600 p-2">
                 <inertia-link href="/create" >新規作成</inertia-link>
             </div>
@@ -23,8 +20,8 @@
             </thead>
             <tbody>
                 <tr class="text-left text-lg border-t" height="60" v-for="diff in diffs.data" :key="diff.id">
-                    <td width="800 border-r">
-                            <inertia-link :href="`/diffs/${diff.id}`">{{diff.title}}</inertia-link>
+                    <td width="800" class=" border-r">
+                            <inertia-link :href="`/diffs/${diff.id}`" class="block hover:text-gray-600">{{diff.title}}</inertia-link>
                     </td>
                     <td class="text-center border-r" width="200">{{diff.created_at | moment}}</td>
                     <td class="text-center" width="200">{{diff.updated_at | moment}}</td>
@@ -42,6 +39,7 @@ import ItemUser from '../../Components/ItemUser';
 import moment from '../../../../node_modules/moment';
 import CardContent from '../../Templetes/CardContent';
 import PaginationLinks from '../../Components/Pagination';
+import ContentTitle from '../../Components/ContentTitle';
 
 export default {
     filters: {
@@ -54,7 +52,8 @@ export default {
         AppLayout,
         ItemUser,
         CardContent,
-        PaginationLinks
+        PaginationLinks,
+        ContentTitle
     },
 }
 </script>
