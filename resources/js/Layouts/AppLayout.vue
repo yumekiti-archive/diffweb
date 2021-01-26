@@ -8,7 +8,7 @@
                         <!-- Logo -->
                         <div class="flex-shrink-0 flex items-center">
                             <inertia-link :href="route('diffs')">
-                                <jet-application-mark class="block h-9 w-auto" />
+                                <img class="block h-9 w-auto" src="/diffsync.png"/>
                             </inertia-link>
                         </div>
 
