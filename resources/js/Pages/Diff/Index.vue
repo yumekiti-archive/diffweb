@@ -81,11 +81,18 @@ export default {
                     .listen('DiffUpdated', this.onUpdate);
             });
         },
-
+        leaveListen(){
+            this.diffList.forEach((diff)=>{
+                this.$echo.leave(`diffs.updated.${diff.id}`);
+            })
+        }
         
     },
-    created() {
+    mounted() {
         this.listenDiffs();
+    },
+    beforeDestroy(){
+        //this.leaveListen();
     }
 }
 </script>
