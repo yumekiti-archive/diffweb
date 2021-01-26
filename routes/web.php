@@ -41,7 +41,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         // 他のユーザーが編集しているにも関わらずputしようとしている場合はエラーを返してください。
         Route::put('/diffs/{diffId}', [DiffController::class, 'update'])->name('diffs.update');
 
-        Route::put('/diffs/{diffId}', [DiffController::class, 'save'])->name('diffs.save');
+        Route::put('/diffs/{diffId}/save', [DiffController::class, 'save'])->name('diffs.save');
 
         // Diffを編集モードにします。
         // 先客がいればエラーを返してください。

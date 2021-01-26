@@ -94,8 +94,9 @@ class DiffController extends Controller
      * Diffを保存します。
      */
     public function save(UpdateDiffRequest $request, $diffId){
-        $me = Auth::user();
         $diff = DB::transaction(function() use($request, $diffId){
+            $me = Auth::user();
+
             $diff = Diff::where('id', $diffId)->lockForUpdate()->firstOrFail();
             if($diff->isLockedByUser($me)){
                 return Redirect::back()->with('error', '他のユーザーによってロックされています。');
@@ -106,6 +107,8 @@ class DiffController extends Controller
             }
             return $diff;
         });
+        DiffUpdated::dispatch($diff, $request->input('client_id'));
+
         
         return Redirect::back()->with('success', '保存に成功しました。');
 

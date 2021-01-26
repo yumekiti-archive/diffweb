@@ -166,7 +166,7 @@ export default {
                         unlock: true,
                         client_id: this.client_id
                     }
-                    this.$inertia.put(this.route('diffs.update', this.diff.id), data);
+                    this.$inertia.put(this.route('diffs.save', this.diff.id), data);
                 }
             }
         },
