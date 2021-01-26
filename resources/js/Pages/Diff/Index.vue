@@ -17,7 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="text-left text-lg border-t" height="60" v-for="diff in diffs.data" :key="diff.id">
+                <tr class="text-left text-lg border-t" height="60" v-for="diff in diffList" :key="diff.id">
                     <td width="800" class=" border-r">
                             <inertia-link :href="`/diffs/${diff.id}`" class="block hover:text-gray-600">{{diff.title}}</inertia-link>
                     </td>
@@ -58,5 +58,34 @@ export default {
         PaginationLinks,
         ContentTitle
     },
+    data() {
+        return {
+            diffList: this.diffs.data
+        }
+    },
+    methods: {
+        onUpdate(e){
+            let aDiff = e.diff;
+
+            this.diffList = this.diffList.map((d)=>{
+                if(d.id == aDiff.id){
+                    d.title = aDiff.title;
+                }
+                return d;
+            });
+        },
+
+        listenDiffs(){
+            this.diffList.forEach((diff)=>{
+                this.$echo.private(`diffs.updated.${diff.id}`)
+                    .listen('DiffUpdated', this.onUpdate);
+            });
+        },
+
+        
+    },
+    created() {
+        this.listenDiffs();
+    }
 }
 </script>

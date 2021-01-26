@@ -81,7 +81,7 @@ class DiffController extends Controller
                 return Redirect::back()->with('error', '他のユーザーによってロックされています。');
             }
             $diff->update($request->only('title', 'source_text', 'compared_text'));
-            if($request->input('unlock') == true){
+            if($request->input('unlock') == true && $diff->members_count > 1){
                 $diff->unlock($me);
             }
             $diff->save();
