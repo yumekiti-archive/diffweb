@@ -9,6 +9,7 @@ use App\Models\Diff;
 use App\Models\UserInvitation;
 use BenSampo\Enum\Traits\CastsEnums;
 use App\Enums\Authority;
+use BenSampo\Enum\Rules\EnumKey;
 
 class Member extends Model
 {
@@ -23,6 +24,12 @@ class Member extends Model
     ];
 
 
+    public function rules() 
+    {
+        return [
+            'authority' => new EnumKey(Authority::class)
+        ];
+    }
     /**
      * dbのカラム user_id references id on users;
      */
