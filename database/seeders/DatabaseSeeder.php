@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Diff;
 use App\Models\UserInvitation;
 use Illuminate\Support\Facades\Hash;
+use App\Enums\Authority;
 
 
 class DatabaseSeeder extends Seeder
@@ -36,16 +37,16 @@ class DatabaseSeeder extends Seeder
         User::factory()->count(100)->create();
 
         User::factory()->count(40)->create()->each(function ($u) use ($testUser){
-            $testUser->diffs()->first()->addMember($u);
+            $testUser->diffs()->first()->addMember($u, new Authority(Authority::READ_ONLY));
         });
 
         $testUser->diffs()->get()->each(function($diff) use ($lockedUser){
             User::factory()->count(40)->create()->each(function($user) use ($diff){
-                $diff->addMember($user);
+                $diff->addMember($user, new Authority(Authority::READ_ONLY));
             });
             
             for($i = 0; $i < 20; $i++){
-                $diff->invite($diff->members()->with(['user'])->inRandomOrder()->first()->user, User::factory()->create());
+                $diff->invite($diff->members()->with(['user'])->inRandomOrder()->first()->user, User::factory()->create(), new Authority(Authority::READ_AND_WRITE));
             }
             if( $diff->id %  3 === 0){
                 $diff->addMember($lockedUser);
@@ -77,7 +78,7 @@ class DatabaseSeeder extends Seeder
         Diff::factory()->count(30)->create()->each(function(Diff $diff) use ($invitationPartner){
             $user = User::factory()->create();
             $diff->addMember($user);
-            $diff->invite($user, $invitationPartner);
+            $diff->invite($user, $invitationPartner, new Authority(Authority::READ_ONLY));
             $diff->save();
         });
                 
