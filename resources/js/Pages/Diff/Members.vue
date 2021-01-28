@@ -5,27 +5,40 @@
 
         </template>
 
-        <d-card-content>
+        <div>
             <div>
-                <item-user v-for="member in members.data" :key="member.id" :user="member.user">
-                    
-                    <div>
-                        <button @click="confirmDeleteMember(member.user)">
-                            <i class="fas fa-user-times"></i>
+                <div 
+                    v-for="member in members.data" :key="member.id"
+                    class="bg-white py-4 px-6 mb-0.5"
+                >
+                    <div class="text-2xl">{{ member.user.user_name }}</div>
+                    <div class="flex justify-end">
+                        <button class="mr-4 text-gray-800 hover:text-gray-600">
+                            <template v-if="member.authority == 0">
+                                ADMIN
+                            </template>
+                            <template v-else-if="member.authority == 1">
+                                READ AND WRITE
+                            </template>
+                            <template v-else>
+                                READ ONLY
+                            </template>
+                        </button>
+                        <button class="text-gray-800 hover:text-gray-600">
                             除名
                         </button>
                     </div>
-                </item-user>
+                </div>
+            
+                
             </div>
-            <confirm-delete-member-dialog 
+        </div>
+        <confirm-delete-member-dialog 
                 :user="confirmMemberDelection.member"
                 :show="confirmMemberDelection.isShow"
                 @close="isShow = false"
                 @delete="deleteMember"
             />
-
-
-        </d-card-content>
         <pagination class="mt-4" :links="members.links" />
 
 
