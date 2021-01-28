@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Diff;
 use App\Models\Member;
+use App\Enums\Authority;
+
 
 class UserInvitation extends Model
 {
@@ -15,7 +17,12 @@ class UserInvitation extends Model
     protected $fillable = [
         'invited_partner_id',
         'author_id',
-        'diff_id'
+        'diff_id',
+        'authority'
+    ];
+
+    protected $casts = [
+        'authority' => Authority::class
     ];
 
     /**
@@ -56,7 +63,7 @@ class UserInvitation extends Model
      */
     public function accept()
     {
-        $member = $this->diff()->first()->addMember($this->invitedPartnerUser()->first());
+        $member = $this->diff()->first()->addMember($this->invitedPartnerUser()->first(), $this->authority);
         $this->delete();
         return $member;
     }

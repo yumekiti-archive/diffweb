@@ -58,6 +58,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         // リクエストパラメーターにパスワードを含めてそのパスワードを検証します。
         Route::post('/diffs/{diffId}/users/{userId}/remove', [MemberController::class, 'destroy'])->name('diffs.members.destroy');
 
+        Route::post('/diffs/{diffId}/users/{userId}/authority', [MemberController::class, 'changeAuthority'])->name('diffs.members.authority.update');
+
         // diffへの招待を一覧表示します。
         Route::get('/diffs/{diffId}/invitations', [DiffInvitationController::class, 'search'])->name('diffs.invitations');
 

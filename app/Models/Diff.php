@@ -15,6 +15,7 @@ use App\Events\DiffLocked;
 use App\Events\DiffUnlocked;
 use App\Events\DiffAddedMember;
 use App\Events\DiffRemovedMember;
+use App\Enums\Authority;
 
 class Diff extends Model
 {
@@ -34,14 +35,23 @@ class Diff extends Model
     }
 
     public function members(){
-        return $this->belongsToMany(User::class, 'members', 'diff_id', 'user_id');
+        return $this->hasMany(Member::class);
     }
 
-    public function addMember(User $user): ?Member
+    /**
+     * 該当するUserのMemberを探します。
+     */
+    public function findMemberByUser(User $user)
+    {
+        return $this->members()->where('user_id', '=', $user->id);
+    }
+
+    public function addMember(User $user, $authority = Authority::ADMIN): ?Member
     {
         $member = new Member([
             'diff_id' => $this->id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
+            'authority' => $authority
         ]);
         $result = $member->save() ? $member : null;
         if($result){
@@ -52,8 +62,8 @@ class Diff extends Model
 
     public function deleteMember(User $user): bool
     {
-        $member = Member::where('user_id', '=', $user->id)->where('diff_id', '=', $this->id)->first();
-        $result =  isset($member) && $member->delete() == 1;
+        $member = $this->findMemberByUser($user)->firstOrFail();
+        $result =  isset($member) && $member->delete();
 
         if($result){
             DiffRemovedMember::dispatch($member);
@@ -72,11 +82,11 @@ class Diff extends Model
     /**
      * 招待を発行する
      */
-    public function invite(User $user, User $partner)
+    public function invite(User $user, User $partner, $authority)
     {
-        $user = $this->members()->findOrFail($user->id);
-        $isMember = $this->members()->sharedLock()->find($partner->id) !== null;
-        if($isMember){
+        $member = $this->findMemberByUser($user)->first();
+        if(!isset($member)){
+            \Log::debug('メンバーではありません');
             throw new InvitedUserMemberedException();
         }
 
@@ -87,8 +97,9 @@ class Diff extends Model
 
         return UserInvitation::create([
             'invited_partner_id' => $partner->id,
-            'author_id' => $user->id,
-            'diff_id' => $this->id
+            'author_id' => $member->user_id,
+            'diff_id' => $this->id,
+            'authority' => $authority
         ]);
 
     }
@@ -128,7 +139,7 @@ class Diff extends Model
         }
 
         $locked = $this->locked()->first();
-        if(isset($locked) && $locked->member()->first()->user_id === $user->id){
+        if($this->canUnLock($user)){
             $this->locked()->delete();
             DiffUnlocked::dispatch($this);
             return true;
@@ -138,6 +149,13 @@ class Diff extends Model
         return false;
 
         
+    }
+
+    public function canUnLock(User $user): bool
+    {
+        $locked = $this->locked()->first();
+        return isset($locked) && ($locked->member()->first())->user_id === $user->id || $user->findMemberByDiff($this)->first()->authority->is(Authority::ADMIN);
+
     }
 
     /**
