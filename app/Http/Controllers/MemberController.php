@@ -60,4 +60,17 @@ class MemberController extends Controller
         return Redirect::back()->with('error', 'パスワードを正しく入力してください。');
 
     }
+
+    public function changeAuthority(Request $request, $diffId, $userId)
+    {
+        $diff = Auth::user()->diffs()->findOrFail($diffId);
+        Gate::authorize('diff-admin', $diff);
+        $member = $diff->findMemberByUser(User::findOrFail($userId));
+        $member->authority = $request->input('authority');
+        if($member->save()){
+            return Redirect::back()->with('success', '権限の変更に成功しました。');
+        }else{
+            return Redirect::back()->with('error', '権限の変更に失敗しました。');
+        }
+    }
 }
