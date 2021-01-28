@@ -20,10 +20,10 @@ class MemberController extends Controller
     public function index($diffId)
     {
         $diff = Diff::findOrFail($diffId);
-        $users = $diff->members()->paginate();
+        $members = $diff->members()->with(['user'])->paginate();
 
         return Inertia::render('Diff/Members', [
-            'users' => $users,
+            'members' => $members,
             'diff' => $diff,
         ]);
 
@@ -37,13 +37,18 @@ class MemberController extends Controller
         $diff = Diff::findOrFail($diffId);
         $me = Auth::user();
         if(Hash::check($request->input('password'), $me->password)){
-            $user = $diff->members()->findOrFail($userId);
-            $diff->deleteMember($user);
-            if($user->id == $me->id){
-                return Redirect::route('diffs')->with('success', 'メンバーから抜けました。');
+            $user = User::findOrFail($userId);
+            $result = $diff->deleteMember($user);
+            if($result){
+                if($user->id == $me->id){
+                    return Redirect::route('diffs')->with('success', 'メンバーから抜けました。');
+                }
+                
+                return Redirect::back()->with('success', 'メンバーを除外しました。');
+            }else{
+                return Redirect::back()->with('error', 'メンバーの除外に失敗しました。');
             }
             
-            return Redirect::back()->with('success', 'メンバーを除外しました。');
 
         }
         return Redirect::back()->with('error', 'パスワードを正しく入力してください。');

@@ -23,7 +23,7 @@ class CheckDiffMember
 
             $user = Auth::user();
             $diff = Diff::findOrFail($request->route()->parameter('diffId'));
-            if( ! $diff->members()->find($user->id)){
+            if( ! $diff->findMemberByUser($user)->first()){
                 // diffへアクセス権がない場合とりあえず401を返す
                 \abort(401);
             }

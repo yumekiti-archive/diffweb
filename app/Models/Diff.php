@@ -34,7 +34,7 @@ class Diff extends Model
     }
 
     public function members(){
-        return $this->hasMany(Member::class);
+        return $this->hasMany(Member::class, 'diff_id');
     }
 
     /**
@@ -60,8 +60,8 @@ class Diff extends Model
 
     public function deleteMember(User $user): bool
     {
-        $member = Member::where('user_id', '=', $user->id)->where('diff_id', '=', $this->id)->first();
-        $result =  isset($member) && $member->delete() == 1;
+        $member = $this->findMemberByUser($user)->firstOrFail();
+        $result =  isset($member) && $member->delete();
 
         if($result){
             DiffRemovedMember::dispatch($member);

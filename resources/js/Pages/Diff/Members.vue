@@ -7,10 +7,10 @@
 
         <d-card-content>
             <div>
-                <item-user v-for="member in users.data" :key="member.id" :user="member">
+                <item-user v-for="member in members.data" :key="member.id" :user="member.user">
                     
                     <div>
-                        <button @click="confirmDeleteMember(member)">
+                        <button @click="confirmDeleteMember(member.user)">
                             <i class="fas fa-user-times"></i>
                             除名
                         </button>
@@ -26,7 +26,7 @@
 
 
         </d-card-content>
-        <pagination class="mt-4" :links="users.links" />
+        <pagination class="mt-4" :links="members.links" />
 
 
     </app-layout>
@@ -45,7 +45,7 @@ import ConfirmDeleteMemberDialog from './ConfirmDeleteMemberDialog';
 
 export default {
     props:{
-        users: Object,
+        members: Object,
         diff: Object
     },
     data(){
