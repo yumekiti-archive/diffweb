@@ -79,14 +79,14 @@ class DiffInvitationController extends Controller
      * @param $diffId 招待するDiff
      * @param $userId 招待するユーザー
      */
-    public function create($diffId, $userId)
+    public function create(Request $request, $diffId, $userId)
     {
         $me = Auth::user();
         $diff = $me->diffs()->findOrFail($diffId);
         $user = User::findOrFail($userId);
         \DB::beginTransaction();
         try{
-            $diff->invite($me, $user);
+            $diff->invite($me, $user, $request->input('authority'));
         }catch(\Exception $e){
             \DB::rollback();
             \Log::debug($e);

@@ -30,7 +30,7 @@ class DiffRemovedMemberListener
         $diff = $event->member->diff()->first();
         $count = $diff->members()->count();
         if($count == 1){
-            $diff->lock($diff->members()->first());
+            $diff->lock($diff->members()->first()->user()->first());
         }
     }
 }

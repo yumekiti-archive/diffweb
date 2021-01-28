@@ -57,7 +57,7 @@
                 </p>
                 
                 <select v-model="invite.selected">
-                    <option v-for="select in invite.selection" :key="select.id">{{ select.name }}</option>
+                    <option v-for="select in invite.selection" :key="select.id" :value="select.value">{{ select.name }}</option>
                 </select>
                 
             </template>
@@ -113,9 +113,9 @@ export default {
     },
     data(){
         let selection = [
-            {id: 0, name: '管理者'},
-            {id: 1, name: '読み書き可能'},
-            {id: 2, name:'読み込みのみ'}
+            {id: 0, name: '管理者', value:0},
+            {id: 1, name: '読み書き可能', value:1},
+            {id: 2, name:'読み込みのみ', value:2}
         ];
         return {
             deleteInvitation: {
@@ -126,7 +126,7 @@ export default {
                 user: null,
                 isShow: false,
                 selection,
-                selected: selection[0]
+                selected: selection[2].value
             },
             memberForm: {
                 user: null,
@@ -183,7 +183,7 @@ export default {
 
         doInvite(){
             this.invite.isShow = false;
-            this.$inertia.post(route('diffs.invitations.create', { 'diffId' : this.diff.id, userId: this.invite.user.id}), { });
+            this.$inertia.post(route('diffs.invitations.create', { 'diffId' : this.diff.id, userId: this.invite.user.id, authority: this.invite.selected}), { });
 
         }
 

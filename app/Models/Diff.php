@@ -46,12 +46,12 @@ class Diff extends Model
         return $this->members()->where('user_id', '=', $user->id);
     }
 
-    public function addMember(User $user, int $authority = Authority::ADMIN): ?Member
+    public function addMember(User $user, $authority = Authority::ADMIN): ?Member
     {
         $member = new Member([
             'diff_id' => $this->id,
             'user_id' => $user->id,
-            'authority' => new Authority($authority)
+            'authority' => $authority
         ]);
         $result = $member->save() ? $member : null;
         if($result){
@@ -82,7 +82,7 @@ class Diff extends Model
     /**
      * 招待を発行する
      */
-    public function invite(User $user, User $partner)
+    public function invite(User $user, User $partner, $authority)
     {
         $member = $this->findMemberByUser($user)->first();
         if(!isset($member)){
@@ -98,7 +98,8 @@ class Diff extends Model
         return UserInvitation::create([
             'invited_partner_id' => $partner->id,
             'author_id' => $member->user_id,
-            'diff_id' => $this->id
+            'diff_id' => $this->id,
+            'authority' => $authority
         ]);
 
     }
