@@ -42,18 +42,18 @@
             @delete="deleteMember"
         />
          
-        <jet-modal 
+        <jet-dialog-modal 
             :show="invite.isShow"
             @close="invite.isShow = false"
             
         >
-            <template name="title">
+            <template #title>
                 招待作成
             </template>
             
-            <template name="content">
+            <template #content>
                 <p v-if="invite.user">
-                    ユーザー{{invite.user_name}}を招待します。
+                    ユーザー{{invite.user.user_name}}を招待します。
                 </p>
                 
                 <select v-model="invite.selected">
@@ -61,11 +61,11 @@
                 </select>
                 
             </template>
-            <template name="footer">
+            <template #footer>
                 <button @click="invite.isShow = false">キャンセル</button>
                 <button @click="doInvite">招待する</button>
             </template>
-        </jet-modal>
+        </jet-dialog-modal>
         
     </app-layout>
 </template>
@@ -78,7 +78,7 @@ import Pagination from '../../Components/Pagination';
 import SimpleDialog from '../../Components/SimpleDialog';
 import ConfirmDeleteMemberDialog from './ConfirmDeleteMemberDialog';
 import throttle from 'lodash/throttle'
-import JetModal from '../../Jetstream/Modal';
+import JetDialogModal from '../../Jetstream/DialogModal';
 
 
 export default {
@@ -90,7 +90,7 @@ export default {
         Pagination,
         SimpleDialog,
         ConfirmDeleteMemberDialog,
-        JetModal
+        JetDialogModal
 
     },
     props: {
