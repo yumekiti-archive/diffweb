@@ -37,6 +37,14 @@ class Diff extends Model
         return $this->hasMany(Member::class);
     }
 
+    /**
+     * 該当するUserのMemberを探します。
+     */
+    public function findMemberByUser(User $user)
+    {
+        return $this->members()->where('user_id', '=', $user->id);
+    }
+
     public function addMember(User $user): ?Member
     {
         $member = new Member([
