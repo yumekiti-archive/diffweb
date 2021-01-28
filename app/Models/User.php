@@ -81,6 +81,11 @@ class User extends Authenticatable
         return $this->hasMany(Member::class);
     }
 
+    public function findMemberByDiff(Diff $diff)
+    {
+        return $this->members()->where('diff_id', '=', $diff->id);
+    }
+
     /**
      * 自分への招待
      */
