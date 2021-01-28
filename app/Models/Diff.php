@@ -46,12 +46,12 @@ class Diff extends Model
         return $this->members()->where('user_id', '=', $user->id);
     }
 
-    public function addMember(User $user, Authority $authority = Authority::ADMIN): ?Member
+    public function addMember(User $user, int $authority = Authority::ADMIN): ?Member
     {
         $member = new Member([
             'diff_id' => $this->id,
             'user_id' => $user->id,
-            'authority' => $authority
+            'authority' => new Authority($authority)
         ]);
         $result = $member->save() ? $member : null;
         if($result){

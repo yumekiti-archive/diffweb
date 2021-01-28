@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\Authority;
 
 class CreateUserInvitationsTable extends Migration
 {
@@ -35,6 +36,9 @@ class CreateUserInvitationsTable extends Migration
 
             // 同じメンバーが同じユーザーに対して複数回招待できないようにする。
             $table->unique(['author_id', 'invited_partner_id', 'diff_id']);
+
+            $table->string('authority')->default(Authority::ADMIN);
+
         });
     }
 
