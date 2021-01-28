@@ -34,7 +34,7 @@ class Diff extends Model
     }
 
     public function members(){
-        return $this->belongsToMany(User::class, 'members', 'diff_id', 'user_id');
+        return $this->hasMany(Member::class);
     }
 
     public function addMember(User $user): ?Member
