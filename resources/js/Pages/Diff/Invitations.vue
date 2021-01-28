@@ -1,7 +1,7 @@
 <template>
     <app-layout>
         <template #header>
-            <diff-nav :diff="diff"></diff-nav>
+            <diff-nav :diff="diff" :member="member" v-if="member"></diff-nav>
 
         </template>
         <div class="p-2 mb-4 bg-white rounded-lg">
@@ -87,6 +87,10 @@ export default {
             type: String,
             required: false
         },
+        member: {
+            type: Object,
+            required:false
+        }
     },
     data(){
         return {

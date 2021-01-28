@@ -1,7 +1,7 @@
 <template>
     <app-layout>
         <template #header>
-            <d-diff-nav :diff="diff" />
+            <d-diff-nav :diff="diff" :member="member" v-if="member"/>
 
         </template>
 
@@ -46,7 +46,8 @@ import ConfirmDeleteMemberDialog from './ConfirmDeleteMemberDialog';
 export default {
     props:{
         members: Object,
-        diff: Object
+        diff: Object,
+        member: Object
     },
     data(){
         return {

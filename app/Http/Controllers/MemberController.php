@@ -25,6 +25,7 @@ class MemberController extends Controller
         return Inertia::render('Diff/Members', [
             'members' => $members,
             'diff' => $diff,
+            'member' => $diff->findMemberByUser(Auth::user())->firstOrFail()
         ]);
 
     }

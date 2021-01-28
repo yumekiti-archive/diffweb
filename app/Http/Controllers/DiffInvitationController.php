@@ -22,7 +22,8 @@ class DiffInvitationController extends Controller
         $invitations = $diff->invitations()->with(['invitedPartnerUser', 'author'])->paginate();
         return Inertia::render('Diff/Invitations', [
             'invitations' => $invitations,
-            'diff' => $diff
+            'diff' => $diff,
+            'member' => $diff->findMemberByUser(Auth::user())->firstOrFail()
         ]);
     }
 
@@ -57,7 +58,8 @@ class DiffInvitationController extends Controller
         return Inertia::render('Diff/Invitations', [
             'users' => $page,
             'diff' => $diff,
-            'user_name' => $request->input('user_name')
+            'user_name' => $request->input('user_name'),
+            'member' => $diff->findMemberByUser(Auth::user())->firstOrFail()
         ]);
     }
 
@@ -109,7 +111,8 @@ class DiffInvitationController extends Controller
         return Inertia::render('Invitation/Edit',[
             'diff' => $diff,
             'users' => $users,
-            'user_name_search' => $request->input('user_name_search')
+            'user_name_search' => $request->input('user_name_search'),
+            'member' => $diff->findMemberByUser(Auth::user())->firstOrFail()
         ]);
     }
 }

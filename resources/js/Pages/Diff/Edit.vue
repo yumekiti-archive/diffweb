@@ -13,7 +13,7 @@
                 </span>
             </h2>
             -->
-            <d-nav-diff :diff="diff" v-if="diff" />
+            <d-nav-diff :diff="diff" :member="member" v-if="diff" />
 
         </template>
         <div>
@@ -47,7 +47,7 @@
                         {{ diff.locked.user.user_name }}によってロックされています。
                     </div>
                 </div>
-                <div class="mt-4">
+                <div class="mt-4" v-if="member.authority <= 1">
                         
                         <div class="flex float-right mb-5">
                             <button v-if="diff && diff.locked && diff.locked.user.id === me.id && !alone" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
@@ -89,6 +89,10 @@ export default {
         },
         client_id: {
             type: String,
+            required: false
+        },
+        member: {
+            type: Object,
             required: false
         }
     },

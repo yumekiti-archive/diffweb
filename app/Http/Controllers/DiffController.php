@@ -40,9 +40,10 @@ class DiffController extends Controller
     public function show($diffId)
     {
         $diff = Diff::with('locked.user')->findOrFail($diffId);
+        $member = $diff->findMemberByUser(Auth::user())->first();
 
         
-        return Inertia::render('Diff/Edit', [ 'diff' => $diff, 'me' => Auth::user(), 'client_id' => Str::uuid()]);
+        return Inertia::render('Diff/Edit', [ 'diff' => $diff, 'me' => Auth::user(), 'client_id' => Str::uuid(), 'member' => $member]);
 
     }
 
