@@ -11,6 +11,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Diff;
 use App\Models\UserInvitation;
+use App\Models\Member;
 
 class User extends Authenticatable
 {
@@ -70,6 +71,14 @@ class User extends Authenticatable
      */
     public function diffs(){
         return $this->belongsToMany(Diff::class, 'members', 'user_id', 'diff_id');
+    }
+
+    /**
+     * 自身のメンバーを取得する
+     */
+    public function members()
+    {
+        return $this->hasMany(Member::class);
     }
 
     /**
