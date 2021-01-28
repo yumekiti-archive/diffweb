@@ -41,14 +41,31 @@
             @close="member.isShow = false"
             @delete="deleteMember"
         />
-         <simple-dialog 
-            v-if="invite.user"
-            @close="invite.isShow = false"
+         
+        <jet-modal 
             :show="invite.isShow"
-            :text="invite.user.user_name + 'への招待をしますか？'"
-            title="招待の作成の確認"
-            @ok="doInvite(targetUser)"
-        />
+            @close="invite.isShow = false"
+            
+        >
+            <template name="title">
+                招待作成
+            </template>
+            
+            <template name="content">
+                <p v-if="invite.user">
+                    ユーザー{{invite.user_name}}を招待します。
+                </p>
+                
+                <select v-model="invite.selected">
+                    <option v-for="select in invite.selection" :key="select.id">{{ select.name }}</option>
+                </select>
+                
+            </template>
+            <template name="footer">
+                <button @click="invite.isShow = false">キャンセル</button>
+                <button @click="doInvite">招待する</button>
+            </template>
+        </jet-modal>
         
     </app-layout>
 </template>
@@ -61,6 +78,7 @@ import Pagination from '../../Components/Pagination';
 import SimpleDialog from '../../Components/SimpleDialog';
 import ConfirmDeleteMemberDialog from './ConfirmDeleteMemberDialog';
 import throttle from 'lodash/throttle'
+import JetModal from '../../Jetstream/Modal';
 
 
 export default {
@@ -71,7 +89,8 @@ export default {
         ItemUser,
         Pagination,
         SimpleDialog,
-        ConfirmDeleteMemberDialog
+        ConfirmDeleteMemberDialog,
+        JetModal
 
     },
     props: {
@@ -93,6 +112,11 @@ export default {
         }
     },
     data(){
+        let selection = [
+            {id: 0, name: '管理者'},
+            {id: 1, name: '読み書き可能'},
+            {id: 2, name:'読み込みのみ'}
+        ];
         return {
             deleteInvitation: {
                 user: null,
@@ -100,9 +124,11 @@ export default {
             },
             invite: {
                 user: null,
-                isShow: false
+                isShow: false,
+                selection,
+                selected: selection[0]
             },
-            member: {
+            memberForm: {
                 user: null,
                 isShow: false,
 
@@ -135,7 +161,7 @@ export default {
         },
 
         deleteMember(res){
-            this.member.isShow = false;
+            this.memberForm.isShow = false;
             this.$inertia.post(route('diffs.members.destroy', {
                 'diffId': this.diff.id,
                 'userId': res.user.id
@@ -145,17 +171,17 @@ export default {
             });
         },
         confirmDeleteMember(user){
-            this.member.user = user;
-            this.member.isShow = true;
+            this.memberForm.user = user;
+            this.memberForm.isShow = true;
         },
 
         confirmInvite(user){
             console.log('confirm invite');
-            this.invite.isShow = true;
             this.invite.user = user;
+            this.invite.isShow = true;
         },
 
-        doInvite(user){
+        doInvite(){
             this.invite.isShow = false;
             this.$inertia.post(route('diffs.invitations.create', { 'diffId' : this.diff.id, userId: this.invite.user.id}), { });
 
