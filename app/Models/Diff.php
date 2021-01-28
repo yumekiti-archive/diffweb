@@ -139,7 +139,7 @@ class Diff extends Model
         }
 
         $locked = $this->locked()->first();
-        if(isset($locked) && $locked->member()->first()->user_id === $user->id){
+        if(isset($locked) && (($member = $locked->member()->first())->user_id === $user->id || $member->authority == Authority::ADMIN)){
             $this->locked()->delete();
             DiffUnlocked::dispatch($this);
             return true;
