@@ -139,7 +139,7 @@ class Diff extends Model
         }
 
         $locked = $this->locked()->first();
-        if(isset($locked) && (($member = $locked->member()->first())->user_id === $user->id || $member->authority == Authority::ADMIN)){
+        if($this->canUnLock($user)){
             $this->locked()->delete();
             DiffUnlocked::dispatch($this);
             return true;
@@ -149,6 +149,13 @@ class Diff extends Model
         return false;
 
         
+    }
+
+    public function canUnLock(User $user): bool
+    {
+        $locked = $this->locked()->first();
+        return isset($locked) && ($locked->member()->first())->user_id === $user->id || $user->findMemberByDiff($this)->first()->authority->is(Authority::ADMIN);
+
     }
 
     /**

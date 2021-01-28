@@ -82,7 +82,7 @@ class DiffController extends Controller
             $diff = Diff::where('id', $diffId)->lockForUpdate()->firstOrFail();
             Gate::authorize('diff-read-and-write', $diff);
 
-            if($diff->isLockedByUser($me)){
+            if(!$diff->canUnLock($me)){
                 return Redirect::back()->with('error', '他のユーザーによってロックされています。');
             }
             $diff->update($request->only('title', 'source_text', 'compared_text'));

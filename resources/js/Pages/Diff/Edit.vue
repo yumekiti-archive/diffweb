@@ -50,7 +50,7 @@
                 <div class="mt-4" v-if="member.authority <= 1">
                         
                         <div class="flex float-right mb-5">
-                            <button v-if="diff && diff.locked && diff.locked.user.id === me.id && !alone" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
+                            <button v-if="canUnLock" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
                             <button 
                                 v-else-if="diff !== null && !alone" 
                                 type="button" 
@@ -141,6 +141,9 @@ export default {
         },
         lockedByMe(){
             return this.diff != null && this.diff.locked != null && this.diff.locked.user.id === this.me.id;
+        },
+        canUnLock(){
+            return this.diff && this.diff.locked && (this.diff.locked.user.id === this.me.id || this.member.authority == 0 ||  !this.alone) 
         }
     },
 
@@ -192,7 +195,7 @@ export default {
             }
         },
         unlock(){
-            if(this.diff != null && this.diff.locked != null && this.diff.locked.user.id == this.me.id){
+            if(this.canUnLock){
                 this.$inertia.delete(this.route('diffs.unlock', this.diff.id), {
                     onFinish(){
                         console.log('ロック解除完了');
