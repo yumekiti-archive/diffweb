@@ -13,6 +13,7 @@ use Session;
 use Illuminate\Support\Str;
 use App\Http\Requests\UpdateDiffRequest;
 use DB;
+use Gate;
 
 
 class DiffController extends Controller
@@ -79,10 +80,13 @@ class DiffController extends Controller
         $diff = \DB::transaction(function () use ($request, $diffId){
             $me = Auth::user();
             $diff = Diff::where('id', $diffId)->lockForUpdate()->firstOrFail();
+            Gate::authorize('diff-read-and-write', $diff);
+
             if($diff->isLockedByUser($me)){
                 return Redirect::back()->with('error', '他のユーザーによってロックされています。');
             }
             $diff->update($request->only('title', 'source_text', 'compared_text'));
+
             
             return $diff;
         });
@@ -99,6 +103,8 @@ class DiffController extends Controller
             $me = Auth::user();
 
             $diff = Diff::where('id', $diffId)->lockForUpdate()->firstOrFail();
+            Gate::authorize('diff-read-and-write', $diff);
+
             if($diff->isLockedByUser($me)){
                 return Redirect::back()->with('error', '他のユーザーによってロックされています。');
             }
@@ -123,8 +129,11 @@ class DiffController extends Controller
     {
         
         $user = Auth::user();
+
         return \DB::transaction(function() use (&$user, $diffId){
             $diff = $user->diffs()->lockForUpdate()->findOrFail($diffId);
+            Gate::authorize('diff-read-and-write', $diff);
+
             $result = $diff->lock($user);
             if($result){
                 return Redirect::back()->with('success', 'ロックしました。');
@@ -143,6 +152,7 @@ class DiffController extends Controller
         return \DB::transaction(function() use ($diffId){
             $user = Auth::user();
             $diff = $user->diffs()->lockForUpdate()->findOrFail($diffId);
+            Gate::authorize('diff-read-and-write', $diff);
             if($diff->unlock($user)){
                 return Redirect::back()->with('success', 'ロックを解除しました。');
             }else{

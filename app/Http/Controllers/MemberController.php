@@ -9,7 +9,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-
+use Gate;
 
 class MemberController extends Controller
 {
@@ -19,7 +19,10 @@ class MemberController extends Controller
      */
     public function index($diffId)
     {
+
         $diff = Diff::findOrFail($diffId);
+        Gate::authorize('diff-admin', $diff);
+
         $members = $diff->members()->with(['user'])->paginate();
 
         return Inertia::render('Diff/Members', [
@@ -36,6 +39,8 @@ class MemberController extends Controller
     public function destroy(Request $request, $diffId, $userId)
     {
         $diff = Diff::findOrFail($diffId);
+        Gate::authorize('diff-admin', $diff);
+
         $me = Auth::user();
         if(Hash::check($request->input('password'), $me->password)){
             $user = User::findOrFail($userId);

@@ -9,6 +9,7 @@ use App\Models\Diff;
 use App\Models\UserInvitation;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Gate;
 
 class DiffInvitationController extends Controller
 {
@@ -18,6 +19,7 @@ class DiffInvitationController extends Controller
      */
     public function invitations($diffId)
     {
+        Gate::authorize('diff-admin');
         $diff = Auth::user()->diffs()->findOrFail($diffId);
         $invitations = $diff->invitations()->with(['invitedPartnerUser', 'author'])->paginate();
         return Inertia::render('Diff/Invitations', [
@@ -30,6 +32,7 @@ class DiffInvitationController extends Controller
     public function search(Request $request, $diffId)
     {
         $diff = Auth::user()->diffs()->findOrFail($diffId);
+        Gate::authorize('diff-admin', $diff);
         $columns = [
             'is_member' => function($query) use ($diff){
                 $query->selectRaw('count(*)')
@@ -70,6 +73,7 @@ class DiffInvitationController extends Controller
     {
         $me = Auth::user();
         $diff = $me->diffs()->findOrFail($diffId);
+        Gate::authorize('diff-admin', $diff);
         $diff->invitations()->lockForUpdate()->where('invited_partner_id','=', $userId)->delete();
         return Redirect::back()->with('success', '招待を取り下げました');
     }
@@ -83,6 +87,7 @@ class DiffInvitationController extends Controller
     {
         $me = Auth::user();
         $diff = $me->diffs()->findOrFail($diffId);
+        Gate::authorize('diff-admin', $diff);
         $user = User::findOrFail($userId);
         \DB::beginTransaction();
         try{
@@ -102,6 +107,7 @@ class DiffInvitationController extends Controller
     public function new(Request $request, $diffId)
     {
         $diff = Auth::user()->diffs()->findOrFail($diffId);
+        Gate::authorize('diff-admin', $diff);
         $users = User::notDiffMembers($diff)->notDiffInvitedUsers($diff)
             ->when($request->input('user_name_search') ?? null, function($query, $userNameSearch){
                 $userNameSearch = str_replace('%', '\%', $userNameSearch);
