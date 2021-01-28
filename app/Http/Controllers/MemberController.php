@@ -65,7 +65,7 @@ class MemberController extends Controller
     {
         $diff = Auth::user()->diffs()->findOrFail($diffId);
         Gate::authorize('diff-admin', $diff);
-        $member = $diff->findMemberByUser(User::findOrFail($userId));
+        $member = $diff->findMemberByUser(User::findOrFail($userId))->firstOrFail();
         $member->authority = $request->input('authority');
         if($member->save()){
             return Redirect::back()->with('success', '権限の変更に成功しました。');

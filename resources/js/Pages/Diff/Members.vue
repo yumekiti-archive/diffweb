@@ -46,12 +46,11 @@
                     <authority-selection v-model="authorityDialog.selected" />
                     へ変更します。
 
-
                 </p>
             </template>
             <template #footer>
                 <button @click="authorityDialog.show = false" class="mr-4">キャンセル</button>
-                <button>変更する</button>
+                <button @click="changeAuthority">変更する</button>
             </template>
         </jet-dialog-modal>
         <pagination class="mt-4" :links="members.links" />
@@ -146,7 +145,14 @@ export default {
             this.authorityDialog.selected = member.authority;
         },
         changeAuthority() {
-            
+            this.$inertia.post(route('diffs.members.authority.update', {
+                    'diffId': this.diff.id,
+                    'userId': this.authorityDialog.member.user_id
+            }),
+            {
+                'authority': this.authorityDialog.selected
+            });
+            this.authorityDialog.show = false;
         }
     }
 }
