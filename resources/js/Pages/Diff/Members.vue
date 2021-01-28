@@ -14,16 +14,9 @@
                 >
                     <div class="text-lg">{{ member.user.user_name }}</div>
                     <div class="flex justify-end">
-                        <button class="mr-4 text-gray-800 hover:text-gray-600">
-                            <template v-if="member.authority == 0">
-                                ADMIN
-                            </template>
-                            <template v-else-if="member.authority == 1">
-                                READ AND WRITE
-                            </template>
-                            <template v-else>
-                                READ ONLY
-                            </template>
+                        <button class="mr-4 text-gray-800 hover:text-gray-600" @click="showAuthorityDialog(member)">
+                            {{ selection[member.authority].name }}
+                            
                         </button>
                         <button class="text-gray-800 hover:text-gray-600" @click="confirmDeleteMember(member.user)">
                             除名
@@ -40,6 +33,27 @@
                 @close="isShow = false"
                 @delete="deleteMember"
             />
+        <jet-dialog-modal
+            :show="authorityDialog.show"
+            @close="authorityDialog.show = false"
+        >
+            <template #title>
+                権限の変更の確認
+            </template>
+            <template #content>
+                <p v-if="authorityDialog.member">
+                    ユーザー{{ authorityDialog.member.user.user_name}}の権限を{{ selection[authorityDialog.before].name }}から<br>
+                    <authority-selection v-model="authorityDialog.selected" />
+                    へ変更します。
+
+
+                </p>
+            </template>
+            <template #footer>
+                <button @click="authorityDialog.show = false" class="mr-4">キャンセル</button>
+                <button>変更する</button>
+            </template>
+        </jet-dialog-modal>
         <pagination class="mt-4" :links="members.links" />
 
 
@@ -56,6 +70,7 @@ import JetInput from '@/Jetstream/Input';
 import ItemUser from '../../Components/ItemUser';
 import Pagination from '../../Components/Pagination';
 import ConfirmDeleteMemberDialog from './ConfirmDeleteMemberDialog';
+import AuthoritySelection, { selection } from '../../Components/AuthoritySelection';
 
 export default {
     props:{
@@ -70,9 +85,16 @@ export default {
                 member: null
 
             },
+            authorityDialog: {
+                show: false,
+                member: null,
+                before: null,
+                selected: null
+            },
+
             form: {
                 password: ''
-            }
+            },
         }
     },
     components: {
@@ -85,9 +107,16 @@ export default {
         JetInput,
         ItemUser,
         Pagination,
-        ConfirmDeleteMemberDialog
+        ConfirmDeleteMemberDialog,
+        AuthoritySelection
 
     },
+    computed: {
+        selection() {
+            return selection();
+        }
+    },
+
     methods: {
         deleteMember(res){
             this.confirmMemberDelection.isShow = false;
@@ -108,6 +137,16 @@ export default {
         cancelMemberDelection(){
             this.confirmMemberDelection.isShow =false;
             this.form.password = '';
+        },
+
+        showAuthorityDialog(member) {
+            this.authorityDialog.member = member;
+            this.authorityDialog.show = true;
+            this.authorityDialog.before = member.authority;
+            this.authorityDialog.selected = member.authority;
+        },
+        changeAuthority() {
+            
         }
     }
 }
