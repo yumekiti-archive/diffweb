@@ -47,10 +47,10 @@
                         {{ diff.locked.user.user_name }}によってロックされています。
                     </div>
                 </div>
-                <div class="mt-4" v-if="member.authority <= 1">
+                <div class="mt-4" v-if="member && member.authority <= 1 || diff == null">
                         
                         <div class="flex float-right mb-5">
-                            <button v-if="canUnLock" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
+                            <button v-if="canUnLock && !alone" type="button" class="bg-gray-600 text-white rounded hover:bg-gray-500 px-4 py-2 focus:outline-none mr-2" @click="unlock">ロック解除</button>
                             <button 
                                 v-else-if="diff !== null && !alone" 
                                 type="button" 
@@ -263,7 +263,9 @@ export default {
             }
     },
     beforeDestroy(){
-        this.$echo.leave('diffs.updated.' + this.diff.id)
+        if(this.diff != null){
+            this.$echo.leave('diffs.updated.' + this.diff.id)
+        }
     },
 
     mounted(){
