@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\Authority;
+
 
 class CreateMembersTable extends Migration
 {
@@ -24,6 +26,9 @@ class CreateMembersTable extends Migration
                 ->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('diff_id')->references('id')->on('diffs')
                 ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->string('authority')->default(Authority::ADMIN);
+
         });
     }
 

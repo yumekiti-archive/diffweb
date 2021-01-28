@@ -11,7 +11,8 @@ use BenSampo\Enum\Enum;
  */
 final class Authority extends Enum
 {
-    const ADMIN = 999;
-    const READ_AND_WRITE = 500;
-    const READ_ONLY = 100;
+    const ADMIN = 0;
+    const READ_AND_WRITE = 1;
+    const READ_ONLY = 2;
+
 }

@@ -15,6 +15,7 @@ use App\Events\DiffLocked;
 use App\Events\DiffUnlocked;
 use App\Events\DiffAddedMember;
 use App\Events\DiffRemovedMember;
+use App\Enums\Authority;
 
 class Diff extends Model
 {
@@ -45,11 +46,12 @@ class Diff extends Model
         return $this->members()->where('user_id', '=', $user->id);
     }
 
-    public function addMember(User $user): ?Member
+    public function addMember(User $user, Authority $authority = Authority::ADMIN): ?Member
     {
         $member = new Member([
             'diff_id' => $this->id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
+            'authority' => $authority
         ]);
         $result = $member->save() ? $member : null;
         if($result){

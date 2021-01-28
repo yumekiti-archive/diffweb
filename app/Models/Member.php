@@ -7,14 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Diff;
 use App\Models\UserInvitation;
+use BenSampo\Enum\Traits\CastsEnums;
+use App\Enums\Authority;
 
 class Member extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'diff_id'
+        'user_id', 'diff_id', 'authority'
     ];
+
+    protected $casts = [
+        'authority' => Authority::class
+    ];
+
+
     /**
      * dbのカラム user_id references id on users;
      */
