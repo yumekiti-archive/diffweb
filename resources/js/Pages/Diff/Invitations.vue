@@ -56,9 +56,7 @@
                     ユーザー{{invite.user.user_name}}を招待します。
                 </p>
                 
-                <select v-model="invite.selected">
-                    <option v-for="select in invite.selection" :key="select.id" :value="select.value">{{ select.name }}</option>
-                </select>
+                <authority-selection v-model="invite.selected" />
                 
             </template>
             <template #footer>
@@ -79,6 +77,7 @@ import SimpleDialog from '../../Components/SimpleDialog';
 import ConfirmDeleteMemberDialog from './ConfirmDeleteMemberDialog';
 import throttle from 'lodash/throttle'
 import JetDialogModal from '../../Jetstream/DialogModal';
+import AuthoritySelection from '../../Components/AuthoritySelection';
 
 
 export default {
@@ -90,7 +89,8 @@ export default {
         Pagination,
         SimpleDialog,
         ConfirmDeleteMemberDialog,
-        JetDialogModal
+        JetDialogModal,
+        AuthoritySelection
 
     },
     props: {

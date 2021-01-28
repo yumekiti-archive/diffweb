@@ -8,10 +8,11 @@
         <div>
             <div>
                 <div 
-                    v-for="member in members.data" :key="member.id"
+                    v-for="(member,index) in members.data" :key="member.id"
                     class="bg-white py-4 px-6 mb-0.5"
+                    :class="{ 'rounded-t': index == 0, 'rounded-b': index == members.data.length - 1}"
                 >
-                    <div class="text-2xl">{{ member.user.user_name }}</div>
+                    <div class="text-lg">{{ member.user.user_name }}</div>
                     <div class="flex justify-end">
                         <button class="mr-4 text-gray-800 hover:text-gray-600">
                             <template v-if="member.authority == 0">
@@ -24,7 +25,7 @@
                                 READ ONLY
                             </template>
                         </button>
-                        <button class="text-gray-800 hover:text-gray-600">
+                        <button class="text-gray-800 hover:text-gray-600" @click="confirmDeleteMember(member.user)">
                             除名
                         </button>
                     </div>
