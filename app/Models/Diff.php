@@ -34,7 +34,7 @@ class Diff extends Model
     }
 
     public function members(){
-        return $this->hasMany(Member::class, 'diff_id');
+        return $this->hasMany(Member::class);
     }
 
     /**
@@ -82,9 +82,9 @@ class Diff extends Model
      */
     public function invite(User $user, User $partner)
     {
-        $user = $this->members()->findOrFail($user->id);
-        $isMember = $this->members()->sharedLock()->find($partner->id) !== null;
-        if($isMember){
+        $member = $this->findMemberByUser($user)->first();
+        if(!isset($member)){
+            \Log::debug('メンバーではありません');
             throw new InvitedUserMemberedException();
         }
 
@@ -95,7 +95,7 @@ class Diff extends Model
 
         return UserInvitation::create([
             'invited_partner_id' => $partner->id,
-            'author_id' => $user->id,
+            'author_id' => $member->user_id,
             'diff_id' => $this->id
         ]);
 

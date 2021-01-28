@@ -87,6 +87,7 @@ class DiffInvitationController extends Controller
             $diff->invite($me, $user);
         }catch(\Exception $e){
             \DB::rollback();
+            \Log::debug($e);
             return Redirect::back()->with('error', '無効な招待です。');
         }
     
