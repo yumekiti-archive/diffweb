@@ -6,11 +6,14 @@
     </div>
 </template>
 <script>
-let selection = [
+
+export function selection() {
+    return [
             {id: 0, name: '管理者', value:0},
             {id: 1, name: '読み書き可能', value:1},
             {id: 2, name:'読み込みのみ', value:2}
         ];
+}
 
 export default {
     props: {
@@ -19,7 +22,7 @@ export default {
         }
     },
     data() {
-        return { selection: [...selection]};
+        return { selection: selection()};
     },
     methods: {
         onChange(e) {

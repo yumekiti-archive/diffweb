@@ -77,7 +77,7 @@ import SimpleDialog from '../../Components/SimpleDialog';
 import ConfirmDeleteMemberDialog from './ConfirmDeleteMemberDialog';
 import throttle from 'lodash/throttle'
 import JetDialogModal from '../../Jetstream/DialogModal';
-import AuthoritySelection from '../../Components/AuthoritySelection';
+import AuthoritySelection, {selection } from '../../Components/AuthoritySelection';
 
 
 export default {
@@ -112,11 +112,7 @@ export default {
         }
     },
     data(){
-        let selection = [
-            {id: 0, name: '管理者', value:0},
-            {id: 1, name: '読み書き可能', value:1},
-            {id: 2, name:'読み込みのみ', value:2}
-        ];
+        
         return {
             deleteInvitation: {
                 user: null,
@@ -125,8 +121,7 @@ export default {
             invite: {
                 user: null,
                 isShow: false,
-                selection,
-                selected: selection[2].value
+                selected: selection()[2].value
             },
             memberForm: {
                 user: null,
