@@ -4,8 +4,10 @@
             メンバー<span v-if="user">{{ user.user_name }}</span>を除名します。
         </template>
         <template #content>
+            <p v-if="user">
             本当にメンバー{{ user.user_name }}を除名しますか？。
             除名する場合はパスワードを入力してください。
+            </p>
         <div>
         <jet-input type="password" class="mt-1 block w-3/4" placeholder="パスワード"
             ref="password" v-model="password" />
