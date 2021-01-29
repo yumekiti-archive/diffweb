@@ -1,7 +1,7 @@
 <x-guest-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
-            <x-jet-authentication-card-logo />
+            <img src="/diffsync.png" class="w-24 h-24">
         </x-slot>
 
         <x-jet-validation-errors class="mb-4" />
@@ -36,6 +36,12 @@
                 @if (Route::has('password.request'))
                     <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
                         {{ __('パスワードを忘れましたか？') }}
+                    </a>
+                @endif
+                <p>・</p>
+                @if (Route::has('register'))
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('register') }}">
+                        {{ __('アカウント作成') }}
                     </a>
                 @endif
 

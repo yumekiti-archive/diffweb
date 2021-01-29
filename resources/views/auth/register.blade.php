@@ -1,7 +1,8 @@
 <x-guest-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
-            <x-jet-authentication-card-logo />
+            <img src="/diffsync.png" class="w-24 h-24">
+
         </x-slot>
 
         <x-jet-validation-errors class="mb-4" />
