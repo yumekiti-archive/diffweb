@@ -37,7 +37,7 @@ services:
         volumes:
             - ../laravel:/mnt/laravel
         working_dir: /mnt/laravel
-        command: [sh, -c, npm install]
+        command: [sh, -c, npm install && npm run watch]
 
     # laravel echo
     laravel-echo-server:

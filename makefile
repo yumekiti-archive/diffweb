@@ -3,6 +3,13 @@ GID := $(shell id -g)
 USER := $(UID):$(GID)
 dc := user=$(USER) docker-compose -f ./docker/docker-compose.yml
 
+.PHONY: test
+test:
+	make down
+	make file-rm
+	make init
+	make seed
+
 .PHONY: init
 init:
 	$(dc) up -d --build
@@ -63,3 +70,8 @@ fresh:
 docker-rm:
 	docker stop `docker ps -aq` ;
 	docker rm `docker ps -aq`
+
+.PHONY: file-rm
+file-rm:
+	rm -f ./docker/laravel-echo/laravel-echo-server.lock
+	rm -fr ./laravel/node_modules/
